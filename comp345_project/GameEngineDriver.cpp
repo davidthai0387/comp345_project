@@ -13,8 +13,8 @@ int main() {
     cout << "Size of deck: " << ge.getDeckCards().getDeck().size() << endl;
 
     // You set the initial observer status using a prompt from the GameStart() method
-    /**   After the user sets the status of the observers, we will change the status two times
-     * to change the effectiveness of our methods**/
+    /** After the user sets the status of the observers, we will change the status two times
+     * to show the effectiveness of our methods**/
     if(ge.getObserverStatus()) {
         cout << "Observers are on" << endl;
         ge.setObserverStatus(false);
