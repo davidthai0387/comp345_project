@@ -50,7 +50,7 @@ vector<string> MapLoader::read() {
     string mapText;
     string text = "";
     vector<string> tokens;
-    ifstream MyReadFile(fileName);
+    ifstream MyReadFile("maps/" + fileName);
     while (getline(MyReadFile, mapText)) {
         text.append(mapText + "\n");
     }
