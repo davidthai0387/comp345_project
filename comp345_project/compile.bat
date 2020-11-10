@@ -1,1 +1,1 @@
-g++ "Player.cpp" "Orders.cpp" "Map.cpp" " MapLoader.cpp" "Cards.cpp" "PlayerDriver.cpp"
+g++ "Player.cpp" "Orders.cpp" "Map.cpp" "MapLoader.cpp" "Cards.cpp" "PlayerDriver.cpp"

@@ -4,6 +4,7 @@
 #include <tuple>
 
 //Nodes of the adjacency list
+class Player;
 class Country {
 public:
 	Country(int num_, std::string name_, int continentNum_);
