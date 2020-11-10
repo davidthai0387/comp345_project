@@ -37,6 +37,9 @@ void Player::setCountry(Country* a) {
 };
 void Player::setPlayerOrders(Orders* a) {
     this->PlayerOrders->add(a);
+}
+void Player::setNumOfArmies(int num) {
+    numOfArmies = num;
 };
 
 
@@ -70,6 +73,9 @@ string Player::showHand() {
 };
 OrderList* Player::getPlayerOrders() {
     return this->PlayerOrders;
+}
+int Player::getNumOfArmies() {
+    return numOfArmies;
 };
 
 // Deleting methods
