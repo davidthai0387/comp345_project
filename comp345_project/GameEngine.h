@@ -14,6 +14,9 @@ class GameEngine {
         void setObserverStatus(bool status);
         Map getMap();
 
+        // Startup phase methods
+        void startupPhase();
+
         // Main game loop methods
         void mainGameLoop();
 

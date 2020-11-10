@@ -14,14 +14,14 @@ public:
 	std::string getName();
 	int getContinentNum();
 	std::string getPlayer();
-	void setPlayer(std::string newPlayer);
+	void setPlayer(Player* newPlayer);
 	int getArmies();
 	void setArmies(int newNum);
 private:
 	int num;
 	std::string name;
 	int continentNum;
-	std::string player;
+	Player* player;
 	int armies;
 };
 

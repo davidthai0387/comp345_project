@@ -58,7 +58,7 @@ string Country::getPlayer()
 }
 
 /*Changes the owning player*/
-void Country::setPlayer(string newPlayer)
+void Country::setPlayer(Player* newPlayer)
 {
 	player = newPlayer;
 }
