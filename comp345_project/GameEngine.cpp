@@ -130,3 +130,10 @@ void GameEngine::setObserverStatus(bool status) {
 Map GameEngine::getMap() {
     return gameMap;
 }
+
+void GameEngine::startupPhase() {
+    vector<Country> countries;
+    for (Country* country : gameMap.getCountries()) {
+
+    }
+}
