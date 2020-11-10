@@ -73,7 +73,7 @@ string GameEngine::selectMap() {
 }
 
 bool GameEngine::isMapInDirectory(string fileName) {
-    ifstream file(fileName);
+    ifstream file("maps/" + fileName);
     if(!file)            
         return false;    
     else                 

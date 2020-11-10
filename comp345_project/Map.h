@@ -5,6 +5,7 @@
 #include <tuple>
 
 //Nodes of the adjacency list
+class Player;
 class Country {
 public:
 	Country(int num_, std::string name_, int continentNum_);
@@ -14,7 +15,7 @@ public:
 	int getNum();
 	std::string getName();
 	int getContinentNum();
-	std::string getPlayer();
+	Player* getPlayer();
 	void setPlayer(Player* newPlayer);
 	int getArmies();
 	void setArmies(int newNum);

@@ -7,7 +7,7 @@ using namespace std;
 
 /*Class constructor*/
 Country::Country(int num_, string name_, int continentNum_)
-	: num(num_), name(name_), continentNum(continentNum_), player(""), armies(0)
+	: num(num_), name(name_), continentNum(continentNum_), player(), armies(0)
 {
 }
 
@@ -23,7 +23,7 @@ Country::Country(const Country& country)
 
 /*Class default constructor*/
 Country::Country()
-	: num(0), name(""), player(""), armies(0)
+	: num(0), name(""), player(), armies(0)
 {
 }
 
@@ -52,7 +52,7 @@ int Country::getContinentNum()
 }
 
 /*Returns the owning player*/
-string Country::getPlayer()
+Player* Country::getPlayer()
 {
 	return player;
 }
