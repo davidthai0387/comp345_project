@@ -52,9 +52,9 @@ int Country::getContinentNum()
 }
 
 /*Returns the owning player*/
-string Country::getPlayer()
+Player* Country::getPlayer()
 {
-	return player->getName();
+	return player;
 }
 
 /*Changes the owning player*/

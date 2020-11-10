@@ -14,7 +14,7 @@ public:
 	int getNum();
 	std::string getName();
 	int getContinentNum();
-	std::string getPlayer();
+	Player* getPlayer();
 	void setPlayer(Player* newPlayer);
 	int getArmies();
 	void setArmies(int newNum);
