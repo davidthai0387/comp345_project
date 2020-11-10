@@ -14,6 +14,10 @@ class GameEngine {
         void setObserverStatus(bool status);
         Map getMap();
 
+        // Main game loop methods
+        void mainGameLoop();
+
+
     private:
         int nbOfPlayers;
         Deck deckCards;

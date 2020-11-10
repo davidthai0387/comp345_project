@@ -22,6 +22,9 @@ private:
     // list of orders
     OrderList* PlayerOrders;
 
+    // reinforcement pool
+    int numOfArmies;
+
 
 public:
     // constructors
@@ -36,6 +39,7 @@ public:
     // setters
     void setCountry(Country* a);
     void setPlayerOrders(Orders* a);
+    void setNumOfArmies(int num);
 
     // removers
     void removeCountry(string a);
@@ -48,6 +52,7 @@ public:
     string getCountries();
     vector<Card*>& getHand();
     OrderList* getPlayerOrders();
+    int getNumOfArmies();
 
     // methods
     string showHand();
