@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-int player_main() {
+int main() {
     vector<Player*> listofplayers;
     Player* p1 = new Player("Bob");
     Player* p2 = new Player("Jesus");

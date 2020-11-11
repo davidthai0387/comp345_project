@@ -2,7 +2,6 @@
   GameEngine.cpp
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(96,10): warning C4101: 'loopAgain': unreferenced local variable
   GameEngineDriver.cpp
-  GameObservers.cpp
   Map.cpp
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(171,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(197,20): warning C4018: '<': signed/unsigned mismatch
@@ -38,12 +37,12 @@ C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_
   Orders.cpp
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Orders.cpp(429,20): warning C4018: '<': signed/unsigned mismatch
   Player.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(49,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(63,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(77,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(100,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(110,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(172,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(66,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(83,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(106,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(116,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(178,27): warning C4018: '<': signed/unsigned mismatch
   PlayerDriver.cpp
   Generating Code...
   comp345_project.vcxproj -> C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\Debug\comp345_project.exe
