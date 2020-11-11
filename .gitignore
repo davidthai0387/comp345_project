@@ -26,11 +26,6 @@
 *.a
 *.lib
 
-# Executables
-*.exe
-*.out
-*.app
-
 # Visual C++ cache files
 ipch/
 *.aps
