@@ -11,6 +11,7 @@ private:
 
 protected:
 	bool exec;
+	int priority;
 
 public:
 	// Constructor
@@ -22,6 +23,7 @@ public:
 	virtual void read() = 0;
 	virtual string getName();
 	void setName(string a);
+	int getpriority();
 	friend ostream& operator<<(ostream& out, const Orders& o);
 };
 
