@@ -293,6 +293,7 @@ bool Map::dfs()
 		else
 			return true;
 	}
+	return false;
 }
 
 //called by dfs()
@@ -328,6 +329,7 @@ bool Map::dfsContinents()
 		else
 			return true;
 	}
+	return false;
 }
 
 //called by dfsContinent()
