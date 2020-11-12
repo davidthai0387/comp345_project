@@ -10,7 +10,8 @@ int engine_main() {
     // The map is not in the directory (any other name)
     ge.GameStart();
     cout << "Number of players that were created: " << ge.getPlayersList().size() << endl;
-    cout << "Size of deck: " << ge.getDeckCards().getDeck().size() << endl;
+    Deck tempDeck = *(ge.getDeckCards());   // getting the Deck object from Deck pointer
+    cout << "Size of deck: " << tempDeck.getDeck().size() << endl;
 
     // You set the initial observer status using a prompt from the GameStart() method
     /** After the user sets the status of the observers, we will change the status two times

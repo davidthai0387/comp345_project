@@ -45,9 +45,8 @@ void GameEngine::GameStart() {
     vector<tuple<string, int>> continents = ml.parseContinents(mapText[2]);
     vector<tuple<string, int>> countries = ml.parseCountries(mapText[3]);
     vector<vector<int>> borders = ml.parseBorders(mapText[4]);
-    Map m(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(),borders);
-    gameMap = m;
-    gameMap.validate();
+    gameMap = new Map(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(),borders);
+    (*gameMap).validate();
     
     setNbOfPlayers();
     activateObservers = Observers();
@@ -56,8 +55,7 @@ void GameEngine::GameStart() {
         string name;
         cout << "Enter the name for player #" << (i+1) << ": ";
         cin >> name;
-        Player newPlayer(name);
-        players.push_back(newPlayer);
+        players.push_back(new Player(name));
     }
     cout << endl;
 }
@@ -111,11 +109,11 @@ int GameEngine::getNbOfPlayers() {
     return nbOfPlayers;
 }
 
-Deck GameEngine::getDeckCards() {
+Deck* GameEngine::getDeckCards() {
     return deckCards;
 }
 
-vector<Player> GameEngine::getPlayersList() {
+vector<Player*> GameEngine::getPlayersList() {
     return players;
 }
 
@@ -127,13 +125,13 @@ void GameEngine::setObserverStatus(bool status) {
     activateObservers = status;
 }
 
-Map GameEngine::getMap() {
+Map* GameEngine::getMap() {
     return gameMap;
 }
 
 void GameEngine::startupPhase() {
     vector<Country> countries;
-    for (Country* country : gameMap.getCountries()) {
+    for (Country* country : (*gameMap).getCountries()) {
 
     }
 }
