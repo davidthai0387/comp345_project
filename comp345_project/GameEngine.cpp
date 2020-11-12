@@ -22,9 +22,46 @@ bool GameEngine::equals(const string& a, const string& b) {
 }
 
 void GameEngine::GameStart() {
-    string map;
-    string mapName = selectMap();
-    while(mapName.compare("") == 0) {
+    /*string map;
+    string mapName = selectMap();*/
+
+    //
+    bool mapIsValid = false;
+    do {
+        string map;
+        string mapName = selectMap();
+
+        // checking if map file exists
+        if (mapName.compare("") == 0) {
+            cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
+            continue;
+        }
+
+        // checking map file format
+        MapLoader ml(mapName);
+        vector<string> mapText = ml.read();
+        if (!ml.checkFormat(mapText)) {
+            cout << "The map that you've selected is incorrectly formatted. You will be asked to select another one." << endl;
+            continue;
+        }
+
+        // checking if map is valid
+        vector<tuple<string, int>> continents = ml.parseContinents(mapText[2]);
+        vector<tuple<string, int>> countries = ml.parseCountries(mapText[3]);
+        vector<vector<int>> borders = ml.parseBorders(mapText[4]);
+        gameMap = new Map(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(), borders);
+        if (!(*gameMap).validate()) {
+            cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
+            continue;
+        }
+
+        // all criterias checked
+        mapIsValid = true;
+
+    } while (!mapIsValid);
+    //
+
+    /*while(mapName.compare("") == 0) {
         cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
         mapName = selectMap();
     }
@@ -46,7 +83,7 @@ void GameEngine::GameStart() {
     vector<tuple<string, int>> countries = ml.parseCountries(mapText[3]);
     vector<vector<int>> borders = ml.parseBorders(mapText[4]);
     gameMap = new Map(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(),borders);
-    (*gameMap).validate();
+    (*gameMap).validate();*/
     
     setNbOfPlayers();
     activateObservers = Observers();
