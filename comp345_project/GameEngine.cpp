@@ -22,10 +22,6 @@ bool GameEngine::equals(const string& a, const string& b) {
 }
 
 void GameEngine::GameStart() {
-    /*string map;
-    string mapName = selectMap();*/
-
-    //
     bool mapIsValid = false;
     do {
         string map;
@@ -57,33 +53,7 @@ void GameEngine::GameStart() {
 
         // all criterias checked
         mapIsValid = true;
-
     } while (!mapIsValid);
-    //
-
-    /*while(mapName.compare("") == 0) {
-        cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
-        mapName = selectMap();
-    }
-
-    MapLoader ml(mapName);
-    vector<string> mapText = ml.read();
-    while(!ml.checkFormat(mapText)) {
-        cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
-        mapName = selectMap();
-        while(mapName.compare("") == 0) {
-            cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
-            mapName = selectMap();
-        }
-        MapLoader ml(mapName);
-        mapText = ml.read();
-    }
-    cout << endl;
-    vector<tuple<string, int>> continents = ml.parseContinents(mapText[2]);
-    vector<tuple<string, int>> countries = ml.parseCountries(mapText[3]);
-    vector<vector<int>> borders = ml.parseBorders(mapText[4]);
-    gameMap = new Map(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(),borders);
-    (*gameMap).validate();*/
     
     setNbOfPlayers();
     activateObservers = Observers();
