@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <iterator>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -131,9 +133,15 @@ Map GameEngine::getMap() {
     return gameMap;
 }
 
+/* Assigns countries and number of armies to players */
 void GameEngine::startupPhase() {
-    vector<Country> countries;
-    for (Country* country : gameMap.getCountries()) {
-
+    vector<Country*> randomCountries = gameMap.getCountries();
+    random_shuffle(randomCountries.begin(), randomCountries.end());
+    int c = 0;
+    for (Country* country : randomCountries) {
+        players[c].setCountry(country);
+        //country->setPlayer(players[c]);
+        c = (c + 1) % nbOfPlayers;
     }
+
 }

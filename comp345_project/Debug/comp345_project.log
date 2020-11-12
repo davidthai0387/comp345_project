@@ -1,7 +1,12 @@
 ﻿  Cards.cpp
   GameEngine.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(96,10): warning C4101: 'loopAgain': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(98,10): warning C4101: 'loopAgain': unreferenced local variable
   GameEngineDriver.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngineDriver.cpp(6,16): error C2259: 'GameEngine': cannot instantiate abstract class
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.h(7): message : see declaration of 'GameEngine'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngineDriver.cpp(6,16): message : due to following members:
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngineDriver.cpp(6,16): message : 'void Observer::update(void)': is abstract
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(15): message : see declaration of 'Observer::update'
   Map.cpp
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(171,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(197,20): warning C4018: '<': signed/unsigned mismatch
@@ -35,7 +40,7 @@ C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(418,38): warning C4101: 'e': unreferenced local variable
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(426,34): warning C4101: 'e': unreferenced local variable
   Orders.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Orders.cpp(429,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Orders.cpp(456,20): warning C4018: '<': signed/unsigned mismatch
   Player.cpp
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(66,23): warning C4018: '<': signed/unsigned mismatch
@@ -45,4 +50,3 @@ C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_
 C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(178,27): warning C4018: '<': signed/unsigned mismatch
   PlayerDriver.cpp
   Generating Code...
-  comp345_project.vcxproj -> C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\Debug\comp345_project.exe
