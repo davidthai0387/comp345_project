@@ -7,7 +7,7 @@ using namespace std;
 
 GameEngine::GameEngine() {
     nbOfPlayers = 0;
-    Deck deckCards;
+    deckCards = new Deck();
     activateObservers = true;
 }
 
