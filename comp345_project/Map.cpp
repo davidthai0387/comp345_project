@@ -279,7 +279,7 @@ void Map::showContents()
 //demonstrates that the map is a connected graph by performing a dfs
 bool Map::dfs()
 {
-	cout << "PERFORMING DFS ON ALL COUNTRIES OF THE MAP:" << endl;
+	cout << endl << "PERFORMING DFS ON ALL COUNTRIES OF THE MAP" << endl;
 
 	//no country visited initially
 	bool* visited = new bool[numOfCountries];

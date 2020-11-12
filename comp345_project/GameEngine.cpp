@@ -50,6 +50,7 @@ void GameEngine::GameStart() {
             cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
             continue;
         }
+        cout << "The selected map has been deemed valid." << endl << endl;
 
         // all criterias checked
         mapIsValid = true;
