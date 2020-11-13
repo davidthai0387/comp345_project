@@ -2,7 +2,6 @@
 #include <fstream>
 #include <vector>
 #include "GameEngine.h"
-
 using namespace std;
 
 GameEngine::GameEngine() {
@@ -137,9 +136,23 @@ Map* GameEngine::getMap() {
     return gameMap;
 }
 
+void GameEngine::update(){
+    cout << "something" << endl;
+}
+
 void GameEngine::startupPhase() {
     vector<Country> countries;
     for (Country* country : (*gameMap).getCountries()) {
 
     }
+}
+
+void GameEngine::mainGameLoop(){
+    // Reinforcement phase
+    
+
+    // Issuing orders phase
+
+
+    // Orders execution phase
 }

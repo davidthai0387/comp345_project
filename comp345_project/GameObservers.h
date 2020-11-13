@@ -31,3 +31,15 @@ class Observable{
         virtual void Detach(Observer* o);
         virtual void Notify();
 };
+
+class PhaseObserver : public Observer{
+    public:
+        PhaseObserver();
+        ~PhaseObserver();
+};
+
+class GameStatisticsObserver : public Observer{
+    public:
+        GameStatisticsObserver();
+        ~GameStatisticsObserver();
+};
