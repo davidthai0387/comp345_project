@@ -4,8 +4,7 @@
 #include<iostream>
 using namespace std;
 
-class GameEngine
-//    : public Observer 
+class GameEngine : public Observer 
 {
     public:
         GameEngine();
@@ -24,7 +23,7 @@ class GameEngine
         void startupPhase();
 
         // Main game loop methods
-        //void mainGameLoop();
+        void mainGameLoop();
 
         
 
@@ -37,6 +36,6 @@ class GameEngine
         bool isMapInDirectory(string fileName);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
-        bool Observers();
+        bool toggleObservers();
         string selectMap();
 };

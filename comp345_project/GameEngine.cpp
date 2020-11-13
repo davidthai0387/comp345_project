@@ -56,7 +56,7 @@ void GameEngine::GameStart() {
     } while (!mapIsValid);
     
     setNbOfPlayers();
-    activateObservers = Observers();
+    activateObservers = toggleObservers();
     cout << endl;
     for (int i = 0; i < nbOfPlayers; i++) {
         string name;
@@ -96,7 +96,7 @@ void GameEngine::setNbOfPlayers() {
     nbOfPlayers = count;
 }
 
-bool GameEngine::Observers() {
+bool GameEngine::toggleObservers() {
     string answer;
     bool loopAgain;
     cout << "Would you like to activate the observers for this game? (Yes or No): ";
