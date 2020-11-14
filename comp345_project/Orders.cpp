@@ -1,3 +1,4 @@
+#include<iterator>
 #include "Player.h"
 
 ostream& operator<<(ostream& out, const Orders& o) {
@@ -32,18 +33,24 @@ void Orders::setName(string a) {
 	this->name = a;
 }
 
+int Orders::getpriority(){
+	return priority;
+}
+
 //---------------------DEPLOY CLASS-----------------------
 // Constructors
 Deploy::Deploy(int a, string t) {
 	army = a;
 	terr = t;
 	this->setName("Deploy");
+	priority = 1;
 };
 Deploy::Deploy(const Deploy& d2) {
 	valid = d2.valid;
 	army = d2.army;
 	terr = d2.terr;
 	this->setName("Deploy");
+	priority = 1;
 }
 Deploy::~Deploy() {
 };
@@ -95,6 +102,7 @@ Advance::Advance(int a, string t1, string t2) {
 	terr1 = t1;
 	terr2 = t2;
 	this->setName("Advance");
+	priority = 4;
 };
 Advance::Advance(const Advance& a2) {
 	valid = a2.valid;
@@ -102,6 +110,7 @@ Advance::Advance(const Advance& a2) {
 	terr1 = a2.terr1;
 	terr2 = a2.terr2;
 	this->setName("Advance");
+	priority = 4;
 }
 Advance::~Advance() {
 };
@@ -157,11 +166,13 @@ void Advance::setTerr2(string t) {
 Bomb::Bomb(string t) {
 	terr = t;
 	this->setName("Bomb");
+	priority = 4;
 };
 Bomb::Bomb(const Bomb& b2) {
 	valid = b2.valid;
 	terr = b2.terr;
 	this->setName("Bomb");
+	priority = 4;
 }
 Bomb::~Bomb() {
 };
@@ -205,12 +216,14 @@ void Bomb::setTerr(string t) {
 Blockade::Blockade(string t) {
 	terr = t;
 	this->setName("Blockade");
+	priority = 3;
 
 };
 Blockade::Blockade(const Blockade& bl2) {
 	valid = bl2.valid;
 	terr = bl2.terr;
 	this->setName("Blockade");
+	priority = 3;
 }
 Blockade::~Blockade() {
 };
@@ -256,6 +269,7 @@ Airlift::Airlift(int a, string t1, string t2) {
 	terr1 = t1;
 	terr2 = t2;
 	this->setName("Airlift");
+	priority = 2;
 };
 Airlift::Airlift(const Airlift& ai2) {
 	valid = ai2.valid;
@@ -263,6 +277,7 @@ Airlift::Airlift(const Airlift& ai2) {
 	terr1 = ai2.terr1;
 	terr2 = ai2.terr2;
 	this->setName("Airlift");
+	priority = 2;
 }
 Airlift::~Airlift() {
 };
@@ -318,10 +333,12 @@ void Airlift::setTerr2(string t) {
 Negotiate::Negotiate(Player* p) {
 	play = p;
 	this->setName("Negotiate");
+	priority = 4;
 };
 Negotiate::Negotiate(const Negotiate& p2) {
 	valid = p2.valid; play = p2.play;
 	this->setName("Negotiate");
+	priority = 4;
 }
 Negotiate::~Negotiate() {
 };
@@ -377,7 +394,17 @@ OrderList::~OrderList() {
 };
 // Methods
 void OrderList::add(Orders* o) {
-	this->list.push_back(o);
+	vector<Orders*>::iterator ptr;
+	for(ptr = list.begin(); ptr < list.end(); ptr++){
+		if(o->getpriority() == 4){
+			this->list.push_back(o);
+			break;
+		}
+		if(o->getpriority() < (*ptr)->getpriority()){
+			this -> list.insert(ptr, o);
+			break;
+		}
+	}
 };
 void OrderList::setList(vector<Orders*> l) {
 	this->list = l;

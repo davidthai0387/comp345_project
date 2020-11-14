@@ -1,35 +1,36 @@
 #pragma once
 #include "Player.h"
+#include "GameObservers.h"
 #include<iostream>
 using namespace std;
 
-class GameEngine {
+class GameEngine : public Observable{
     public:
         GameEngine();
         void GameStart();
         int getNbOfPlayers();
-        Deck getDeckCards();
-        vector<Player> getPlayersList();
+        Deck* getDeckCards();
+        vector<Player*> getPlayersList();
         bool getObserverStatus();
         void setObserverStatus(bool status);
-        Map getMap();
+        Map* getMap();
 
         // Startup phase methods
         void startupPhase();
 
         // Main game loop methods
         void mainGameLoop();
-
+       
 
     private:
         int nbOfPlayers;
-        Deck deckCards;
-        vector<Player> players;
+        Deck* deckCards;
+        vector<Player*> players;
         bool activateObservers;
-        Map gameMap;
+        Map* gameMap;
         bool isMapInDirectory(string fileName);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
-        bool Observers();
+        void toggleObservers();
         string selectMap();
 };

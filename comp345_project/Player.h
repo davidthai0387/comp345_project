@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Map.h"
-#include "Cards.h"
 #include "MapLoader.h"
+#include "Cards.h"
+#include "Map.h"
 #include "Orders.h"
 using namespace std;
 
