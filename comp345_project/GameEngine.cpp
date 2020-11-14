@@ -136,10 +136,6 @@ Map* GameEngine::getMap() {
     return gameMap;
 }
 
-void GameEngine::update(){
-    cout << "something" << endl;
-}
-
 void GameEngine::startupPhase() {
     vector<Country> countries;
     for (Country* country : (*gameMap).getCountries()) {

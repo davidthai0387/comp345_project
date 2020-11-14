@@ -1,5 +1,6 @@
 #include "GameObservers.h"
 #include <list>
+#include <iostream>
 using namespace std;
 
 Observer::Observer(){
@@ -29,3 +30,27 @@ void Observable::Notify(){
     for (; i != observers->end(); ++i)
         (*i)->update();
 };
+
+PhaseObserver::PhaseObserver(Observable s){
+    s.Attach(this);
+}
+
+PhaseObserver::~PhaseObserver(){
+    delete this->subject;
+}
+
+void PhaseObserver::update(){
+    cout << "something" << endl;
+}
+
+GameStatsObserver::GameStatsObserver(Observable s){
+    s.Attach(this);
+}
+
+GameStatsObserver::~GameStatsObserver(){
+    delete this->subject;
+}
+
+void GameStatsObserver::update(){
+    cout << "something" << endl;
+}

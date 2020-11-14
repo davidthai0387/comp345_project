@@ -33,13 +33,25 @@ class Observable{
 };
 
 class PhaseObserver : public Observer{
+    private:
+        Observable* subject;
     public:
-        PhaseObserver();
+        // Constructors
+        PhaseObserver(Observable s);
         ~PhaseObserver();
+
+        // Method
+        virtual void update();
 };
 
-class GameStatisticsObserver : public Observer{
+class GameStatsObserver : public Observer{
+    private:
+        Observable* subject;
     public:
-        GameStatisticsObserver();
-        ~GameStatisticsObserver();
+        // Constructors
+        GameStatsObserver(Observable s);
+        ~GameStatsObserver();
+
+        // Method
+        virtual void update();
 };

@@ -4,8 +4,7 @@
 #include<iostream>
 using namespace std;
 
-class GameEngine : public Observer 
-{
+class GameEngine : public Observable{
     public:
         GameEngine();
         void GameStart();
@@ -16,16 +15,12 @@ class GameEngine : public Observer
         void setObserverStatus(bool status);
         Map* getMap();
 
-        // Observer method
-        void update();
-
         // Startup phase methods
         void startupPhase();
 
         // Main game loop methods
         void mainGameLoop();
-
-        
+       
 
     private:
         int nbOfPlayers;
