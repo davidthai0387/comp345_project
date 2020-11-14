@@ -18,6 +18,7 @@ class Observer{
 class Observable{
     private:
         list<Observer*> *observers;
+        string currentphase;
     
     public:
         // Constructor
@@ -25,6 +26,10 @@ class Observable{
 
         // Destructor
         ~Observable();
+
+        // Accessors
+        virtual void setPhase(string s);
+        string getPhase();
 
         // Methods
         virtual void Attach(Observer* o);

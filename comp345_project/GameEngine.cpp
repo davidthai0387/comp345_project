@@ -141,11 +141,24 @@ void GameEngine::startupPhase() {
 }
 
 void GameEngine::mainGameLoop(){
-    // Reinforcement phase
+    for(int i = 0; i < players.size(); i++){
+        // Reinforcement phase
+        if(activateObservers){
+            setPhase("Player " + players[i]->getName() + ": Reinforcement Phase");
+            Notify();
+        }
+
+        // Issuing orders phase
+        if(activateObservers){
+            setPhase("Player " + players[i]->getName() + ": Issuing Orders Phase");
+            Notify();
+        }
+
+        // Orders execution phase
+        if(activateObservers){
+            setPhase("Player " + players[i]->getName() + ": Orders Execution Phase");
+            Notify();
+        }
+    }
     
-
-    // Issuing orders phase
-
-
-    // Orders execution phase
 }
