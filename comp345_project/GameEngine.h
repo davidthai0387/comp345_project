@@ -31,6 +31,6 @@ class GameEngine : public Observable{
         bool isMapInDirectory(string fileName);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
-        bool toggleObservers();
+        void toggleObservers();
         string selectMap();
 };

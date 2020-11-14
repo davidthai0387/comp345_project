@@ -11,10 +11,10 @@ GameEngine::GameEngine() {
 }
 
 bool GameEngine::equals(const string& a, const string& b) {
-    unsigned int sz = a.size();
+    int sz = a.size();
     if (b.size() != sz)
         return false;
-    for (unsigned int i = 0; i < sz; ++i)
+    for (int i = 0; i < sz; ++i)
         if (tolower(a[i]) != tolower(b[i]))
             return false;
     return true;
@@ -23,7 +23,6 @@ bool GameEngine::equals(const string& a, const string& b) {
 void GameEngine::GameStart() {
     bool mapIsValid = false;
     do {
-        string map;
         string mapName = selectMap();
 
         // checking if map file exists
@@ -56,7 +55,7 @@ void GameEngine::GameStart() {
     } while (!mapIsValid);
     
     setNbOfPlayers();
-    activateObservers = toggleObservers();
+    toggleObservers();
     cout << endl;
     for (int i = 0; i < nbOfPlayers; i++) {
         string name;
@@ -96,9 +95,8 @@ void GameEngine::setNbOfPlayers() {
     nbOfPlayers = count;
 }
 
-bool GameEngine::toggleObservers() {
+void GameEngine::toggleObservers() {
     string answer;
-    bool loopAgain;
     cout << "Would you like to activate the observers for this game? (Yes or No): ";
     cin >> answer;
     while(!equals(answer,"yes") && !equals(answer,"no")) {
@@ -106,10 +104,9 @@ bool GameEngine::toggleObservers() {
        cin >> answer;
     }
     if(equals(answer,"yes")) 
-        return true;
+        setObserverStatus(true);
     else if(equals(answer,"no"))
-        return false;
-    return false;
+        setObserverStatus(false);
 }
 
 int GameEngine::getNbOfPlayers() {
