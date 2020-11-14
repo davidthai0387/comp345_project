@@ -2,7 +2,7 @@
 #include "GameEngine.h"
 using namespace std;
 
-int engine_main() {
+int main() {
     GameEngine ge;
     //When selecting the map here are the different cases
     // The map is in the directory but invalid (solar)

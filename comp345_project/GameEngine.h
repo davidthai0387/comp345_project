@@ -4,7 +4,9 @@
 #include<iostream>
 using namespace std;
 
-class GameEngine : public Observer {
+class GameEngine 
+    //: public Observer 
+{
     public:
         GameEngine();
         void GameStart();
