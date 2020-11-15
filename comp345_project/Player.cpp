@@ -57,6 +57,9 @@ string Player::getCountries() {
     }
     return out;
 };
+vector<Country*> Player::getOwnedCountries(){
+    return this->Countries;
+};
 vector<Card*>& Player::getHand() {
     return this->PlayerHand->getHand();
 };

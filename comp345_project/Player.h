@@ -50,6 +50,7 @@ public:
     string getName();
     bool existsCountry(string a);
     string getCountries();
+    vector<Country*> getOwnedCountries();
     vector<Card*>& getHand();
     OrderList* getPlayerOrders();
     int getNumOfArmies();
