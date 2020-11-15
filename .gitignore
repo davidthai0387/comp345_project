@@ -34,3 +34,11 @@ ipch/
 *.opensdf
 *.sdf
 *.cachefile
+*.suo
+*.user
+*.ncb
+*.sbr
+*.log
+*.bin
+*.obj
+*.ipch

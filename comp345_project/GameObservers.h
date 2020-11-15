@@ -18,7 +18,6 @@ class Observer{
 class Observable{
     private:
         list<Observer*> *observers;
-        string currentphase;
     
     public:
         // Constructor
@@ -27,22 +26,19 @@ class Observable{
         // Destructor
         ~Observable();
 
-        // Accessors
-        virtual void setPhase(string s);
-        string getPhase();
-
         // Methods
         virtual void Attach(Observer* o);
         virtual void Detach(Observer* o);
         virtual void Notify();
 };
 
+class GameEngine;
 class PhaseObserver : public Observer{
     private:
-        Observable* subject;
+        GameEngine* subject;
     public:
         // Constructors
-        PhaseObserver(Observable s);
+        PhaseObserver(GameEngine* s);
         ~PhaseObserver();
 
         // Method
@@ -51,10 +47,11 @@ class PhaseObserver : public Observer{
 
 class GameStatsObserver : public Observer{
     private:
-        Observable* subject;
+        GameEngine* subject;
+        
     public:
         // Constructors
-        GameStatsObserver(Observable s);
+        GameStatsObserver(GameEngine* s);
         ~GameStatsObserver();
 
         // Method

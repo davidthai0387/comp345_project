@@ -105,35 +105,44 @@ void GameEngine::toggleObservers() {
        cout << "Your answer has been deeemd invalid. Please enter again: ";
        cin >> answer;
     }
-    if(equals(answer,"yes")) 
+    if(equals(answer,"yes")) {
         setObserverStatus(true);
+        new PhaseObserver(this);
+        new GameStatsObserver(this);
+    }  
     else if(equals(answer,"no"))
         setObserverStatus(false);
 }
 
+
+// Accessors
 int GameEngine::getNbOfPlayers() {
     return nbOfPlayers;
 }
-
 Deck* GameEngine::getDeckCards() {
     return deckCards;
 }
-
 vector<Player*> GameEngine::getPlayersList() {
     return players;
 }
-
 bool GameEngine::getObserverStatus() {
     return activateObservers;
 }
-
 void GameEngine::setObserverStatus(bool status) {
     activateObservers = status;
 }
-
 Map* GameEngine::getMap() {
     return gameMap;
 }
+void GameEngine::setPhase(string s){
+    this->currentphase = s;
+}
+string GameEngine::getPhase(){
+    return currentphase;
+}
+
+
+// Methods
 
 /* Assigns countries and number of armies to players */
 void GameEngine::startupPhase() {
@@ -147,7 +156,6 @@ void GameEngine::startupPhase() {
     }
 
 }
-
 void GameEngine::mainGameLoop(){
     for(int i = 0; i < players.size(); i++){
         // Reinforcement phase

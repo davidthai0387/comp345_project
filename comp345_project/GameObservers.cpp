@@ -1,6 +1,7 @@
-#include "GameObservers.h"
+#include "GameEngine.h"
 #include <list>
 #include <iostream>
+#include <iomanip> 
 using namespace std;
 
 // ----------------------- Observer -----------------------
@@ -21,15 +22,6 @@ Observable::~Observable(){
 };
 
 
-// Accessors
-void Observable::setPhase(string s){
-    this->currentphase = s;
-}
-string Observable::getPhase(){
-    return currentphase;
-}
-
-
 // Methods
 void Observable::Attach(Observer* o){
     observers -> push_back(o);
@@ -46,8 +38,9 @@ void Observable::Notify(){
 
 // ----------------------- PhaseObserver -----------------------
 // Constructors
-PhaseObserver::PhaseObserver(Observable s){
-    s.Attach(this);
+PhaseObserver::PhaseObserver(GameEngine* s){
+    s->Attach(this);
+    this->subject = s;
 }
 PhaseObserver::~PhaseObserver(){
     delete this->subject;
@@ -62,8 +55,9 @@ void PhaseObserver::update(){
 
 // ----------------------- GameStatsObserver -----------------------
 // Constructors
-GameStatsObserver::GameStatsObserver(Observable s){
-    s.Attach(this);
+GameStatsObserver::GameStatsObserver(GameEngine* s){
+    s->Attach(this);
+    this->subject = s;
 }
 GameStatsObserver::~GameStatsObserver(){
     delete this->subject;
@@ -72,5 +66,15 @@ GameStatsObserver::~GameStatsObserver(){
 
 // Methods
 void GameStatsObserver::update(){
-    cout << "something" << endl;
+    int Total = subject->getMap()->getCountries().size();
+    int UnownedCountries = Total;
+    cout << '|' << setw(20) << "Game Statistics" << setw(20) << '|' << endl;
+    for(int i = 0; i < subject->getPlayersList().size(); i++){
+        // Percentage controlled
+        int OwnedCountries = subject->getPlayersList()[i]->getOwnedCountries().size();
+        cout << '|' << setw(10) << subject->getPlayersList()[i]->getName() << '|' << setw(10) << (OwnedCountries/Total)*100 << "%" << '|' << endl;
+
+        UnownedCountries -= OwnedCountries;
+    }
+    cout << '|' << setw(10) << "Total Remaining" << '|' << setw(10) << (UnownedCountries/Total)*100 << "%" << '|' << endl;
 }
