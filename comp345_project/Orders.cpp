@@ -1,5 +1,6 @@
 #include <iterator>
 #include <algorithm>
+#include <random>
 #include "Player.h"
 
 ostream& operator<<(ostream& out, const Orders& o) {
@@ -40,13 +41,15 @@ string Orders::getName() {
 void Orders::setName(string a) {
 	this->name = a;
 }
-void Orders::setOrderIssuer(Player* p){
+
+void Orders::setOrderIssuer(Player* p) {
 	orderIssuer = p;
 };
 int Orders::getpriority() {
 	return priority;
 }
-Player* Orders::getOrderIssuer(){
+
+Player* Orders::getOrderIssuer() {
 	return orderIssuer;
 };
 
@@ -77,8 +80,9 @@ bool Deploy::validate() {
 	return valid;
 };
 void Deploy::execute() {
-	for(Country* c : this->orderIssuer->getOwnedCountries()){
-		if(c->getName() == country->getName()){
+	for (Country* c : this->orderIssuer->getOwnedCountries()) {
+		if (c->getName() == country->getName()) {
+
 			c->setArmies((c->getArmies()) + getArmy());
 		}
 	}
@@ -138,12 +142,42 @@ Advance::~Advance() {
 };
 // Methods
 bool Advance::validate() {
-	if ((*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getBorders()[src->getNum()]).begin(), (map->getBorders()[src->getNum()]).end(), dest) != (map->getBorders()[src->getNum()]).end()) {
+	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getBorders()[src->getNum()]).begin(), (map->getBorders()[src->getNum()]).end(), dest) != (map->getBorders()[src->getNum()]).end()) {
+
 		valid = true;
 	}
 	return valid;
 };
 void Advance::execute() {
+	src->setArmies((src->getArmies() - getArmiesToDeploy()));
+	for (Country* c : this->orderIssuer->getOwnedCountries()) {
+		if (c->getName() == dest->getName()) {
+			c->setArmies((c->getArmies()) + getArmiesToDeploy());
+			return;
+		}
+	}
+	int attackUnits = getArmiesToDeploy();
+	int defendUnits = dest->getArmies();
+	while (attackUnits != 0 && defendUnits != 0) {
+		int attackPercent = rand() % 101;
+		int defendPercent = rand() % 101;
+		if (attackPercent >= 40)
+			defendUnits--;
+		if (defendPercent >= 30)
+			attackUnits--;
+	}
+	if (attackUnits == 0)
+		dest->setArmies(defendUnits);
+	if (defendUnits == 0) {
+		dest->setArmies(attackUnits);
+		if (attackUnits != 0) {
+			dest->getPlayer()->removeCountry(dest->getName());
+			dest->setPlayer(orderIssuer);
+			orderIssuer->setCountry(dest);
+			// ADD 1 CARD TO orderIssuer HAND
+			// LIMIT 1 PER TURN
+		}
+	}
 };
 void Advance::read() {
 	cout << "Advance\t\tMove " << getArmiesToDeploy() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
@@ -210,6 +244,7 @@ bool Bomb::validate() {
 	return false;
 };
 void Bomb::execute() {
+	targetCountry->setArmies((targetCountry->getArmies() / 2));
 };
 void Bomb::read() {
 	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry() << endl;
@@ -264,6 +299,9 @@ bool Blockade::validate() {
 	return true;
 };
 void Blockade::execute() {
+	target->setArmies((target->getArmies() * 2));
+	orderIssuer->removeCountry(target->getName());
+	// GIVE IT TO NEAUTRAL PLAYER
 };
 void Blockade::read() {
 	cout << "Blockade\tTriples troops in " << getTarget() << " and making it a neutral territory" << endl;
@@ -313,12 +351,41 @@ Airlift::~Airlift() {
 };
 // Methods
 bool Airlift::validate() {
-	if ((*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
+	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
 		valid = true;
 	}
 	return valid;
 };
 void Airlift::execute() {
+	src->setArmies((src->getArmies() - armies));
+	for (Country* c : this->orderIssuer->getOwnedCountries()) {
+		if (c->getName() == dest->getName()) {
+			c->setArmies((c->getArmies()) + armies);
+			return;
+		}
+	}
+	int attackUnits = armies;
+	int defendUnits = dest->getArmies();
+	while (attackUnits != 0 && defendUnits != 0) {
+		int attackPercent = rand() % 101;
+		int defendPercent = rand() % 101;
+		if (attackPercent >= 40)
+			defendUnits--;
+		if (defendPercent >= 30)
+			attackUnits--;
+	}
+	if (attackUnits == 0)
+		dest->setArmies(defendUnits);
+	if (defendUnits == 0) {
+		dest->setArmies(attackUnits);
+		if (attackUnits != 0) {
+			dest->getPlayer()->removeCountry(dest->getName());
+			dest->setPlayer(orderIssuer);
+			orderIssuer->setCountry(dest);
+			// ADD 1 CARD TO orderIssuer HAND
+			// LIMIT 1 PER TURN
+		}
+	}
 };
 void Airlift::read() {
 	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc() << " to " << getDest() << endl;
@@ -382,10 +449,13 @@ bool Negotiate::validate() {
 	return true;
 };
 void Negotiate::execute() {
+	// orderIssuer->setTruce(opponent);
+	// opponent->setTruce(orderIssuer);
+	// AT THE BEGINNING OF EVERY ROUND, SET EVERY PLAYER'S TRUCE TO NOBODY
 };
 
 void Negotiate::read() {
-		cout << "Negotiate\tPrevents attacks to and from " << (*orderIssuer).getName() << " for one turn" << endl;
+	cout << "Negotiate\tPrevents attacks to and from " << (*opponent).getName() << " for one turn" << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
