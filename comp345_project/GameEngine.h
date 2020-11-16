@@ -4,26 +4,26 @@
 #include<iostream>
 using namespace std;
 
-class GameEngine
-//    : public Observer 
-{
+class GameEngine : public Observable{
     public:
+        // Constructors
         GameEngine();
         void GameStart();
+
+        // Accessors
         int getNbOfPlayers();
         Deck* getDeckCards();
         vector<Player*> getPlayersList();
         bool getObserverStatus();
         void setObserverStatus(bool status);
         Map* getMap();
+        void setPhase(string s);
+        string getPhase();
 
-        // Startup phase methods
+        // Methods
         void startupPhase();
-
-        // Main game loop methods
-        //void mainGameLoop();
-
-
+        void mainGameLoop();
+        
     private:
         int nbOfPlayers;
         Deck* deckCards;
@@ -33,6 +33,7 @@ class GameEngine
         bool isMapInDirectory(string fileName);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
-        bool Observers();
+        void toggleObservers();
         string selectMap();
+        string currentphase;
 };

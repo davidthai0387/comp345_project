@@ -1,3 +1,50 @@
-﻿  GameEngine.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(94,10): warning C4101: 'loopAgain': unreferenced local variable
+﻿  Cards.cpp
+  GameEngine.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(131,10): warning C4101: 'loopAgain': unreferenced local variable
+  GameEngineDriver.cpp
+  Map.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(171,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(197,20): warning C4018: '<': signed/unsigned mismatch
+  MapLoader.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(125,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(136,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(155,42): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(158,38): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(186,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(194,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(211,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(235,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(246,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(260,42): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(263,38): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(276,42): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(279,38): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(287,42): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(290,38): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(300,34): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(303,30): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(325,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(333,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(350,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(371,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(373,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(379,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(400,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(402,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(407,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(418,38): warning C4101: 'e': unreferenced local variable
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(426,34): warning C4101: 'e': unreferenced local variable
+  Orders.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Orders.cpp(456,20): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(66,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(83,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(106,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(116,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(178,27): warning C4018: '<': signed/unsigned mismatch
+  PlayerDriver.cpp
+  Generating Code...
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(296): warning C4715: 'Map::dfs': not all control paths return a value
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(331): warning C4715: 'Map::dfsContinents': not all control paths return a value
   comp345_project.vcxproj -> C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\Debug\comp345_project.exe

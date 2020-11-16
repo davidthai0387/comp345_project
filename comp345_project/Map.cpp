@@ -242,15 +242,9 @@ std::vector<std::vector<int>> Map::getBorders()
 }
 
 /*Demonstrates that the map is a connected graph*/
-void Map::validate()
+bool Map::validate()
 {
-	dfs();
-	cout << endl;
-	for (int i = 0; i < numOfContinents; i++) {
-		int currentNumOfCountries = continents[i]->getCountries().size();
-		dfsContinent(i, currentNumOfCountries);
-		cout << endl;
-	}
+	return (dfs() && dfsContinents());
 }
 
 /*Shows all contents of the map*/
@@ -283,9 +277,9 @@ void Map::showContents()
 }
 
 //demonstrates that the map is a connected graph by performing a dfs
-void Map::dfs()
+bool Map::dfs()
 {
-	cout << "PERFORMING DFS ON ALL COUNTRIES OF THE MAP:" << endl;
+	cout << endl << "PERFORMING DFS ON ALL COUNTRIES OF THE MAP" << endl;
 
 	//no country visited initially
 	bool* visited = new bool[numOfCountries];
@@ -293,13 +287,20 @@ void Map::dfs()
 		visited[i] = false;
 
 	dfsHelper(0, visited);
+	for (int i = 0; i < numOfCountries; i++) {
+		if (!visited[i])
+			return false;
+		else
+			return true;
+	}
+	return false;
 }
 
 //called by dfs()
 void Map::dfsHelper(int cv, bool visited[])
 {
 	visited[cv] = true;
-	cout << cv << ":" << countryNames[cv] << endl;
+	//cout << cv << ":" << countryNames[cv] << endl;
 
 	for (auto borderCountry : borders[cv]) {
 		if (!visited[borderCountry])
@@ -308,27 +309,39 @@ void Map::dfsHelper(int cv, bool visited[])
 }
 
 //demonstrates that each continent is a connected subgraph by performing a dfs on each continent
-void Map::dfsContinent(int currentContinentNum, int currentNumOfCountries)
+bool Map::dfsContinents()
 {
-	cout << "PERFORMING DFS ON " << continents[currentContinentNum]->getName() << endl;
+	
+	cout << "PERFORMING DFS ON CONTINENTS " << endl;
 
 	bool* visitedCountryNums = new bool[numOfCountries];
 	for (int i = 0; i < numOfCountries; i++)
 		visitedCountryNums[i] = false;
 
-	dfsContinentHelper(continents[currentContinentNum]->getCountries()[0]->getNum(), currentContinentNum, visitedCountryNums);
+	for (int i = 0; i < numOfContinents; i++) {
+		int currentNumOfCountries = continents[i]->getCountries().size();
+		dfsContinentsHelper(continents[i]->getCountries()[0]->getNum(), i, visitedCountryNums);
+	}
+
+	for (int i = 0; i < numOfCountries; i++) {
+		if (!visitedCountryNums[i])
+			return false;
+		else
+			return true;
+	}
+	return false;
 }
 
 //called by dfsContinent()
-void Map::dfsContinentHelper(int cv, int currentContinentNum, bool visitedCountryNums[])
+void Map::dfsContinentsHelper(int cv, int currentContinentNum, bool visitedCountryNums[])
 {
 	visitedCountryNums[cv] = true;
-	cout << cv << ":" << countryNames[cv] << endl;
+	//cout << cv << ":" << countryNames[cv] << endl;
 
 	for (auto borderCountry : borders[cv]) {
 		if (countryContinents[borderCountry] == currentContinentNum) {
 			if (!visitedCountryNums[borderCountry])
-				dfsContinentHelper(borderCountry, currentContinentNum, visitedCountryNums);
+				dfsContinentsHelper(borderCountry, currentContinentNum, visitedCountryNums);
 
 		}
 	}

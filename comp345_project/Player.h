@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Map.h"
-#include "Cards.h"
 #include "MapLoader.h"
+#include "Cards.h"
+#include "Map.h"
 #include "Orders.h"
 using namespace std;
 
@@ -50,6 +50,7 @@ public:
     string getName();
     bool existsCountry(string a);
     string getCountries();
+    vector<Country*> getOwnedCountries();
     vector<Card*>& getHand();
     OrderList* getPlayerOrders();
     int getNumOfArmies();
