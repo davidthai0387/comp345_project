@@ -1,4 +1,5 @@
 #include <iterator>
+#include <algorithm>
 #include "Player.h"
 
 ostream& operator<<(ostream& out, const Orders& o) {
@@ -10,18 +11,20 @@ ostream& operator<<(ostream& out, const Orders& o) {
 		return out << "Your order was not executed." << endl;
 
 };
+
 //------------------------------ORDERS CLASS------------------------
 // Constructor
 Orders::Orders() {
 };
+
 Orders::Orders(Player* p) {
 	exec = false;
-	OrderIssuer = p;
+	orderIssuer = p;
 };
 Orders::Orders(const Orders& o2) {
 	name = o2.name;
 	exec = o2.exec;
-	OrderIssuer = o2.OrderIssuer;
+	orderIssuer = o2.orderIssuer;
 }
 Orders::~Orders() {
 };
@@ -38,27 +41,27 @@ void Orders::setName(string a) {
 	this->name = a;
 }
 void Orders::setOrderIssuer(Player* p){
-	OrderIssuer = p;
+	orderIssuer = p;
 };
 int Orders::getpriority() {
 	return priority;
 }
 Player* Orders::getOrderIssuer(){
-	return OrderIssuer;
+	return orderIssuer;
 };
 
 //---------------------DEPLOY CLASS-----------------------
 // Constructors
-Deploy::Deploy(Player* p, int a, string t) : Orders(p) {
-	army = a;
-	terr = t;
+Deploy::Deploy(Player* p, int a, Country* c, Map* m) : Orders(p) {
+	armiesToDeploy = a;
+	country = c;
 	this->setName("Deploy");
 	priority = 1;
 };
-Deploy::Deploy(const Deploy& d2) : Orders(d2.OrderIssuer) {
+Deploy::Deploy(const Deploy& d2) : Orders(d2.orderIssuer) {
 	valid = d2.valid;
-	army = d2.army;
-	terr = d2.terr;
+	armiesToDeploy = d2.armiesToDeploy;
+	country = d2.country;
 	this->setName("Deploy");
 	priority = 1;
 }
@@ -68,20 +71,20 @@ Deploy::~Deploy() {
 
 // Methods
 bool Deploy::validate() {
-	if (getArmy() <= this->OrderIssuer->getNumOfArmies() && getArmy() > 0 && this->OrderIssuer->getCountries().find(getTerr()) != string::npos) {
+	if (getArmy() <= this->orderIssuer->getNumOfArmies() && getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
 		valid = true;
 	}
 	return valid;
 };
 void Deploy::execute() {
-	for(Country* c : this->OrderIssuer->getOwnedCountries()){
-		if(c->getName() == terr){
+	for(Country* c : this->orderIssuer->getOwnedCountries()){
+		if(c->getName() == country->getName()){
 			c->setArmies((c->getArmies()) + getArmy());
 		}
 	}
 };
 void Deploy::read() {
-	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getTerr() << endl;
+	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -94,10 +97,10 @@ bool Deploy::getValid() {
 	return valid;
 };
 int Deploy::getArmy() {
-	return army;
+	return armiesToDeploy;
 };
-string Deploy::getTerr() {
-	return terr;
+Country* Deploy::getCountry() {
+	return country;
 };
 string Deploy::getName() {
 	return "Deploy";
@@ -106,26 +109,28 @@ void Deploy::setValid(bool v) {
 	valid = v;
 };
 void Deploy::setArmy(int a) {
-	army = a;
+	armiesToDeploy = a;
 };
-void Deploy::setTerr(string t) {
-	terr = t;
+void Deploy::setCountry(Country* t) {
+	country = t;
 };
 
 //---------------------ADVANCE CLASS-----------------------
 // Constructors
-Advance::Advance(Player* p, int a, string t1, string t2) {
-	army = a;
-	terr1 = t1;
-	terr2 = t2;
+Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m) : Orders(p) {
+	armiesToAdvance = a;
+	src = c1;
+	dest = c2;
+	map = m;
+
 	this->setName("Advance");
 	priority = 4;
 };
 Advance::Advance(const Advance& a2) {
 	valid = a2.valid;
-	army = a2.army;
-	terr1 = a2.terr1;
-	terr2 = a2.terr2;
+	armiesToAdvance = a2.armiesToAdvance;
+	src = a2.src;
+	dest = a2.dest;
 	this->setName("Advance");
 	priority = 4;
 }
@@ -133,7 +138,7 @@ Advance::~Advance() {
 };
 // Methods
 bool Advance::validate() {
-	if (this->OrderIssuer->getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory &&  getArmy() > 0 && string terr2 is an adjacent territory) {
+	if ((*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getBorders()[src->getNum()]).begin(), (map->getBorders()[src->getNum()]).end(), dest) != (map->getBorders()[src->getNum()]).end()) {
 		valid = true;
 	}
 	return valid;
@@ -141,7 +146,7 @@ bool Advance::validate() {
 void Advance::execute() {
 };
 void Advance::read() {
-	cout << "Advance\t\tMove " << getArmy() << " troop(s) from " << getTerr1() << " to " << getTerr2() << endl;
+	cout << "Advance\t\tMove " << getArmiesToDeploy() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -153,14 +158,14 @@ void Advance::read() {
 bool Advance::getValid() {
 	return valid;
 };
-int Advance::getArmy() {
-	return army;
+int Advance::getArmiesToDeploy() {
+	return armiesToAdvance;
 };
-string Advance::getTerr1() {
-	return terr1;
+Country* Advance::getSrc() {
+	return src;
 }
-string Advance::getTerr2() {
-	return terr2;
+Country* Advance::getDest() {
+	return dest;
 };
 string Advance::getName() {
 	return "Advance";
@@ -169,25 +174,26 @@ void Advance::setValid(bool v) {
 	valid = v;
 };
 void Advance::setArmy(int a) {
-	army = a;
+	armiesToAdvance = a;
 };
-void Advance::setTerr1(string t) {
-	terr1 = t;
+void Advance::setSrc(Country* c) {
+	src = c;
 };
-void Advance::setTerr2(string t) {
-	terr2 = t;
+void Advance::setDest(Country* c) {
+	dest = c;
 };
 
 //---------------------BOMB CLASS-----------------------
 // Constructors
-Bomb::Bomb(Player* p, string t) {
-	terr = t;
+Bomb::Bomb(Player* p, Country* c, Map* m) : Orders(p) {
+	targetCountry = c;
+	map = m;
 	this->setName("Bomb");
 	priority = 4;
 };
 Bomb::Bomb(const Bomb& b2) {
 	valid = b2.valid;
-	terr = b2.terr;
+	targetCountry = b2.targetCountry;
 	this->setName("Bomb");
 	priority = 4;
 }
@@ -195,15 +201,18 @@ Bomb::~Bomb() {
 };
 // Methods
 bool Bomb::validate() {
-	if ( string terr is an enemy territory ) {
-		valid = true;
+	for (Country* country : (*orderIssuer).getOwnedCountries()) {
+		if (std::find((map->getBorders()[country->getNum()]).begin(), (map->getBorders()[country->getNum()]).end(), targetCountry) != (map->getBorders()[country->getNum()]).end()) {
+			valid = true;
+			return true;
+		}
 	}
-	return true;
+	return false;
 };
 void Bomb::execute() {
 };
 void Bomb::read() {
-	cout << "Bomb\t\tEliminate half the troops in " << getTerr() << endl;
+	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -215,8 +224,8 @@ void Bomb::read() {
 bool Bomb::getValid() {
 	return valid;
 };
-string Bomb::getTerr() {
-	return terr;
+Country* Bomb::getTargetCountry() {
+	return targetCountry;
 };
 string Bomb::getName() {
 	return "Bomb";
@@ -224,20 +233,23 @@ string Bomb::getName() {
 void Bomb::setValid(bool v) {
 	valid = v;
 };
-void Bomb::setTerr(string t) {
-	terr = t;
+void Bomb::setTargetCountry(Country* c) {
+	targetCountry = c;
 };
 
 //---------------------BLOCKADE CLASS-----------------------
 // Constructors
-Blockade::Blockade(Player* p, string t) {
-	terr = t;
+Blockade::Blockade(Player* p, Country* c, Map* m) : Orders(p) {
+	target = c;
+	map = m;
+
 	this->setName("Blockade");
 	priority = 3;
 };
 Blockade::Blockade(const Blockade& bl2) {
 	valid = bl2.valid;
-	terr = bl2.terr;
+	target = bl2.target;
+
 	this->setName("Blockade");
 	priority = 3;
 }
@@ -245,7 +257,8 @@ Blockade::~Blockade() {
 };
 // Methods
 bool Blockade::validate() {
-	if (this->OrderIssuer->getCountries().find(getTerr()) != string::npos) {
+	if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
+
 		valid = true;
 	}
 	return true;
@@ -253,7 +266,7 @@ bool Blockade::validate() {
 void Blockade::execute() {
 };
 void Blockade::read() {
-	cout << "Blockade\tTriples troops in " << getTerr() << " and making it a neutral territory" << endl;
+	cout << "Blockade\tTriples troops in " << getTarget() << " and making it a neutral territory" << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -265,8 +278,8 @@ void Blockade::read() {
 bool Blockade::getValid() {
 	return valid;
 };
-string Blockade::getTerr() {
-	return terr;
+Country* Blockade::getTarget() {
+	return target;
 };
 string Blockade::getName() {
 	return "Blockade";
@@ -274,24 +287,25 @@ string Blockade::getName() {
 void Blockade::setValid(bool v) {
 	valid = v;
 };
-void Blockade::setTerr(string t) {
-	terr = t;
+void Blockade::setTarget(Country* c) {
+	target = c;
 };
 
 //---------------------AIRLIFT CLASS-----------------------
 // Constructors
-Airlift::Airlift(Player* p, int a, string t1, string t2) {
-	army = a;
-	terr1 = t1;
-	terr2 = t2;
+Airlift::Airlift(Player* p, int a, Country* c1, Country* c2, Map* m) : Orders(p) {
+	armies = a;
+	src = c1;
+	dest = c2;
+	map = m;
 	this->setName("Airlift");
 	priority = 2;
 };
 Airlift::Airlift(const Airlift& ai2) {
 	valid = ai2.valid;
-	army = ai2.army;
-	terr1 = ai2.terr1;
-	terr2 = ai2.terr2;
+	armies = ai2.armies;
+	src = ai2.src;
+	dest = ai2.dest;
 	this->setName("Airlift");
 	priority = 2;
 }
@@ -299,7 +313,7 @@ Airlift::~Airlift() {
 };
 // Methods
 bool Airlift::validate() {
-	if (this->OrderIssuer->getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory && getArmy() > 0 && string terr2 is a territory) {
+	if ((*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
 		valid = true;
 	}
 	return valid;
@@ -307,7 +321,7 @@ bool Airlift::validate() {
 void Airlift::execute() {
 };
 void Airlift::read() {
-	cout << "Airlift\t\tMove " << getArmy() << " troop(s) from " << getTerr1() << " to " << getTerr2() << endl;
+	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc() << " to " << getDest() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -319,14 +333,14 @@ void Airlift::read() {
 bool Airlift::getValid() {
 	return valid;
 };
-int Airlift::getArmy() {
-	return army;
+int Airlift::getArmies() {
+	return armies;
 };
-string Airlift::getTerr1() {
-	return terr1;
+Country* Airlift::getSrc() {
+	return src;
 };
-string Airlift::getTerr2() {
-	return terr2;
+Country* Airlift::getDest() {
+	return dest;
 };
 
 string Airlift::getName() {
@@ -336,25 +350,25 @@ void Airlift::setValid(bool v) {
 	valid = v;
 };
 void Airlift::setArmy(int a) {
-	army = a;
+	armies = a;
 };
-void Airlift::setTerr1(string t) {
-	terr1 = t;
+void Airlift::setSrc(Country* c) {
+	src = c;
 };
-void Airlift::setTerr2(string t) {
-	terr2 = t;
+void Airlift::setDest(Country* c) {
+	dest = c;
 };
 
 //---------------------NEGOTIATE CLASS-----------------------
-Negotiate::Negotiate(Player& p) {
-	playO = &p;
+Negotiate::Negotiate(Player* p, Player* o, Map* m) : Orders(p) {
+	opponent = o;
+	map = m;
 	this->setName("Negotiate");
 	priority = 4;
 };
 Negotiate::Negotiate(const Negotiate& p2) {
 	valid = p2.valid;
-	playO = p2.playO;
-	playP = p2.playP;
+	opponent = p2.opponent;
 	this->setName("Negotiate");
 	priority = 4;
 }
@@ -362,7 +376,7 @@ Negotiate::~Negotiate() {
 };
 // Methods
 bool Negotiate::validate() {
-	if (getPlayerO().getName() != getPlayerP().getName()) {
+	if ((*orderIssuer).getName() != (*opponent).getName()) {
 		valid = true;
 	}
 	return true;
@@ -371,7 +385,7 @@ void Negotiate::execute() {
 };
 
 void Negotiate::read() {
-		cout << "Negotiate\tPrevents attacks to and from " << getPlayerO().getName() << " for one turn" << endl;
+		cout << "Negotiate\tPrevents attacks to and from " << (*orderIssuer).getName() << " for one turn" << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -385,11 +399,8 @@ void Negotiate::read() {
 bool Negotiate::getValid() {
 	return valid;
 };
-Player Negotiate::getPlayerO() {
-	return *playO;
-};
-Player Negotiate::getPlayerP() {
-	return *playP;
+Player* Negotiate::getOpponent() {
+	return opponent;
 };
 string Negotiate::getName() {
 	return "Negotiate";
@@ -397,8 +408,8 @@ string Negotiate::getName() {
 void Negotiate::setValid(bool v) {
 	valid = v;
 };
-void Negotiate::setPlayerO(Player *p) {
-	playO = p;
+void Negotiate::setOpponent(Player* p) {
+	opponent = p;
 };
 
 
