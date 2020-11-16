@@ -49,7 +49,7 @@ public:
     // getters
     string getName();
     bool existsCountry(string a);
-    string getCountries();
+    string getCountryNames();
     vector<Country*> getOwnedCountries();
     vector<Card*>& getHand();
     OrderList* getPlayerOrders();
@@ -63,7 +63,7 @@ public:
     vector<Country*> toAttack(); //return list of country to attack
     inline void issueOrder(string a);
     void issueOrder(string a, vector<Player*> listofplayers); //create Order object + add to list of orders (optional parameter)
-    void issueOrder()
+    void issueOrder();
 
 };
 

@@ -14,11 +14,12 @@ private:
 protected:
 	bool exec;
 	int priority;
-	Player* OrderIssuer;
+	Player* orderIssuer;
 	Map* map;
 
 public:
 	// Constructor
+	Orders();
 	Orders(Player* p);
 	Orders(const Orders& o2);
 
@@ -40,12 +41,13 @@ ostream& operator<<(ostream& out, const Orders& o);
 class Deploy : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr;
+	int armiesToDeploy;
+	Country* country;
+	Map* map;
 
 public:
 	// Constructor
-	Deploy(Player* p, int a, string t);
+	Deploy(Player* p, int a, Country* c, Map* m);
 	Deploy(const Deploy& d2);
 
 	// Destructor
@@ -59,26 +61,25 @@ public:
 	// Getters
 	bool getValid();
 	int getArmy();
-	string getTerr();
+	Country* getCountry();
 	string getName();
 
 	// Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr(string t);
+	void setCountry(Country* t);
 };
 
 class Advance : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr1;
-	string terr2;
-	const Player* play;
+	int armiesToAdvance;
+	Country* src;
+	Country* dest;
 
 public:
 	// Constructor
-	Advance(int a, string t1, string t2, Player& p);
+	Advance(Player* p, int a, Country* c1, Country* c2, Map* m);
 	Advance(const Advance& a2);
 
 	// Destructor
@@ -91,28 +92,26 @@ public:
 
 	// Getters
 	bool getValid();
-	int getArmy();
-	string getTerr1();
-	string getTerr2();
+	int getArmiesToDeploy();
+	Country* getSrc();
+	Country* getDest();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr1(string t);
-	void setTerr2(string t);
+	void setSrc(Country* c);
+	void setDest(Country* c);
 };
 
 class Bomb : public Orders {
 private:
 	bool valid{ false };
-	string terr;
-	const Player* play;
-
+	Country* targetCountry;
+	Map* map;
 public:
 	// Constructor
-	Bomb(string t, Player& p);
+	Bomb(Player* p, Country* c, Map* m);
 	Bomb(const Bomb& b2);
 
 	// Destructor
@@ -125,24 +124,22 @@ public:
 
 	// Getters
 	bool getValid();
-	string getTerr();
+	Country* getTargetCountry();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
-	void setTerr(string t);
+	void setTargetCountry(Country* c);
 };
 
 class Blockade : public Orders {
 private:
 	bool valid{ false };
-	string terr;
-	const Player* play;
-
+	Country* target;
+	Map* map;
 public:
 	// Constructor
-	Blockade(string terr, Player& p);
+	Blockade(Player* p, Country* c, Map* m);
 	Blockade(const Blockade& bl2);
 
 	// Destructor
@@ -155,26 +152,24 @@ public:
 
 	// Getters
 	bool getValid();
-	string getTerr();
+	Country* getTarget();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
-	void setTerr(string t);
+	void setTarget(Country* c);
 };
 
 class Airlift : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr1;
-	string terr2;
-	const Player* play;
-
+	int armies;
+	Country* src;
+	Country* dest;
+	Map* map;
 public:
 	//Constructors
-	Airlift(int a, string t1, string t2, Player& p);
+	Airlift(Player* p, int a, Country* c1, Country* c2, Map* m);
 	Airlift(const Airlift& ai2);
 
 	// Destructor
@@ -187,29 +182,29 @@ public:
 
 	//Getters
 	bool getValid();
-	int getArmy();
-	string getTerr1();
-	string getTerr2();
+	int getArmies();
+	Country* getSrc();
+	Country* getDest();
 	string getName();
-	Player getPlayer();
 
 	//Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr1(string t);
-	void setTerr2(string t);
+	void setSrc(Country* c);
+	void setDest(Country* c);
 };
 
 
 class Negotiate : public Orders {
 private:
 	bool valid{ false };
-	const Player* playO;
-	const Player* playP;
+	Player* opponent;
+	Map* map;
+
 
 public:
 	//Constructor
-	Negotiate(Player& p);
+	Negotiate(Player* p, Player* o, Map* m);
 	Negotiate(const Negotiate& p2);
 
 	// Destructor
@@ -222,13 +217,12 @@ public:
 
 	//Getters
 	bool getValid();
-	Player getPlayerO();
-	Player getPlayerP();
+	Player* getOpponent();
 	string getName();
 
 	//Setters
 	void setValid(bool v);
-	void setPlayerO(Player* p);
+	void setOpponent(Player* p);
 };
 
 class OrderList {

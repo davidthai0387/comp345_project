@@ -47,7 +47,7 @@ void Player::setNumOfArmies(int num) {
 string Player::getName() {
     return this->Name;
 };
-string Player::getCountries() {
+string Player::getCountryNames() {
     string out;
     for (int i = 0; i < Countries.size(); i++) {
         if (i == (Countries.size() - 1))

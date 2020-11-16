@@ -137,11 +137,18 @@ void GameEngine::issueOrdersPhase()
             int n;
             cin >> n;
 
+
+
+            if (i = nbOfPlayers)
+                j++;
             break;
         case 1:     // advance
             for (Country* country : players[i]->toAttack()) {
 
             }
+
+            if (i = nbOfPlayers)
+                j++;
             break;
         case 2:     // special orders
             break;
@@ -151,8 +158,7 @@ void GameEngine::issueOrdersPhase()
 
 
         phaseIsOver = true;
-        if (i = nbOfPlayers)
-            j++;
+        
         i = ++i % nbOfPlayers;
     }
 }
