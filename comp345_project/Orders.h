@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "Map.h"
 using namespace std;
 
 class Player;
@@ -14,6 +15,7 @@ protected:
 	bool exec;
 	int priority;
 	Player* OrderIssuer;
+	Map* map;
 
 public:
 	// Constructor
