@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <iterator>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -76,6 +78,91 @@ string GameEngine::selectMap() {
         return "";    
 }
 
+void GameEngine::reinforcementPhase()
+{
+    for (Player* player : players) {
+        int armyValue = 0;
+        for (Continent* continent : gameMap->getContinents()) {
+            if (ownsContinent(player, continent)) {
+                armyValue += continent->getControlValue();
+            }
+        }
+        armyValue += (player->getOwnedCountries().size()) / 3;
+        player->setNumOfArmies(armyValue);
+    }
+}
+
+bool GameEngine::ownsContinent(Player* p, Continent* c)
+{
+    for (Country* country : c->getCountries()) {
+        if (country->getPlayer() != p)
+            return false;
+    }
+    return true;
+}
+
+void GameEngine::issueOrdersPhase()
+{
+    vector<bool> turnIsOver(nbOfPlayers);
+    for (bool over : turnIsOver) {
+        over = false;
+    }
+
+    bool phaseIsOver = true;
+
+    int i = 0;
+    int j = 0;
+    
+    while (true) {
+        for (bool over : turnIsOver) {
+            if (!over)
+                phaseIsOver = false;
+        }
+        if (phaseIsOver)
+            break;
+        if (turnIsOver[i])
+            continue;
+
+        switch (j) {
+        case 0:     // deploy armies to owned countries
+            cout << "You currently own the following countries" << endl;
+            for (Country* country : players[i]->getOwnedCountries()) {
+                cout << "#" << country->getNum() << " " << country->getName() << endl;
+            }
+            cout << "You currently have " << players[i]->getNumOfArmies() << " armies to deploy." << endl;
+            cout << "Enter the number of the country where you want to deploy your armies: ";
+            int id;
+            cin >> id;
+            cout << "Enter the number of armies your want to deploy: ";
+            int n;
+            cin >> n;
+
+
+
+            if (i = nbOfPlayers)
+                j++;
+            break;
+        case 1:     // advance
+            for (Country* country : players[i]->toAttack()) {
+
+            }
+
+            if (i = nbOfPlayers)
+                j++;
+            break;
+        case 2:     // special orders
+            break;
+        }
+
+
+
+
+        phaseIsOver = true;
+        
+        i = ++i % nbOfPlayers;
+    }
+}
+
 bool GameEngine::isMapInDirectory(string fileName) {
     ifstream file("maps/" + fileName);
     if(!file)            
@@ -141,12 +228,41 @@ string GameEngine::getPhase(){
 
 
 // Methods
-void GameEngine::startupPhase() {
-    vector<Country> countries;
-    for (Country* country : (*gameMap).getCountries()) {
 
+/* Assigns countries and number of armies to players */
+void GameEngine::startupPhase() {
+    vector<Country*> randomCountries = (*gameMap).getCountries();
+    random_shuffle(randomCountries.begin(), randomCountries.end());     // shuffling the list of countries
+    int c = 0;
+    for (Country* country : randomCountries) {      // assigning each country to a player
+        (*players[c]).setCountry(country);
+        country->setPlayer(players[c]);
+        c = (c + 1) % nbOfPlayers;
     }
+
+    // assigning initial armies
+    int initialArmies = 0;
+    switch (nbOfPlayers) {
+    case 2:
+        initialArmies = 40;
+        break;
+    case 3:
+        initialArmies = 35;
+        break;
+    case 4:
+        initialArmies = 30;
+        break;
+    case 5:
+        initialArmies = 25;
+        break;
+    }
+    for (Player* player : players) {
+        player->setNumOfArmies(initialArmies);
+    }
+
 }
+
+/* Main flow of the game */
 void GameEngine::mainGameLoop(){
     for(int i = 0; i < players.size(); i++){
         // Reinforcement phase

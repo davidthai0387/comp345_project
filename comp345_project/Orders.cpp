@@ -41,12 +41,14 @@ string Orders::getName() {
 void Orders::setName(string a) {
 	this->name = a;
 }
+
 void Orders::setOrderIssuer(Player* p) {
 	orderIssuer = p;
 };
 int Orders::getpriority() {
 	return priority;
 }
+
 Player* Orders::getOrderIssuer() {
 	return orderIssuer;
 };
@@ -80,6 +82,7 @@ bool Deploy::validate() {
 void Deploy::execute() {
 	for (Country* c : this->orderIssuer->getOwnedCountries()) {
 		if (c->getName() == country->getName()) {
+
 			c->setArmies((c->getArmies()) + getArmy());
 		}
 	}
@@ -140,6 +143,7 @@ Advance::~Advance() {
 // Methods
 bool Advance::validate() {
 	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getBorders()[src->getNum()]).begin(), (map->getBorders()[src->getNum()]).end(), dest) != (map->getBorders()[src->getNum()]).end()) {
+
 		valid = true;
 	}
 	return valid;
