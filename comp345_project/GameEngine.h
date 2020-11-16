@@ -9,7 +9,6 @@ class GameEngine : public Observable{
     public:
         // Constructors
         GameEngine();
-        void GameStart();
 
         // Accessors
         int getNbOfPlayers();
@@ -22,6 +21,7 @@ class GameEngine : public Observable{
         string getPhase();
 
         // Methods
+        void GameStart();
         void startupPhase();
         void mainGameLoop();
         
@@ -37,4 +37,8 @@ class GameEngine : public Observable{
         void toggleObservers();
         string selectMap();
         string currentphase;
+        void reinforcementPhase();
+        bool ownsContinent(Player* p, Continent* c);
+        void issueOrdersPhase();
+        void executeOrdersPhase();
 };
