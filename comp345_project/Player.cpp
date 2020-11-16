@@ -47,7 +47,7 @@ void Player::setNumOfArmies(int num) {
 string Player::getName() {
     return this->Name;
 };
-string Player::getCountries() {
+string Player::getCountryNames() {
     string out;
     for (int i = 0; i < Countries.size(); i++) {
         if (i == (Countries.size() - 1))
@@ -56,6 +56,9 @@ string Player::getCountries() {
             out += Countries[i]->getName() + ", ";
     }
     return out;
+};
+vector<Country*> Player::getOwnedCountries(){
+    return this->Countries;
 };
 vector<Card*>& Player::getHand() {
     return this->PlayerHand->getHand();
@@ -101,24 +104,18 @@ Player Player::operator=(const Player& p) {
     this->PlayerOrders = new OrderList(*p.PlayerOrders);
     return *this;
 };
-string Player::toDefend() {
-    string out;
-    for (int i = 0; i < Countries.size(); i++) {
-        if (i == (Countries.size() - 1))
-            out += Countries[i]->getName();
-        else
-            out += Countries[i]->getName() + ", ";
-    }
+vector<Country*> Player::toDefend() {
+    vector<Country*> out;
+
+    // TODO
+
     return out;
 };
-string Player::toAttack() {
-    string out;
-    for (int i = 0; i < Countries.size(); i++) {
-        if (i == (Countries.size() - 1))
-            out += Countries[i]->getName();
-        else
-            out += Countries[i]->getName() + ", ";
-    }
+vector<Country*> Player::toAttack() {
+    vector<Country*> out;
+
+    // TODO
+
     return out;
 };
 void Player::issueOrder(string usedcard) {

@@ -1,5 +1,4 @@
 #pragma once
-#include "Player.h"
 #include <string>
 #include <vector>
 #include <tuple>
@@ -55,7 +54,7 @@ public:
 	std::vector<int> getCountryContinents();
 	std::vector<Continent*> getContinents();
 	std::vector<std::vector<int>> getBorders();
-	void validate();
+	bool validate();
 	void showContents();
 
 private:
@@ -66,8 +65,8 @@ private:
 	std::vector<std::vector<int>> borders;	//list of all borders
 	int numOfContinents;
 	int numOfCountries;
-	void dfs();
+	bool dfs();
 	void dfsHelper(int cv, bool visited[]);
-	void dfsContinent(int currentContinentNum, int currentNumOfCountries);
-	void dfsContinentHelper(int cv, int currentContinentNum, bool visitedCountryNums[]);
+	bool dfsContinents();
+	void dfsContinentsHelper(int cv, int currentContinentNum, bool visitedCountryNums[]);
 };

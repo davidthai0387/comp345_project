@@ -4,33 +4,41 @@
 #include<iostream>
 using namespace std;
 
-class GameEngine : public Observer {
+
+class GameEngine : public Observable{
     public:
+        // Constructors
         GameEngine();
-        void GameStart();
+
+        // Accessors
         int getNbOfPlayers();
-        Deck getDeckCards();
-        vector<Player> getPlayersList();
+        Deck* getDeckCards();
+        vector<Player*> getPlayersList();
         bool getObserverStatus();
         void setObserverStatus(bool status);
-        Map getMap();
+        Map* getMap();
+        void setPhase(string s);
+        string getPhase();
 
-        // Startup phase methods
+        // Methods
+        void GameStart();
         void startupPhase();
-
-        // Main game loop methods
         void mainGameLoop();
-
-
+        
     private:
         int nbOfPlayers;
-        Deck deckCards;
-        vector<Player> players;
+        Deck* deckCards;
+        vector<Player*> players;
         bool activateObservers;
-        Map gameMap;
+        Map* gameMap;
         bool isMapInDirectory(string fileName);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
-        bool Observers();
+        void toggleObservers();
         string selectMap();
+        string currentphase;
+        void reinforcementPhase();
+        bool ownsContinent(Player* p, Continent* c);
+        void issueOrdersPhase();
+        void executeOrdersPhase();
 };

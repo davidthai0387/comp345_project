@@ -3,27 +3,36 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "Map.h"
 using namespace std;
 
+class Player;
 class Orders {
 private:
 	string name;
-
+	
 protected:
 	bool exec;
 	int priority;
+	Player* orderIssuer;
+	Map* map;
 
 public:
 	// Constructor
 	Orders();
+	Orders(Player* p);
 	Orders(const Orders& o2);
+
+	// Destructor
 	~Orders();
 
 	// Method
 	virtual void read() = 0;
 	virtual string getName();
 	void setName(string a);
+	void setOrderIssuer(Player* p);
 	int getpriority();
+	Player* getOrderIssuer();
 	friend ostream& operator<<(ostream& out, const Orders& o);
 };
 
@@ -32,156 +41,192 @@ ostream& operator<<(ostream& out, const Orders& o);
 class Deploy : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr;
+	int armiesToDeploy;
+	Country* country;
+	Map* map;
 
 public:
-	Deploy(int a, string t);
+	// Constructor
+	Deploy(Player* p, int a, Country* c, Map* m);
 	Deploy(const Deploy& d2);
+
+	// Destructor
 	~Deploy();
+
+	// Method
 	bool validate();
 	void execute();
 	virtual void read();
 
+	// Getters
 	bool getValid();
 	int getArmy();
-	string getTerr();
+	Country* getCountry();
 	string getName();
 
+	// Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr(string t);
+	void setCountry(Country* t);
 };
 
 class Advance : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr1;
-	string terr2;
+	int armiesToAdvance;
+	Country* src;
+	Country* dest;
 
 public:
-	Advance(int a, string t1, string t2);
+	// Constructor
+	Advance(Player* p, int a, Country* c1, Country* c2, Map* m);
+
 	Advance(const Advance& a2);
+
+	// Destructor
 	~Advance();
+
+	// Method
 	bool validate();
 	void execute();
 	virtual void read();
 
+	// Getters
 	bool getValid();
-	int getArmy();
-	string getTerr1();
-	string getTerr2();
+	int getArmiesToDeploy();
+	Country* getSrc();
+	Country* getDest();
 	string getName();
 
+	// Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr1(string t);
-	void setTerr2(string t);
+	void setSrc(Country* c);
+	void setDest(Country* c);
 };
 
 class Bomb : public Orders {
 private:
 	bool valid{ false };
-	string terr;
-
+	Country* targetCountry;
+	Map* map;
 public:
-	Bomb(string t);
+	// Constructor
+	Bomb(Player* p, Country* c, Map* m);
+
 	Bomb(const Bomb& b2);
+
+	// Destructor
 	~Bomb();
+
+	// Method
 	bool validate();
 	void execute();
 	virtual void read();
 
+	// Getters
 	bool getValid();
-	string getTerr();
+	Country* getTargetCountry();
 	string getName();
 
+	// Setters
 	void setValid(bool v);
-	void setTerr(string t);
+	void setTargetCountry(Country* c);
 };
 
 class Blockade : public Orders {
 private:
 	bool valid{ false };
-	string terr;
-
+	Country* target;
+	Map* map;
 public:
-	Blockade(string terr);
+	// Constructor
+	Blockade(Player* p, Country* c, Map* m);
 	Blockade(const Blockade& bl2);
+
+	// Destructor
 	~Blockade();
+
+	// Method
 	bool validate();
 	void execute();
 	virtual void read();
 
+	// Getters
 	bool getValid();
-	string getTerr();
+	Country* getTarget();
 	string getName();
 
+	// Setters
 	void setValid(bool v);
-	void setTerr(string t);
+	void setTarget(Country* c);
 };
 
 class Airlift : public Orders {
 private:
 	bool valid{ false };
-	int army;
-	string terr1;
-	string terr2;
-
+	int armies;
+	Country* src;
+	Country* dest;
+	Map* map;
 public:
 	//Constructors
-	Airlift(int a, string t1, string t2);
+	Airlift(Player* p, int a, Country* c1, Country* c2, Map* m);
 	Airlift(const Airlift& ai2);
+
+	// Destructor
 	~Airlift();
 
-	//Methods
+	//Method
 	bool validate();
 	void execute();
 	virtual void read();
 
-	//Getter
+	//Getters
 	bool getValid();
-	int getArmy();
-	string getTerr1();
-	string getTerr2();
+	int getArmies();
+	Country* getSrc();
+	Country* getDest();
 	string getName();
 
-	//Setter
+	//Setters
 	void setValid(bool v);
 	void setArmy(int a);
-	void setTerr1(string t);
-	void setTerr2(string t);
+	void setSrc(Country* c);
+	void setDest(Country* c);
 };
 
-class Player;
+
 class Negotiate : public Orders {
 private:
 	bool valid{ false };
-	Player* play;
-
+	Player* opponent;
+	Map* map;
 public:
 	//Constructor
-	Negotiate(Player* p);
+	Negotiate(Player* p, Player* o, Map* m);
 	Negotiate(const Negotiate& p2);
+
+	// Destructor
 	~Negotiate();
 
-	//Methods
+	//Method
 	bool validate();
 	void execute();
 	virtual void read();
 
-	//Getter
+	//Getters
 	bool getValid();
-	Player getPlayer();
+	Player* getOpponent();
 	string getName();
 
-	//Setter
+	//Setters
 	void setValid(bool v);
-	void setPlayer(Player* p);
+	void setOpponent(Player* p);
 };
 
 class OrderList {
+
 private:
 	vector<Orders*> list;
 
@@ -189,15 +234,18 @@ public:
 	// Constructors
 	OrderList();
 	OrderList(const OrderList& l2);
+
+	// Destructor
 	~OrderList();
 
-	// Methods
+	// Method
 	void add(Orders* o);
 	void move(int i, int j);
 	void remove(int i);
 	void execOrders();
+	string displayOrders();
 	void setList(vector<Orders*> somelist);
 
-	string displayOrders();
+	// Getters
 	vector<Orders*> getList();
 };

@@ -1,48 +1,19 @@
-﻿  Cards.cpp
-  GameEngine.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(96,10): warning C4101: 'loopAgain': unreferenced local variable
-  GameEngineDriver.cpp
-  Map.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(171,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Map.cpp(197,20): warning C4018: '<': signed/unsigned mismatch
-  MapLoader.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(125,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(136,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(155,42): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(158,38): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(186,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(194,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(211,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(235,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(246,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(260,42): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(263,38): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(276,42): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(279,38): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(287,42): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(290,38): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(300,34): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(303,30): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(325,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(333,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(350,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(371,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(373,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(379,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(400,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(402,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(407,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(418,38): warning C4101: 'e': unreferenced local variable
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\MapLoader.cpp(426,34): warning C4101: 'e': unreferenced local variable
-  Orders.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Orders.cpp(429,20): warning C4018: '<': signed/unsigned mismatch
-  Player.cpp
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(66,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(83,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(106,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(116,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\Player.cpp(178,27): warning C4018: '<': signed/unsigned mismatch
+﻿  GameEngine.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameEngine.cpp(152,22): warning C4018: '<': signed/unsigned mismatch
+  GameObservers.cpp
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(21,28): error C3646: 'currentphase': unknown override specifier
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(21,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(31,38): error C2061: syntax error: identifier 'string'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(32,24): error C3646: 'getPhase': unknown override specifier
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(32,24): error C2059: syntax error: '('
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(32,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.cpp(25,36): error C2511: 'void Observable::setPhase(std::string)': overloaded member function not found in 'Observable'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(18): message : see declaration of 'Observable'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.cpp(26,5): error C2671: 'Observable::setPhase': static member functions do not have 'this' pointers
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.cpp(28,20): error C2039: 'getPhase': is not a member of 'Observable'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(18): message : see declaration of 'Observable'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.cpp(29,12): error C2065: 'currentphase': undeclared identifier
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.cpp(59,71): error C2039: 'getPhase': is not a member of 'Observable'
+C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\comp345_project\GameObservers.h(18): message : see declaration of 'Observable'
   PlayerDriver.cpp
   Generating Code...
-  comp345_project.vcxproj -> C:\Users\david\Documents\Visual Studio 2019\My Projects\comp345_project\Debug\comp345_project.exe
