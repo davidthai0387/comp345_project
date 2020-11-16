@@ -19,6 +19,7 @@ protected:
 
 public:
 	// Constructor
+	Orders();
 	Orders(Player* p);
 	Orders(const Orders& o2);
 
@@ -74,11 +75,10 @@ private:
 	int army;
 	string terr1;
 	string terr2;
-	const Player* play;
 
 public:
 	// Constructor
-	Advance(int a, string t1, string t2, Player& p);
+	Advance(Player* p, int a, string t1, string t2);
 	Advance(const Advance& a2);
 
 	// Destructor
@@ -95,7 +95,6 @@ public:
 	string getTerr1();
 	string getTerr2();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
@@ -108,11 +107,10 @@ class Bomb : public Orders {
 private:
 	bool valid{ false };
 	string terr;
-	const Player* play;
 
 public:
 	// Constructor
-	Bomb(string t, Player& p);
+	Bomb(Player* p, string t);
 	Bomb(const Bomb& b2);
 
 	// Destructor
@@ -127,7 +125,6 @@ public:
 	bool getValid();
 	string getTerr();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
@@ -138,11 +135,10 @@ class Blockade : public Orders {
 private:
 	bool valid{ false };
 	string terr;
-	const Player* play;
 
 public:
 	// Constructor
-	Blockade(string terr, Player& p);
+	Blockade(Player* p, string terr);
 	Blockade(const Blockade& bl2);
 
 	// Destructor
@@ -157,7 +153,6 @@ public:
 	bool getValid();
 	string getTerr();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
@@ -170,11 +165,10 @@ private:
 	int army;
 	string terr1;
 	string terr2;
-	const Player* play;
 
 public:
 	//Constructors
-	Airlift(int a, string t1, string t2, Player& p);
+	Airlift(Player* p, int a, string t1, string t2);
 	Airlift(const Airlift& ai2);
 
 	// Destructor
@@ -191,7 +185,6 @@ public:
 	string getTerr1();
 	string getTerr2();
 	string getName();
-	Player getPlayer();
 
 	//Setters
 	void setValid(bool v);
@@ -206,7 +199,7 @@ private:
 	bool valid{ false };
 	const Player* playO;
 	const Player* playP;
-
+	//	NOT SURE HOW TO APPROACH THIS, LEAVING BOTH PLAYER OBJECTS FOR NOW
 public:
 	//Constructor
 	Negotiate(Player& p);

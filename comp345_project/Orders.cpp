@@ -12,6 +12,8 @@ ostream& operator<<(ostream& out, const Orders& o) {
 };
 //------------------------------ORDERS CLASS------------------------
 // Constructor
+Orders::Orders() {
+};
 Orders::Orders(Player* p) {
 	exec = false;
 	OrderIssuer = p;
@@ -47,7 +49,7 @@ Player* Orders::getOrderIssuer(){
 
 //---------------------DEPLOY CLASS-----------------------
 // Constructors
-Deploy::Deploy( Player* p, int a, string t) : Orders(p) {
+Deploy::Deploy(Player* p, int a, string t) : Orders(p) {
 	army = a;
 	terr = t;
 	this->setName("Deploy");
@@ -112,11 +114,10 @@ void Deploy::setTerr(string t) {
 
 //---------------------ADVANCE CLASS-----------------------
 // Constructors
-Advance::Advance(int a, string t1, string t2, Player& p) {
+Advance::Advance(Player* p, int a, string t1, string t2) {
 	army = a;
 	terr1 = t1;
 	terr2 = t2;
-	play = &p;
 	this->setName("Advance");
 	priority = 4;
 };
@@ -125,7 +126,6 @@ Advance::Advance(const Advance& a2) {
 	army = a2.army;
 	terr1 = a2.terr1;
 	terr2 = a2.terr2;
-	play = a2.play;
 	this->setName("Advance");
 	priority = 4;
 }
@@ -133,7 +133,7 @@ Advance::~Advance() {
 };
 // Methods
 bool Advance::validate() {
-	if (getPlayer().getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory &&  getArmy() > 0 && string terr2 is an adjacent territory) {
+	if (this->OrderIssuer->getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory &&  getArmy() > 0 && string terr2 is an adjacent territory) {
 		valid = true;
 	}
 	return valid;
@@ -165,9 +165,6 @@ string Advance::getTerr2() {
 string Advance::getName() {
 	return "Advance";
 };
-Player Advance::getPlayer() {
-	return *play;
-};
 void Advance::setValid(bool v) {
 	valid = v;
 };
@@ -183,16 +180,14 @@ void Advance::setTerr2(string t) {
 
 //---------------------BOMB CLASS-----------------------
 // Constructors
-Bomb::Bomb(string t, Player& p) {
+Bomb::Bomb(Player* p, string t) {
 	terr = t;
-	play = &p;
 	this->setName("Bomb");
 	priority = 4;
 };
 Bomb::Bomb(const Bomb& b2) {
 	valid = b2.valid;
 	terr = b2.terr;
-	play = b2.play;
 	this->setName("Bomb");
 	priority = 4;
 }
@@ -200,7 +195,7 @@ Bomb::~Bomb() {
 };
 // Methods
 bool Bomb::validate() {
-	if ( string terr is an adjacent enemy territory ) {
+	if ( string terr is an enemy territory ) {
 		valid = true;
 	}
 	return true;
@@ -226,9 +221,6 @@ string Bomb::getTerr() {
 string Bomb::getName() {
 	return "Bomb";
 };
-Player Bomb::getPlayer() {
-	return *play;
-};
 void Bomb::setValid(bool v) {
 	valid = v;
 };
@@ -238,16 +230,14 @@ void Bomb::setTerr(string t) {
 
 //---------------------BLOCKADE CLASS-----------------------
 // Constructors
-Blockade::Blockade(string t, Player& p) {
+Blockade::Blockade(Player* p, string t) {
 	terr = t;
-	play = &p;
 	this->setName("Blockade");
 	priority = 3;
 };
 Blockade::Blockade(const Blockade& bl2) {
 	valid = bl2.valid;
 	terr = bl2.terr;
-	play = bl2.play;
 	this->setName("Blockade");
 	priority = 3;
 }
@@ -255,7 +245,7 @@ Blockade::~Blockade() {
 };
 // Methods
 bool Blockade::validate() {
-	if (getPlayer().getCountries().find(getTerr()) != string::npos) {
+	if (this->OrderIssuer->getCountries().find(getTerr()) != string::npos) {
 		valid = true;
 	}
 	return true;
@@ -281,9 +271,6 @@ string Blockade::getTerr() {
 string Blockade::getName() {
 	return "Blockade";
 };
-Player Blockade::getPlayer() {
-	return *play;
-};
 void Blockade::setValid(bool v) {
 	valid = v;
 };
@@ -293,11 +280,10 @@ void Blockade::setTerr(string t) {
 
 //---------------------AIRLIFT CLASS-----------------------
 // Constructors
-Airlift::Airlift(int a, string t1, string t2, Player& p) {
+Airlift::Airlift(Player* p, int a, string t1, string t2) {
 	army = a;
 	terr1 = t1;
 	terr2 = t2;
-	play = &p;
 	this->setName("Airlift");
 	priority = 2;
 };
@@ -306,7 +292,6 @@ Airlift::Airlift(const Airlift& ai2) {
 	army = ai2.army;
 	terr1 = ai2.terr1;
 	terr2 = ai2.terr2;
-	play = ai2.play;
 	this->setName("Airlift");
 	priority = 2;
 }
@@ -314,7 +299,7 @@ Airlift::~Airlift() {
 };
 // Methods
 bool Airlift::validate() {
-	if (getPlayer().getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory && getArmy() > 0 && string terr2 is a territory) {
+	if (this->OrderIssuer->getCountries().find(getTerr1()) != string::npos && getArmy() <= player's troops in own territory && getArmy() > 0 && string terr2 is a territory) {
 		valid = true;
 	}
 	return valid;
@@ -346,9 +331,6 @@ string Airlift::getTerr2() {
 
 string Airlift::getName() {
 	return "Airlift";
-};
-Player Airlift::getPlayer() {
-	return *play;
 };
 void Airlift::setValid(bool v) {
 	valid = v;
