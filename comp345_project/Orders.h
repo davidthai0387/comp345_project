@@ -5,17 +5,19 @@
 #include <algorithm>
 using namespace std;
 
+class Player;
 class Orders {
 private:
 	string name;
-
+	
 protected:
 	bool exec;
 	int priority;
+	Player* OrderIssuer;
 
 public:
 	// Constructor
-	Orders();
+	Orders(Player* p);
 	Orders(const Orders& o2);
 
 	// Destructor
@@ -25,7 +27,9 @@ public:
 	virtual void read() = 0;
 	virtual string getName();
 	void setName(string a);
+	void setOrderIssuer(Player* p);
 	int getpriority();
+	Player* getOrderIssuer();
 	friend ostream& operator<<(ostream& out, const Orders& o);
 };
 
@@ -36,11 +40,10 @@ private:
 	bool valid{ false };
 	int army;
 	string terr;
-	const Player* play;
 
 public:
 	// Constructor
-	Deploy(int a, string t, Player& p);
+	Deploy(Player* p, int a, string t);
 	Deploy(const Deploy& d2);
 
 	// Destructor
@@ -56,7 +59,6 @@ public:
 	int getArmy();
 	string getTerr();
 	string getName();
-	Player getPlayer();
 
 	// Setters
 	void setValid(bool v);
@@ -196,7 +198,7 @@ public:
 	void setTerr2(string t);
 };
 
-class Player;
+
 class Negotiate : public Orders {
 private:
 	bool valid{ false };

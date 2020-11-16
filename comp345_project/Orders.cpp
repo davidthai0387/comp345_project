@@ -1,5 +1,5 @@
-#include<iterator>
-#include "ProjectDef.h"
+#include <iterator>
+#include "Player.h"
 
 ostream& operator<<(ostream& out, const Orders& o) {
 	if (o.exec == true) {
@@ -12,15 +12,19 @@ ostream& operator<<(ostream& out, const Orders& o) {
 };
 //------------------------------ORDERS CLASS------------------------
 // Constructor
-Orders::Orders() {
+Orders::Orders(Player* p) {
 	exec = false;
+	OrderIssuer = p;
 };
 Orders::Orders(const Orders& o2) {
 	name = o2.name;
 	exec = o2.exec;
+	OrderIssuer = o2.OrderIssuer;
 }
 Orders::~Orders() {
 };
+
+
 // Methods
 void Orders::read() {
 	cout << "Order" << endl;
@@ -28,41 +32,51 @@ void Orders::read() {
 string Orders::getName() {
 	return "Order";
 };
-
 void Orders::setName(string a) {
 	this->name = a;
 }
+void Orders::setOrderIssuer(Player* p){
+	OrderIssuer = p;
+};
 int Orders::getpriority() {
 	return priority;
 }
+Player* Orders::getOrderIssuer(){
+	return OrderIssuer;
+};
 
 //---------------------DEPLOY CLASS-----------------------
 // Constructors
-Deploy::Deploy(int a, string t, Player& p) {
+Deploy::Deploy( Player* p, int a, string t) : Orders(p) {
 	army = a;
 	terr = t;
-	play = &p;
 	this->setName("Deploy");
 	priority = 1;
 };
-Deploy::Deploy(const Deploy& d2) {
+Deploy::Deploy(const Deploy& d2) : Orders(d2.OrderIssuer) {
 	valid = d2.valid;
 	army = d2.army;
 	terr = d2.terr;
-	play = d2.play;
 	this->setName("Deploy");
 	priority = 1;
 }
 Deploy::~Deploy() {
 };
+
+
 // Methods
 bool Deploy::validate() {
-	if (getArmy() <= getPlayer().getNumOfArmies() && getArmy() > 0 && getPlayer().getCountries().find(getTerr()) != string::npos) {
+	if (getArmy() <= this->OrderIssuer->getNumOfArmies() && getArmy() > 0 && this->OrderIssuer->getCountries().find(getTerr()) != string::npos) {
 		valid = true;
 	}
 	return valid;
 };
 void Deploy::execute() {
+	for(Country* c : this->OrderIssuer->getOwnedCountries()){
+		if(c->getName() == terr){
+			c->setArmies((c->getArmies()) + getArmy());
+		}
+	}
 };
 void Deploy::read() {
 	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getTerr() << endl;
@@ -85,9 +99,6 @@ string Deploy::getTerr() {
 };
 string Deploy::getName() {
 	return "Deploy";
-};
-Player Deploy::getPlayer() {
-	return *play;
 };
 void Deploy::setValid(bool v) {
 	valid = v;
