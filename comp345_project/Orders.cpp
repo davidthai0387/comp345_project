@@ -15,7 +15,8 @@ ostream& operator<<(ostream& out, const Orders& o) {
 //------------------------------ORDERS CLASS------------------------
 // Constructor
 Orders::Orders() {
-}
+};
+
 Orders::Orders(Player* p) {
 	exec = false;
 	orderIssuer = p;
@@ -121,6 +122,7 @@ Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m) : Orders(p)
 	src = c1;
 	dest = c2;
 	map = m;
+
 	this->setName("Advance");
 	priority = 4;
 };
@@ -240,12 +242,14 @@ void Bomb::setTargetCountry(Country* c) {
 Blockade::Blockade(Player* p, Country* c, Map* m) : Orders(p) {
 	target = c;
 	map = m;
+
 	this->setName("Blockade");
 	priority = 3;
 };
 Blockade::Blockade(const Blockade& bl2) {
 	valid = bl2.valid;
 	target = bl2.target;
+
 	this->setName("Blockade");
 	priority = 3;
 }
@@ -254,6 +258,7 @@ Blockade::~Blockade() {
 // Methods
 bool Blockade::validate() {
 	if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
+
 		valid = true;
 	}
 	return true;

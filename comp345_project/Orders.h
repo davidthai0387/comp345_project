@@ -80,6 +80,7 @@ private:
 public:
 	// Constructor
 	Advance(Player* p, int a, Country* c1, Country* c2, Map* m);
+
 	Advance(const Advance& a2);
 
 	// Destructor
@@ -112,6 +113,7 @@ private:
 public:
 	// Constructor
 	Bomb(Player* p, Country* c, Map* m);
+
 	Bomb(const Bomb& b2);
 
 	// Destructor
@@ -200,8 +202,6 @@ private:
 	bool valid{ false };
 	Player* opponent;
 	Map* map;
-
-
 public:
 	//Constructor
 	Negotiate(Player* p, Player* o, Map* m);
