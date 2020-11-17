@@ -11,16 +11,16 @@ using namespace std;
 class Player {
 private:
     // player name
-    string Name;
+    string name;
 
     // list of owned countries
-    vector<Country*> Countries;
+    vector<Country*> countries;
 
     // hand of cards
-    Hand* PlayerHand;
+    Hand* playerHand;
 
     // list of orders
-    OrderList* PlayerOrders;
+    OrderList* playerOrders;
 
     // reinforcement pool
     int numOfArmies;
@@ -61,7 +61,7 @@ public:
     Player operator=(const Player& p);
     vector<Country*> toDefend(); //return list of country to defend
     vector<Country*> toAttack(); //return list of country to attack
-    inline void issueOrder(string a);
+    inline void issueOrder(Orders* o);
     void issueOrder(string a, vector<Player*> listofplayers); //create Order object + add to list of orders (optional parameter)
     void issueOrder();
 

@@ -88,7 +88,7 @@ void Deploy::execute() {
 	}
 };
 void Deploy::read() {
-	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry() << endl;
+	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry()->getName() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -142,7 +142,7 @@ Advance::~Advance() {
 };
 // Methods
 bool Advance::validate() {
-	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getBorders()[src->getNum()]).begin(), (map->getBorders()[src->getNum()]).end(), dest) != (map->getBorders()[src->getNum()]).end()) {
+	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getAllBorders()[src->getNum()]).begin(), (map->getAllBorders()[src->getNum()]).end(), dest) != (map->getAllBorders()[src->getNum()]).end()) {
 
 		valid = true;
 	}
@@ -236,7 +236,7 @@ Bomb::~Bomb() {
 // Methods
 bool Bomb::validate() {
 	for (Country* country : (*orderIssuer).getOwnedCountries()) {
-		if (std::find((map->getBorders()[country->getNum()]).begin(), (map->getBorders()[country->getNum()]).end(), targetCountry) != (map->getBorders()[country->getNum()]).end()) {
+		if (std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
 			valid = true;
 			return true;
 		}
@@ -247,7 +247,7 @@ void Bomb::execute() {
 	targetCountry->setArmies((targetCountry->getArmies() / 2));
 };
 void Bomb::read() {
-	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry() << endl;
+	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry()->getName() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -304,7 +304,7 @@ void Blockade::execute() {
 	// GIVE IT TO NEAUTRAL PLAYER
 };
 void Blockade::read() {
-	cout << "Blockade\tTriples troops in " << getTarget() << " and making it a neutral territory" << endl;
+	cout << "Blockade\tTriples troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
@@ -388,7 +388,7 @@ void Airlift::execute() {
 	}
 };
 void Airlift::read() {
-	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc() << " to " << getDest() << endl;
+	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		execute();
