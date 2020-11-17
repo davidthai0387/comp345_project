@@ -61,9 +61,8 @@ public:
     Player operator=(const Player& p);
     vector<Country*> toDefend(); //return list of country to defend
     vector<Country*> toAttack(); //return list of country to attack
-    inline void issueOrder(Orders* o);
+    void issueOrder(Orders* o);
     void issueOrder(string a, vector<Player*> listofplayers); //create Order object + add to list of orders (optional parameter)
-    void issueOrder();
 
 };
 
