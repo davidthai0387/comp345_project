@@ -11,16 +11,16 @@ using namespace std;
 class Player {
 private:
     // player name
-    string Name;
+    string name;
 
     // list of owned countries
-    vector<Country*> Countries;
+    vector<Country*> countries;
 
     // hand of cards
-    Hand* PlayerHand;
+    Hand* playerHand;
 
     // list of orders
-    OrderList* PlayerOrders;
+    OrderList* playerOrders;
 
     // reinforcement pool
     int numOfArmies;

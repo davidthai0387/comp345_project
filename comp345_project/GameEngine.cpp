@@ -139,7 +139,7 @@ void GameEngine::issueOrdersPhase()
 
 
 
-            if (i = nbOfPlayers)
+            if (i == nbOfPlayers)
                 j++;
             break;
         case 1:     // advance
@@ -147,7 +147,7 @@ void GameEngine::issueOrdersPhase()
 
             }
 
-            if (i = nbOfPlayers)
+            if (i == nbOfPlayers)
                 j++;
             break;
         case 2:     // special orders

@@ -4,39 +4,39 @@
 using namespace std;
 
 // Constructors
-Player::Player() :Name("David") {
-    this->PlayerHand = new Hand();
-    this->PlayerOrders = new OrderList();
+Player::Player() :name("David") {
+    this->playerHand = new Hand();
+    this->playerOrders = new OrderList();
 };
-Player::Player(string a) :Name(a) {
-    this->PlayerHand = new Hand();
-    this->PlayerOrders = new OrderList();
+Player::Player(string a) :name(a) {
+    this->playerHand = new Hand();
+    this->playerOrders = new OrderList();
 };
-Player::Player(string a, vector<Country*> b, OrderList* c) :Name(a), Countries(b), PlayerOrders(c) {
-    this->PlayerHand = new Hand();
-    this->PlayerOrders = new OrderList();
+Player::Player(string a, vector<Country*> b, OrderList* c) :name(a), countries(b), playerOrders(c) {
+    this->playerHand = new Hand();
+    this->playerOrders = new OrderList();
 };
 Player::Player(const Player& p) {
-    this->Name = p.Name;
-    this->Countries = p.Countries;
-    this->PlayerHand = new Hand(*p.PlayerHand);
-    this->PlayerOrders = new OrderList(*p.PlayerOrders);
+    this->name = p.name;
+    this->countries = p.countries;
+    this->playerHand = new Hand(*p.playerHand);
+    this->playerOrders = new OrderList(*p.playerOrders);
 };
 
 Player::~Player() {
-    for (Country* country : Countries)
+    for (Country* country : countries)
         delete country;
 
-    delete PlayerHand;
-    delete PlayerOrders;
+    delete playerHand;
+    delete playerOrders;
 };
 
 // Setter methods
 void Player::setCountry(Country* a) {
-    this->Countries.insert(Countries.end(), a);
+    this->countries.insert(countries.end(), a);
 };
 void Player::setPlayerOrders(Orders* a) {
-    this->PlayerOrders->add(a);
+    this->playerOrders->add(a);
 }
 void Player::setNumOfArmies(int num) {
     numOfArmies = num;
@@ -45,37 +45,37 @@ void Player::setNumOfArmies(int num) {
 
 // Getter methods
 string Player::getName() {
-    return this->Name;
+    return this->name;
 };
 string Player::getCountryNames() {
     string out;
-    for (int i = 0; i < Countries.size(); i++) {
-        if (i == (Countries.size() - 1))
-            out += Countries[i]->getName();
+    for (int i = 0; i < countries.size(); i++) {
+        if (i == (countries.size() - 1))
+            out += countries[i]->getName();
         else
-            out += Countries[i]->getName() + ", ";
+            out += countries[i]->getName() + ", ";
     }
     return out;
 };
 vector<Country*> Player::getOwnedCountries(){
-    return this->Countries;
+    return this->countries;
 };
 vector<Card*>& Player::getHand() {
-    return this->PlayerHand->getHand();
+    return this->playerHand->getHand();
 };
 
 string Player::showHand() {
     string out;
-    for (int i = 0; i < PlayerHand->getHand().size(); i++) {
-        if (i == (PlayerHand->getHand().size() - 1))
-            out += PlayerHand->getHand()[i]->getCardName();
+    for (int i = 0; i < playerHand->getHand().size(); i++) {
+        if (i == (playerHand->getHand().size() - 1))
+            out += playerHand->getHand()[i]->getCardName();
         else
-            out += PlayerHand->getHand()[i]->getCardName() + ", ";
+            out += playerHand->getHand()[i]->getCardName() + ", ";
     }
     return out;
 };
 OrderList* Player::getPlayerOrders() {
-    return this->PlayerOrders;
+    return this->playerOrders;
 }
 int Player::getNumOfArmies() {
     return numOfArmies;
@@ -83,9 +83,9 @@ int Player::getNumOfArmies() {
 
 // Deleting methods
 void Player::removeCountry(string a) {
-    for (int i = 0; i < Countries.size(); i++) {
-        if (Countries[i]->getName() == a)
-            Countries.erase(Countries.begin() + i);
+    for (int i = 0; i < countries.size(); i++) {
+        if (countries[i]->getName() == a)
+            countries.erase(countries.begin() + i);
     };
 };
 void Player::removeHand(int a) {
@@ -94,20 +94,22 @@ void Player::removeHand(int a) {
 
 // Methods
 ostream& operator<<(ostream& out, const Player& p) {
-    return out << p.Name;
+    return out << p.name;
 };
 
 Player Player::operator=(const Player& p) {
-    this->Name = p.Name;
-    this->Countries = p.Countries;
-    this->PlayerHand = new Hand(*p.PlayerHand);
-    this->PlayerOrders = new OrderList(*p.PlayerOrders);
+    this->name = p.name;
+    this->countries = p.countries;
+    this->playerHand = new Hand(*p.playerHand);
+    this->playerOrders = new OrderList(*p.playerOrders);
     return *this;
 };
 vector<Country*> Player::toDefend() {
     vector<Country*> out;
 
-    // TODO
+    for (Country* country : countries) {
+
+    }
 
     return out;
 };
@@ -130,7 +132,7 @@ void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
         string terr;
         cout << "Where would you like to bomb? ";
         cin >> terr;
-        o = new Bomb(terr);
+        //o = new Bomb();
 
     }
     else if (usedcard == "Reinforcement") {
@@ -141,14 +143,14 @@ void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
         cout << "Where would you like to deploy? ";
         cin >> terr;
 
-        o = new Deploy(army, terr);
+        //o = new Deploy(army, terr);
     }
     else if (usedcard == "Blockade") {
         string terr;
         cout << "Where would you like to form a blockade? ";
         cin >> terr;
 
-        o = new Blockade(terr);
+        //o = new Blockade(terr);
     }
     else if (usedcard == "Airlift") {
         int army;
@@ -161,7 +163,7 @@ void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
         cout << "Which territory would you like to deploy them to? ";
         cin >> terr2;
 
-        o = new Airlift(army, terr1, terr2);
+        //o = new Airlift(army, terr1, terr2);
     }
     else if (usedcard == "Diplomacy") {
         string playername;
@@ -177,7 +179,7 @@ void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
                 p = listofplayers[i];
         }
 
-        o = new Negotiate(p);
+        //o = new Negotiate(p);
     }
     else {
         cout << "Invalid card" << endl;
@@ -185,6 +187,6 @@ void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
     }
 
     //Adding to list of player orders
-    this->PlayerOrders->add(o);
+    //this->playerOrders->add(o);
     cout << "The order has been issued." << endl;
 };
