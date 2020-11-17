@@ -121,12 +121,12 @@ void Deploy::setCountry(Country* t) {
 
 //---------------------ADVANCE CLASS-----------------------
 // Constructors
-Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m) : Orders(p) {
+Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : Orders(p) {
 	armiesToAdvance = a;
 	src = c1;
 	dest = c2;
 	map = m;
-
+	deck = d;
 	this->setName("Advance");
 	priority = 4;
 };
@@ -331,11 +331,12 @@ void Blockade::setTarget(Country* c) {
 
 //---------------------AIRLIFT CLASS-----------------------
 // Constructors
-Airlift::Airlift(Player* p, int a, Country* c1, Country* c2, Map* m) : Orders(p) {
+Airlift::Airlift(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : Orders(p) {
 	armies = a;
 	src = c1;
 	dest = c2;
 	map = m;
+	deck = d;
 	this->setName("Airlift");
 	priority = 2;
 };
@@ -344,6 +345,7 @@ Airlift::Airlift(const Airlift& ai2) {
 	armies = ai2.armies;
 	src = ai2.src;
 	dest = ai2.dest;
+	deck = ai2.deck;
 	this->setName("Airlift");
 	priority = 2;
 }

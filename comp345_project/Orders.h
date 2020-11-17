@@ -16,6 +16,7 @@ protected:
 	int priority;
 	Player* orderIssuer;
 	Map* map;
+	Deck* deck;
 
 public:
 	// Constructor
@@ -79,7 +80,7 @@ private:
 
 public:
 	// Constructor
-	Advance(Player* p, int a, Country* c1, Country* c2, Map* m);
+	Advance(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d);
 
 	Advance(const Advance& a2);
 
@@ -171,7 +172,7 @@ private:
 	Map* map;
 public:
 	//Constructors
-	Airlift(Player* p, int a, Country* c1, Country* c2, Map* m);
+	Airlift(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d);
 	Airlift(const Airlift& ai2);
 
 	// Destructor
