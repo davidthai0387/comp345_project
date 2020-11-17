@@ -134,7 +134,7 @@ void GameEngine::issueOrdersPhase()
             }
 
             int nArmies = rand() % gameMap->getCountries()[c1Num]->getArmies();
-            p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap));
+            p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deckCards));
         }
        
     }
