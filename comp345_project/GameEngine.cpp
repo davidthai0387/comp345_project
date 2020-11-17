@@ -8,7 +8,7 @@ using namespace std;
 
 GameEngine::GameEngine() {
     nbOfPlayers = 0;
-    deckCards = new Deck();
+    deck = new Deck();
     activateObservers = true;
 }
 
@@ -103,56 +103,70 @@ bool GameEngine::ownsContinent(Player* p, Continent* c)
 
 void GameEngine::issueOrdersPhase()
 {
-    for (Player* p : players) {     // deploy random number of armies to random country until no armies left
-        int armiesThisTurn = p->getNumOfArmies();
-
-        while (armiesThisTurn > 0) {
-            int nArmies = rand() % armiesThisTurn + 1;
-            armiesThisTurn -= nArmies;
-            int cNum = rand() % gameMap->getCountries().size();
-            p->issueOrder(new Deploy(p, nArmies, gameMap->getCountries()[cNum], gameMap));
-        }
-    }
-
-    for (Player* p : players) {     // advance
-
-        int keepPlaying = rand() % 3;
-        int c1Num;
-        int c2Num;
-
-        while (keepPlaying > 0) {
-            c1Num = rand() % p->getOwnedCountries().size();
-
-            bool chooseFrom = rand() % 2;
-            if (chooseFrom) {
-                int attackNum = rand() % p->toAttack().size();
-                c2Num = p->toAttack()[attackNum]->getNum();
-            }
-            else {
-                int defendNum = rand() % p->toDefend().size();
-                c2Num = p->toAttack()[defendNum]->getNum();
+    int remainingPlayers = players.size();
+    do {
+        remainingPlayers = players.size();
+        for (Player* p : players) {     // deploy random number of armies to random country until no armies left
+            if (p->getOwnedCountries().size() == 0) {
+                remainingPlayers--;
+                continue;
             }
 
-            int nArmies = rand() % gameMap->getCountries()[c1Num]->getArmies();
-            p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deckCards));
-        }
-       
-    }
+            int armiesThisTurn = p->getNumOfArmies();
 
-    for (Player* p : players) {     // cards
-        int handSize = p->getHand().size();
-
-        while (handSize > 0) {
-            if (rand() % 2) {
-                int cardNum = rand() % handSize;
-
-                // play card from p.getHand()[cardNum]
-
-                handSize--;
-
+            while (armiesThisTurn > 0) {
+                int nArmies = rand() % armiesThisTurn + 1;
+                armiesThisTurn -= nArmies;
+                int cNum = rand() % gameMap->getCountries().size();
+                p->issueOrder(new Deploy(p, nArmies, gameMap->getCountries()[cNum], gameMap));
             }
         }
-    }
+
+        for (Player* p : players) {     // advance
+            if (p->getOwnedCountries().size() == 0)
+                continue;
+
+            int keepPlaying = rand() % 3;
+            int c1Num;
+            int c2Num;
+
+            while (keepPlaying > 0) {
+                c1Num = rand() % p->getOwnedCountries().size();
+
+                bool chooseFrom = rand() % 2;
+                if (chooseFrom) {
+                    int attackNum = rand() % p->toAttack().size();
+                    c2Num = p->toAttack()[attackNum]->getNum();
+                }
+                else {
+                    int defendNum = rand() % p->toDefend().size();
+                    c2Num = p->toDefend()[defendNum]->getNum();
+                }
+
+                int nArmies = rand() % gameMap->getCountries()[c1Num]->getArmies();
+                p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deck));
+            }
+        }
+
+        for (Player* p : players) {     // cards
+            if (p->getOwnedCountries().size() == 0)
+                continue;
+            int handSize = p->getHand().size();
+
+            while (handSize > 0) {
+                if (rand() % 2) {
+                    int cardNum = rand() % handSize;
+
+                    // play card from p.getHand()[cardNum]
+
+                    handSize--;
+
+                }
+            }
+        }
+
+    } while (remainingPlayers > 1);
+    
 
 }
 
@@ -197,8 +211,8 @@ void GameEngine::toggleObservers() {
 int GameEngine::getNbOfPlayers() {
     return nbOfPlayers;
 }
-Deck* GameEngine::getDeckCards() {
-    return deckCards;
+Deck* GameEngine::getDeck() {
+    return deck;
 }
 vector<Player*> GameEngine::getPlayersList() {
     return players;
