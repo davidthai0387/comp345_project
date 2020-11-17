@@ -10,7 +10,7 @@ Player::Player() :name("David") {
 };
 Player::Player(string a) :name(a) {
     this->playerHand = new Hand();
-    this->playerOrders = new OrderList();
+this->playerOrders = new OrderList();
 };
 Player::Player(string a, vector<Country*> b, OrderList* c) :name(a), countries(b), playerOrders(c) {
     this->playerHand = new Hand();
@@ -57,7 +57,7 @@ string Player::getCountryNames() {
     }
     return out;
 };
-vector<Country*> Player::getOwnedCountries(){
+vector<Country*> Player::getOwnedCountries() {
     return this->countries;
 };
 vector<Card*>& Player::getHand() {
@@ -105,23 +105,24 @@ Player Player::operator=(const Player& p) {
     return *this;
 };
 vector<Country*> Player::toDefend() {
-    vector<Country*> out;
-
-    for (Country* country : countries) {
-
-    }
-
-    return out;
+    return countries;
 };
 vector<Country*> Player::toAttack() {
     vector<Country*> out;
 
-    // TODO
+    for (Country* country : countries) {
+        for (Country* border : country->getBorders()) {
+            if (border->getPlayer()->getName() != this->getName()
+                && find(out.begin(), out.end(), border) == out.end()) {
+                out.push_back(border);
+            }
+        }
+    }
 
     return out;
 };
-void Player::issueOrder(string usedcard) {
-    issueOrder(usedcard, vector<Player*>());
+void Player::issueOrder(Orders* o) {
+    this->getPlayerOrders()->add(o);
 };
 void Player::issueOrder(string usedcard, vector<Player*> listofplayers) {
     //Create new Order pointer

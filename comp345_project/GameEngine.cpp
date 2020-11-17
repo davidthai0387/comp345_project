@@ -103,64 +103,57 @@ bool GameEngine::ownsContinent(Player* p, Continent* c)
 
 void GameEngine::issueOrdersPhase()
 {
-    vector<bool> turnIsOver(nbOfPlayers);
-    for (bool over : turnIsOver) {
-        over = false;
+    for (Player* p : players) {     // deploy random number of armies to random country until no armies left
+        int armiesThisTurn = p->getNumOfArmies();
+
+        while (armiesThisTurn > 0) {
+            int nArmies = rand() % armiesThisTurn + 1;
+            armiesThisTurn -= nArmies;
+            int cNum = rand() % gameMap->getCountries().size();
+            p->issueOrder(new Deploy(p, nArmies, gameMap->getCountries()[cNum], gameMap));
+        }
     }
 
-    bool phaseIsOver = true;
+    for (Player* p : players) {     // advance
 
-    int i = 0;
-    int j = 0;
-    
-    while (true) {
-        for (bool over : turnIsOver) {
-            if (!over)
-                phaseIsOver = false;
-        }
-        if (phaseIsOver)
-            break;
-        if (turnIsOver[i])
-            continue;
+        int keepPlaying = rand() % 3;
+        int c1Num;
+        int c2Num;
 
-        switch (j) {
-        case 0:     // deploy armies to owned countries
-            cout << "You currently own the following countries" << endl;
-            for (Country* country : players[i]->getOwnedCountries()) {
-                cout << "#" << country->getNum() << " " << country->getName() << endl;
+        while (keepPlaying > 0) {
+            c1Num = rand() % p->getOwnedCountries().size();
+
+            bool chooseFrom = rand() % 2;
+            if (chooseFrom) {
+                int attackNum = rand() % p->toAttack().size();
+                c2Num = p->toAttack()[attackNum]->getNum();
             }
-            cout << "You currently have " << players[i]->getNumOfArmies() << " armies to deploy." << endl;
-            cout << "Enter the number of the country where you want to deploy your armies: ";
-            int id;
-            cin >> id;
-            cout << "Enter the number of armies your want to deploy: ";
-            int n;
-            cin >> n;
-
-
-
-            if (i == nbOfPlayers)
-                j++;
-            break;
-        case 1:     // advance
-            for (Country* country : players[i]->toAttack()) {
-
+            else {
+                int defendNum = rand() % p->toDefend().size();
+                c2Num = p->toAttack()[defendNum]->getNum();
             }
 
-            if (i == nbOfPlayers)
-                j++;
-            break;
-        case 2:     // special orders
-            break;
+            int nArmies = rand() % gameMap->getCountries()[c1Num]->getArmies();
+            p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap));
         }
-
-
-
-
-        phaseIsOver = true;
-        
-        i = ++i % nbOfPlayers;
+       
     }
+
+    for (Player* p : players) {     // cards
+        int handSize = p->getHand().size();
+
+        while (handSize > 0) {
+            if (rand() % 2) {
+                int cardNum = rand() % handSize;
+
+                // play card from p.getHand()[cardNum]
+
+                handSize--;
+
+            }
+        }
+    }
+
 }
 
 bool GameEngine::isMapInDirectory(string fileName) {
