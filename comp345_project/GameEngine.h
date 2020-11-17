@@ -12,7 +12,7 @@ class GameEngine : public Observable{
 
         // Accessors
         int getNbOfPlayers();
-        Deck* getDeckCards();
+        Deck* getDeck();
         vector<Player*> getPlayersList();
         bool getObserverStatus();
         void setObserverStatus(bool status);
@@ -27,7 +27,7 @@ class GameEngine : public Observable{
         
     private:
         int nbOfPlayers;
-        Deck* deckCards;
+        Deck* deck;
         vector<Player*> players;
         bool activateObservers;
         Map* gameMap;
