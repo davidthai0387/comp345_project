@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <errno.h>
+
 using namespace std;
 
 GameEngine::GameEngine() {
@@ -180,14 +182,23 @@ bool GameEngine::isMapInDirectory(string fileName) {
 }
 
 void GameEngine::setNbOfPlayers() {
-    int count = 0;
-    cout << "Select the number of players that will be participation (Must be between 2 and 5): ";
-    cin >> count;
-    while(!(count >= 2 && count <=5)) {
-       cout << "The numbers of players that you've selected has been deemed invalid. Please pick again: ";
-       cin >> count;
+    while(true){
+        int count = 0;
+        cout << "Select the number of players that will be participating (Must be between 2 and 5): ";
+        cin >> count;
+        try{
+            if(!(count >= 2 && count <=5)) {
+                throw exception();
+            }
+            nbOfPlayers = count;
+            cout << endl;
+            break;
+        } catch (...) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "The numbers of players that you've selected has been deemed invalid. Please try again.\n" << endl;
+        }
     }
-    nbOfPlayers = count;
 }
 
 void GameEngine::toggleObservers() {
