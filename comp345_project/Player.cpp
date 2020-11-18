@@ -58,6 +58,12 @@ string Player::getCountryNames() {
     }
     return out;
 };
+vector<string> Player::getNegotiatedPlayers() {
+    return this->negotiatedPlayers;
+};
+void Player::resetNegotiatedPlayers() {
+    negotiatedPlayers.clear();
+};
 vector<Country*> Player::getOwnedCountries() {
     return this->countries;
 };

@@ -38,5 +38,7 @@ int main() {
         cout << "Observers are on" << endl;
     else
         cout << "Observers are off" << endl;
+
+    ge.startupPhase();
     return 0;
 }

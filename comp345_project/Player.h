@@ -22,6 +22,8 @@ private:
     // reinforcement pool
     int numOfArmies;
 
+    //negotiate
+    vector<string> negotiatedPlayers;
 
 public:
     // constructors
@@ -51,6 +53,8 @@ public:
     vector<Card*>& getHand();
     OrderList* getPlayerOrders();
     int getNumOfArmies();
+    vector<string> getNegotiatedPlayers();
+    void resetNegotiatedPlayers();
 
     // methods
     string showHand();
