@@ -8,6 +8,7 @@
 using namespace std;
 
 class Player;
+class Map;
 class Card {
 private:
     /*The size of the array of the cards that will be given
@@ -53,7 +54,7 @@ public:
     BombCard& operator = (const BombCard& bc);
 
     //Method
-    void play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i);
+    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
     string play(int index, vector<Card*> hand, vector<Card*> deck);
 };
 
@@ -67,7 +68,7 @@ public:
     ReinforcementCard& operator = (const ReinforcementCard& rc);
 
     //Method
-    void play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i);
+    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
     string play(int index, vector<Card*> hand, vector<Card*> deck);
 };
 
@@ -81,7 +82,7 @@ public:
     BlockadeCard& operator = (const BlockadeCard& blc);
 
     //Method
-    void play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i);
+    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
     string play(int index, vector<Card*> hand, vector<Card*> deck);
 };
 
@@ -95,7 +96,7 @@ public:
     AirliftCard& operator = (const AirliftCard& ac);
 
     //Method
-    void play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i);
+    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
     string play(int index, vector<Card*> hand, vector<Card*> deck);
 };
 

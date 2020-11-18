@@ -7,6 +7,7 @@
 using namespace std;
 
 class Player;
+
 class Orders {
 private:
 	string name;

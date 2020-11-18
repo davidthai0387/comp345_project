@@ -65,14 +65,14 @@ BombCard& BombCard::operator=(const BombCard& bc) {
 }
 
 
-void BombCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+void BombCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
 {
-    deck.push_back(hand[i]);
-    hand.erase(hand.begin() + i);
+    d->addToDeck(h->getHand()[i]);
 
     int cNum = rand() % p->toAttack().size();
     p->issueOrder(new Bomb(p, p->toAttack()[cNum], m));
 
+    h->discard(i);
 }
 
 //Method
@@ -106,14 +106,14 @@ ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& rc) {
     return *this;
 }
 
-void ReinforcementCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+void ReinforcementCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
 {
-    deck.push_back(hand[i]);
-    hand.erase(hand.begin() + i);
+    d->addToDeck(h->getHand()[i]);
 
     int cNum = rand() % p->getOwnedCountries().size();
     p->issueOrder(new Deploy(p, 5, p->getOwnedCountries()[cNum], m));
 
+    h->discard(i);
 }
 
 //Method
@@ -145,14 +145,14 @@ BlockadeCard& BlockadeCard::operator=(const BlockadeCard& blc) {
     return *this;
 }
 
-void BlockadeCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+void BlockadeCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
 {
-    deck.push_back(hand[i]);
-    hand.erase(hand.begin() + i);
+    d->addToDeck(h->getHand()[i]);
 
     int cNum = rand() % p->getOwnedCountries().size();
     p->issueOrder(new Blockade(p, p->getOwnedCountries()[cNum], m));
 
+    h->discard(i);
 }
 
 //Method
@@ -184,10 +184,9 @@ AirliftCard& AirliftCard::operator=(const AirliftCard& ac) {
     return *this;
 }
 
-void AirliftCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+void AirliftCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
 {
-    deck.push_back(hand[i]);
-    hand.erase(hand.begin() + i);
+    d->addToDeck(h->getHand()[i]);
 
     int c1Num = rand() % p->getOwnedCountries().size();
     int c2Num = rand() % m->getCountries().size();
@@ -196,6 +195,7 @@ void AirliftCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand
 
     p->issueOrder(new Airlift(p, a, p->getOwnedCountries()[c1Num], m->getCountries()[c2Num], m, d));
 
+    h->discard(i);
 }
 
 //Method
