@@ -118,7 +118,6 @@ vector<Country*> Player::toAttack() {
             }
         }
     }
-
     return out;
 };
 void Player::issueOrder(Orders* o) {

@@ -117,8 +117,8 @@ void GameEngine::issueOrdersPhase()
             while (armiesThisTurn > 0) {
                 int nArmies = rand() % armiesThisTurn + 1;
                 armiesThisTurn -= nArmies;
-                int cNum = rand() % gameMap->getCountries().size();
-                p->issueOrder(new Deploy(p, nArmies, gameMap->getCountries()[cNum], gameMap));
+                int cNum = rand() % p->getOwnedCountries().size();
+                p->issueOrder(new Deploy(p, nArmies, p->getOwnedCountries()[cNum], gameMap));
             }
         }
 
@@ -156,7 +156,7 @@ void GameEngine::issueOrdersPhase()
             while (handSize > 0) {
                 if (rand() % 2) {
                     int cardNum = rand() % handSize;
-
+                    //p->getHand()[cardNum]->Play();
                     // play card from p.getHand()[cardNum]
 
                     handSize--;

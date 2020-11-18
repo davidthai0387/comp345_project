@@ -26,10 +26,6 @@ Card& Card::operator=(const Card& c) {
 ostream& operator<<(ostream& out, const Card& c) {
     return out << c.cardName;
 };
-//Method
-string Card::Play(int index, vector<Card*> hand, vector<Card*> deck) {
-    return "Card";
-}
 
 //Getter
 int Card::getCardMinimum() const {
@@ -69,8 +65,18 @@ BombCard& BombCard::operator=(const BombCard& bc) {
 }
 
 
+void BombCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+{
+    deck.push_back(hand[i]);
+    hand.erase(hand.begin() + i);
+
+    int cNum = rand() % p->toAttack().size();
+    p->issueOrder(new Bomb(p, p->toAttack()[cNum], m));
+
+}
+
 //Method
-string BombCard::Play(int index, vector<Card*> hand, vector<Card*> deck) {
+string BombCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
     //Add card back to deck
     deck.push_back(hand[index]);
 
@@ -100,8 +106,18 @@ ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& rc) {
     return *this;
 }
 
+void ReinforcementCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+{
+    deck.push_back(hand[i]);
+    hand.erase(hand.begin() + i);
+
+    int cNum = rand() % p->getOwnedCountries().size();
+    p->issueOrder(new Deploy(p, 5, p->getOwnedCountries()[cNum], m));
+
+}
+
 //Method
-string ReinforcementCard::Play(int index, vector<Card*> hand, vector<Card*> deck) {
+string ReinforcementCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
     //Add card back to deck
     deck.push_back(hand[index]);
 
@@ -129,8 +145,18 @@ BlockadeCard& BlockadeCard::operator=(const BlockadeCard& blc) {
     return *this;
 }
 
+void BlockadeCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+{
+    deck.push_back(hand[i]);
+    hand.erase(hand.begin() + i);
+
+    int cNum = rand() % p->getOwnedCountries().size();
+    p->issueOrder(new Blockade(p, p->getOwnedCountries()[cNum], m));
+
+}
+
 //Method
-string BlockadeCard::Play(int index, vector<Card*> hand, vector<Card*> deck) {
+string BlockadeCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
     //Add card back to deck
     deck.push_back(hand[index]);
 
@@ -158,8 +184,22 @@ AirliftCard& AirliftCard::operator=(const AirliftCard& ac) {
     return *this;
 }
 
+void AirliftCard::play(Player* p, Map* m, vector<Card*> deck, vector<Card*> hand, int i)
+{
+    deck.push_back(hand[i]);
+    hand.erase(hand.begin() + i);
+
+    int c1Num = rand() % p->getOwnedCountries().size();
+    int c2Num = rand() % m->getCountries().size();
+
+    int a = rand() % p->getOwnedCountries()[c1Num]->getArmies();
+
+    p->issueOrder(new Airlift(p, a, p->getOwnedCountries()[c1Num], m->getCountries()[c2Num], m, d));
+
+}
+
 //Method
-string AirliftCard::Play(int index, vector<Card*> hand, vector<Card*> deck) {
+string AirliftCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
     //Add card back to deck
     deck.push_back(hand[index]);
 
@@ -188,7 +228,7 @@ DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& dc) {
 }
 
 //Method
-string DiplomacyCard::Play(int index, vector<Card*> hand, vector<Card*> deck) {
+string DiplomacyCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
     //Add card back to deck
     deck.push_back(hand[index]);
 
@@ -266,6 +306,11 @@ void Deck::draw(vector<Card*>& hand) {
 
 }
 
+void Deck::addToDeck(Card* c)
+{
+    deck.push_back(c);
+}
+
 //Method to create a deck, maybe I should make a constructor from this...
 vector<Card*> listofcards(int cardRep) {
     //The deck as an arrayList (vector)
@@ -324,4 +369,9 @@ Hand& Hand::operator=(const Hand& h) {
 //Getter
 vector<Card*>& Hand::getHand() {
     return this->hand;
+}
+
+void Hand::discard(int i)
+{
+    hand.erase(hand.begin() + i);
 }
