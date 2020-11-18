@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "GameObservers.h"
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 
