@@ -29,7 +29,7 @@ public:
 	~Orders();
 
 	// Method
-	virtual void execute() = 0;
+	virtual bool execute() = 0;
 	virtual string getName();
 	void setName(string a);
 	void setOrderIssuer(Player* p);
@@ -57,7 +57,7 @@ public:
 
 	// Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	// Getters
@@ -90,7 +90,7 @@ public:
 
 	// Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	// Getters
@@ -123,7 +123,7 @@ public:
 
 	// Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	// Getters
@@ -151,7 +151,7 @@ public:
 
 	// Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	// Getters
@@ -181,7 +181,7 @@ public:
 
 	//Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	//Getters
@@ -214,7 +214,7 @@ public:
 
 	//Method
 	bool validate();
-	virtual void execute();
+	virtual bool execute();
 	void read();
 
 	//Getters
@@ -231,6 +231,7 @@ class OrderList {
 
 private:
 	vector<Orders*> list;
+	bool countryConquered;
 
 public:
 	// Constructors
@@ -244,10 +245,12 @@ public:
 	void add(Orders* o);
 	void move(int i, int j);
 	void remove(int i);
-	void execOrders();
 	string displayOrders();
 	void setList(vector<Orders*> somelist);
+	void emptyList();
+	void setCountryConquered(bool b);
 
 	// Getters
 	vector<Orders*> getList();
+	bool getCountryConquered();
 };

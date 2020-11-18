@@ -1,6 +1,8 @@
 #include "GameEngine.h"
 
 #include <iostream>
+#include <time.h>
+
 using namespace std;
 
 int main() {
@@ -40,7 +42,6 @@ int main() {
         cout << "Observers are off" << endl;
 
     ge.startupPhase();
-    ge.reinforcementPhase();
-    ge.issueOrdersPhase();
+    ge.mainGameLoop();
     return 0;
 }

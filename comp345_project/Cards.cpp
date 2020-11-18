@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <time.h>
 
 //=============================================================================
 //Default constructor
@@ -73,6 +74,7 @@ void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int 
 {
     d->addToDeck(h->getHand()[i]);
 
+    
     int cNum = rand() % p->toAttack().size();
     p->issueOrder(new Bomb(p, p->toAttack()[cNum], m));
 
@@ -103,6 +105,7 @@ void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand
 {
     d->addToDeck(h->getHand()[i]);
 
+    
     int cNum = rand() % p->getOwnedCountries().size();
     p->issueOrder(new Deploy(p, 5, p->getOwnedCountries()[cNum], m));
 
@@ -132,6 +135,7 @@ void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, 
 {
     d->addToDeck(h->getHand()[i]);
 
+    
     int cNum = rand() % p->getOwnedCountries().size();
     p->issueOrder(new Blockade(p, p->getOwnedCountries()[cNum], m));
 
@@ -161,6 +165,7 @@ void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, i
 {
     d->addToDeck(h->getHand()[i]);
 
+    
     int c1Num = rand() % p->getOwnedCountries().size();
     int c2Num = rand() % m->getCountries().size();
 
@@ -197,6 +202,7 @@ void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h,
     int oNum;
 
     do {
+        
         oNum = rand() % o.size();
         oName = o[oNum]->getName();
     } while (pName == oName);
@@ -263,6 +269,7 @@ void Deck::draw(vector<Card*>& hand) {
 
     else {
         //Randomly decide the index of the card that will be drawn
+        
         int drawnIndex = (rand() % deck.size());
         //Add that card to the arrayList of the hand
         hand.push_back(deck[drawnIndex]);

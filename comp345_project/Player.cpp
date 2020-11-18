@@ -41,13 +41,18 @@ void Player::setPlayerOrders(Orders* a) {
 }
 void Player::setNumOfArmies(int num) {
     numOfArmies = num;
-};
+}
 
 
 // Getter methods
 string Player::getName() {
     return this->name;
-};
+}
+bool Player::existsCountry(string a)
+{
+    return false;
+}
+;
 string Player::getCountryNames() {
     string out;
     for (int i = 0; i < countries.size(); i++) {

@@ -3,6 +3,9 @@
 #include <iterator>
 #include <algorithm>
 #include <random>
+#include <time.h>
+#include <stdlib.h>
+
 using namespace std;
 
 ostream& operator<<(ostream& out, const Orders& o) {
@@ -34,8 +37,6 @@ Orders::~Orders() {
 
 
 // Methods
-void Orders::execute() {
-};
 string Orders::getName() {
 	return "Order";
 };
@@ -80,7 +81,7 @@ bool Deploy::validate() {
 	}
 	return valid;
 };
-void Deploy::execute() {
+bool Deploy::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
@@ -92,7 +93,7 @@ void Deploy::execute() {
 	} else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
-	
+	return false;
 };
 void Deploy::read() {
 	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry()->getName() << endl;
@@ -149,43 +150,44 @@ bool Advance::validate() {
 	}
 	return valid;
 };
-void Advance::execute() {
+bool Advance::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		src->setArmies((src->getArmies() - getArmiesToDeploy()));
-	for (Country* c : this->orderIssuer->getOwnedCountries()) {
-		if (c->getName() == dest->getName()) {
-			c->setArmies((c->getArmies()) + getArmiesToDeploy());
-			return;
+		for (Country* c : this->orderIssuer->getOwnedCountries()) {
+			if (c->getName() == dest->getName()) {
+				c->setArmies((c->getArmies()) + getArmiesToDeploy());
+				return false;
+			}
+		}
+		int attackUnits = getArmiesToDeploy();
+		int defendUnits = dest->getArmies();
+		while (attackUnits != 0 && defendUnits != 0) {
+			
+			int attackPercent = rand() % 101;
+			int defendPercent = rand() % 101;
+			if (attackPercent >= 40)
+				defendUnits--;
+			if (defendPercent >= 30)
+				attackUnits--;
+		}
+		if (attackUnits == 0)
+			dest->setArmies(defendUnits);
+		if (defendUnits == 0) {
+			dest->setArmies(attackUnits);
+			if (attackUnits != 0) {
+				dest->getPlayer()->removeCountry(dest->getName());
+				dest->setPlayer(orderIssuer);
+				orderIssuer->setCountry(dest);
+				return true;
+			}
 		}
 	}
-	int attackUnits = getArmiesToDeploy();
-	int defendUnits = dest->getArmies();
-	while (attackUnits != 0 && defendUnits != 0) {
-		int attackPercent = rand() % 101;
-		int defendPercent = rand() % 101;
-		if (attackPercent >= 40)
-			defendUnits--;
-		if (defendPercent >= 30)
-			attackUnits--;
-	}
-	if (attackUnits == 0)
-		dest->setArmies(defendUnits);
-	if (defendUnits == 0) {
-		dest->setArmies(attackUnits);
-		if (attackUnits != 0) {
-			dest->getPlayer()->removeCountry(dest->getName());
-			dest->setPlayer(orderIssuer);
-			orderIssuer->setCountry(dest);
-			// ADD 1 CARD TO orderIssuer HAND
-			// LIMIT 1 PER TURN
-		}
-	}
-	} else {
+	else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
+		return false;
 	}
-	
 };
 void Advance::read() {
 	cout << "Advance\t\tMove " << getArmiesToDeploy() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
@@ -245,7 +247,7 @@ bool Bomb::validate() {
 	}
 	return valid;
 };
-void Bomb::execute() {
+bool Bomb::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
@@ -253,6 +255,7 @@ void Bomb::execute() {
 	} else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
+	return false;
 };
 void Bomb::read() {
 	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry()->getName() << endl;
@@ -300,7 +303,7 @@ bool Blockade::validate() {
 	valid = false;
     return false;
 };
-void Blockade::execute() {
+bool Blockade::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
@@ -311,8 +314,7 @@ void Blockade::execute() {
 	else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
-	
-	// GIVE IT TO NEUTRAL PLAYER
+	return false;
 };
 void Blockade::read() {
 	cout << "Blockade\tDoubles troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
@@ -365,7 +367,7 @@ bool Airlift::validate() {
 	}
 	return valid;
 };
-void Airlift::execute() {
+bool Airlift::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
@@ -373,12 +375,13 @@ void Airlift::execute() {
 	for (Country* c : this->orderIssuer->getOwnedCountries()) {
 		if (c->getName() == dest->getName()) {
 			c->setArmies((c->getArmies()) + armies);
-			return;
+			return false;
 		}
 	}
 	int attackUnits = armies;
 	int defendUnits = dest->getArmies();
 	while (attackUnits != 0 && defendUnits != 0) {
+		
 		int attackPercent = rand() % 101;
 		int defendPercent = rand() % 101;
 		if (attackPercent >= 40)
@@ -394,12 +397,12 @@ void Airlift::execute() {
 			dest->getPlayer()->removeCountry(dest->getName());
 			dest->setPlayer(orderIssuer);
 			orderIssuer->setCountry(dest);
-			// ADD 1 CARD TO orderIssuer HAND
-			// LIMIT 1 PER TURN
+			return true;
 		}
 	}
 	} else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
+		return false;
 	}
 	
 };
@@ -457,7 +460,7 @@ bool Negotiate::validate() {
 	}
 	return valid;
 };
-void Negotiate::execute() {
+bool Negotiate::execute() {
 	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
@@ -466,7 +469,7 @@ void Negotiate::execute() {
 	} else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
-	
+	return false;
 };
 
 void Negotiate::read() {
@@ -551,16 +554,18 @@ void OrderList::remove(int i) {
 		this->list.erase(list.begin() + i);
 	}
 }
-void OrderList::execOrders() {
-	for (int i = 0; i < (signed int)getList().size(); i++) {
-		list[i]->execute();
-	}
-	while (!getList().empty()) {
-		this->list.pop_back();
-	}
-};
 void OrderList::setList(vector<Orders*> l) {
 	this->list = l;
+}
+void OrderList::emptyList()
+{
+	while (!list.empty()) {
+		list.pop_back();
+	}
+}
+void OrderList::setCountryConquered(bool b)
+{
+	countryConquered = b;
 }
 string OrderList::displayOrders() {
 	string out = "";
@@ -573,5 +578,10 @@ string OrderList::displayOrders() {
 	return out;
 };
 vector<Orders*> OrderList::getList() {
-	return this->list;
-};
+	return list;
+}
+bool OrderList::getCountryConquered()
+{
+	return countryConquered;
+}
+;
