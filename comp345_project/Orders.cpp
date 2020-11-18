@@ -183,6 +183,7 @@ bool Advance::execute() {
 				return true;
 			}
 		}
+		return false;
 	}
 	else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
@@ -372,34 +373,35 @@ bool Airlift::execute() {
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
 		src->setArmies((src->getArmies() - armies));
-	for (Country* c : this->orderIssuer->getOwnedCountries()) {
-		if (c->getName() == dest->getName()) {
-			c->setArmies((c->getArmies()) + armies);
-			return false;
+		for (Country* c : this->orderIssuer->getOwnedCountries()) {
+			if (c->getName() == dest->getName()) {
+				c->setArmies((c->getArmies()) + armies);
+				return false;
+			}
 		}
-	}
-	int attackUnits = armies;
-	int defendUnits = dest->getArmies();
-	while (attackUnits != 0 && defendUnits != 0) {
+		int attackUnits = armies;
+		int defendUnits = dest->getArmies();
+		while (attackUnits != 0 && defendUnits != 0) {
 		
-		int attackPercent = rand() % 101;
-		int defendPercent = rand() % 101;
-		if (attackPercent >= 40)
-			defendUnits--;
-		if (defendPercent >= 30)
-			attackUnits--;
-	}
-	if (attackUnits == 0)
-		dest->setArmies(defendUnits);
-	if (defendUnits == 0) {
-		dest->setArmies(attackUnits);
-		if (attackUnits != 0) {
-			dest->getPlayer()->removeCountry(dest->getName());
-			dest->setPlayer(orderIssuer);
-			orderIssuer->setCountry(dest);
-			return true;
+			int attackPercent = rand() % 101;
+			int defendPercent = rand() % 101;
+			if (attackPercent >= 40)
+				defendUnits--;
+			if (defendPercent >= 30)
+				attackUnits--;
 		}
-	}
+		if (attackUnits == 0)
+			dest->setArmies(defendUnits);
+		if (defendUnits == 0) {
+			dest->setArmies(attackUnits);
+			if (attackUnits != 0) {
+				dest->getPlayer()->removeCountry(dest->getName());
+				dest->setPlayer(orderIssuer);
+				orderIssuer->setCountry(dest);
+				return true;
+			}
+		}
+		return false;
 	} else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 		return false;
