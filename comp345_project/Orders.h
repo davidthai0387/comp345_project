@@ -29,7 +29,7 @@ public:
 	~Orders();
 
 	// Method
-	virtual void read() = 0;
+	virtual void execute() = 0;
 	virtual string getName();
 	void setName(string a);
 	void setOrderIssuer(Player* p);
@@ -57,8 +57,8 @@ public:
 
 	// Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	// Getters
 	bool getValid();
@@ -90,8 +90,8 @@ public:
 
 	// Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	// Getters
 	bool getValid();
@@ -123,8 +123,8 @@ public:
 
 	// Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	// Getters
 	bool getValid();
@@ -151,8 +151,8 @@ public:
 
 	// Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	// Getters
 	bool getValid();
@@ -181,8 +181,8 @@ public:
 
 	//Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	//Getters
 	bool getValid();
@@ -214,8 +214,8 @@ public:
 
 	//Method
 	bool validate();
-	void execute();
-	virtual void read();
+	virtual void execute();
+	void read();
 
 	//Getters
 	bool getValid();
