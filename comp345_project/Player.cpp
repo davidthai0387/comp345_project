@@ -1,4 +1,5 @@
 #include "Player.h"
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -124,7 +125,6 @@ vector<Country*> Player::toAttack() {
             }
         }
     }
-
     return out;
 };
 void Player::issueOrder(Orders* o) {

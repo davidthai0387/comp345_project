@@ -1,9 +1,10 @@
 #pragma once
 #include "Player.h"
 #include "GameObservers.h"
-#include <iostream>
-using namespace std;
 
+#include<iostream>
+
+using namespace std;
 
 class GameEngine : public Observable{
     public:
