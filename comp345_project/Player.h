@@ -51,6 +51,7 @@ public:
     string getCountryNames();
     vector<Country*> getOwnedCountries();
     vector<Card*>& getHand();
+    Hand* getHandObject();
     OrderList* getPlayerOrders();
     int getNumOfArmies();
     vector<string> getNegotiatedPlayers();
