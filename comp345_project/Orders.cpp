@@ -80,22 +80,21 @@ bool Deploy::validate() {
 	return valid;
 };
 void Deploy::execute() {
-	for (Country* c : this->orderIssuer->getOwnedCountries()) {
-		if (c->getName() == country->getName()) {
-
-			c->setArmies((c->getArmies()) + getArmy());
+	read();
+	if (validate()) {
+		cout << "Order is valid, executing...\n" << endl;
+		for (Country* c : this->orderIssuer->getOwnedCountries()) {
+			if (c->getName() == country->getName()) {
+				c->setArmies((c->getArmies()) + getArmy());
+			}
 		}
+	} else {
+		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
+	
 };
 void Deploy::read() {
 	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry()->getName() << endl;
-	if (validate()) {
-		cout << "Order is valid, executing...\n" << endl;
-		execute();
-	}
-	else {
-		cout << "Order is invalid, no action will occur.\n" << endl;
-	}
 };
 bool Deploy::getValid() {
 	return valid;
@@ -150,7 +149,10 @@ bool Advance::validate() {
 	return valid;
 };
 void Advance::execute() {
-	src->setArmies((src->getArmies() - getArmiesToDeploy()));
+	read();
+	if (validate()) {
+		cout << "Order is valid, executing...\n" << endl;
+		src->setArmies((src->getArmies() - getArmiesToDeploy()));
 	for (Country* c : this->orderIssuer->getOwnedCountries()) {
 		if (c->getName() == dest->getName()) {
 			c->setArmies((c->getArmies()) + getArmiesToDeploy());
@@ -179,16 +181,13 @@ void Advance::execute() {
 			// LIMIT 1 PER TURN
 		}
 	}
+	} else {
+		cout << "Order is invalid, no action will occur.\n" << endl;
+	}
+	
 };
 void Advance::read() {
 	cout << "Advance\t\tMove " << getArmiesToDeploy() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
-	if (validate()) {
-		cout << "Order is valid, executing...\n" << endl;
-		execute();
-	}
-	else {
-		cout << "Order is invalid, no action will occur.\n" << endl;
-	}
 };
 bool Advance::getValid() {
 	return valid;
@@ -246,17 +245,16 @@ bool Bomb::validate() {
 	return valid;
 };
 void Bomb::execute() {
-	targetCountry->setArmies((targetCountry->getArmies() / 2));
+	read();
+	if (validate()) {
+		cout << "Order is valid, executing...\n" << endl;
+		targetCountry->setArmies((targetCountry->getArmies() / 2));
+	} else {
+		cout << "Order is invalid, no action will occur.\n" << endl;
+	}
 };
 void Bomb::read() {
 	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry()->getName() << endl;
-	if (validate()) {
-		cout << "Order is valid, executing...\n" << endl;
-		execute();
-	}
-	else {
-		cout << "Order is invalid, no action will occur.\n" << endl;
-	}
 };
 bool Bomb::getValid() {
 	return valid;
@@ -367,7 +365,10 @@ bool Airlift::validate() {
 	return valid;
 };
 void Airlift::execute() {
-	src->setArmies((src->getArmies() - armies));
+	read();
+	if (validate()) {
+		cout << "Order is valid, executing...\n" << endl;
+		src->setArmies((src->getArmies() - armies));
 	for (Country* c : this->orderIssuer->getOwnedCountries()) {
 		if (c->getName() == dest->getName()) {
 			c->setArmies((c->getArmies()) + armies);
@@ -396,16 +397,13 @@ void Airlift::execute() {
 			// LIMIT 1 PER TURN
 		}
 	}
+	} else {
+		cout << "Order is invalid, no action will occur.\n" << endl;
+	}
+	
 };
 void Airlift::read() {
 	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
-	if (validate()) {
-		cout << "Order is valid, executing...\n" << endl;
-		execute();
-	}
-	else {
-		cout << "Order is invalid, no action will occur.\n" << endl;
-	}
 };
 bool Airlift::getValid() {
 	return valid;
@@ -459,19 +457,19 @@ bool Negotiate::validate() {
 	return valid;
 };
 void Negotiate::execute() {
-	orderIssuer->getNegotiatedPlayers().push_back((*opponent).getName());
-	opponent->getNegotiatedPlayers().push_back((*orderIssuer).getName());
+	read();
+	if (validate()) {
+		cout << "Order is valid, executing...\n" << endl;
+		orderIssuer->getNegotiatedPlayers().push_back((*opponent).getName());
+		opponent->getNegotiatedPlayers().push_back((*orderIssuer).getName());
+	} else {
+		cout << "Order is invalid, no action will occur.\n" << endl;
+	}
+	
 };
 
 void Negotiate::read() {
 	cout << "Negotiate\tPrevents attacks to and from " << (*opponent).getName() << " for one turn" << endl;
-	if (validate()) {
-		cout << "Order is valid, executing...\n" << endl;
-		execute();
-	}
-	else {
-		cout << "Order is invalid, no action will occur.\n" << endl;
-	}
 };
 
 
