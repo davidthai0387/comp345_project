@@ -34,8 +34,7 @@ Orders::~Orders() {
 
 
 // Methods
-void Orders::read() {
-	cout << "Order" << endl;
+void Orders::execute() {
 };
 string Orders::getName() {
 	return "Order";
@@ -554,7 +553,7 @@ void OrderList::remove(int i) {
 }
 void OrderList::execOrders() {
 	for (int i = 0; i < (signed int)getList().size(); i++) {
-		list[i]->read();
+		list[i]->execute();
 	}
 	while (!getList().empty()) {
 		this->list.pop_back();
