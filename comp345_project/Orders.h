@@ -1,13 +1,13 @@
 #pragma once
+#include "Map.h"
+
 #include <vector>
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "Map.h"
 using namespace std;
 
 class Player;
-
 class Orders {
 private:
 	string name;

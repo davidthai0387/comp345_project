@@ -1,9 +1,10 @@
+#include "GameEngine.h"
+
 #include <algorithm>
 #include <iterator>
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "GameEngine.h"
 using namespace std;
 
 GameEngine::GameEngine() {

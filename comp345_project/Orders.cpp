@@ -1,7 +1,9 @@
+#include "Player.h"
+
 #include <iterator>
 #include <algorithm>
 #include <random>
-#include "Player.h"
+using namespace std;
 
 ostream& operator<<(ostream& out, const Orders& o) {
 	if (o.exec == true) {

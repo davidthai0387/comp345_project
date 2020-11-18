@@ -1,12 +1,9 @@
 #pragma once
-#include <vector>
-#include <string>
 #include "MapLoader.h"
 #include "Cards.h"
-#include "Map.h"
 #include "Orders.h"
-using namespace std;
 
+using namespace std;
 
 class Player {
 private:

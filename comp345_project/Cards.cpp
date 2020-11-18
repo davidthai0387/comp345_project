@@ -7,10 +7,15 @@ Card::Card() {
     /*The size of the array of the cards that will be given
     at the end of the turn*/
     cardMinimum = 0;
-
+    cardName = "Card";
 }
 Card::Card(int cm) {
     cardMinimum = cm;
+}
+Card::Card(int cm, string cn)
+{
+    cardMinimum = cm;
+    cardName = cn;
 }
 Card::Card(const Card& c) {
     cardMinimum = c.cardMinimum;
@@ -46,9 +51,8 @@ void Card::setCardName(string cn) {
 //============================================================================= 
 
 //Default constructor
-BombCard::BombCard() {
-    setCardMinimum(0);
-    setCardName("Bomb");
+BombCard::BombCard() : Card() {
+    
 }
 
 //Copy constructor
@@ -74,17 +78,6 @@ void BombCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
 
     h->discard(i);
 }
-
-//Method
-string BombCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
-    //Add card back to deck
-    deck.push_back(hand[index]);
-
-    //Remove from hand
-    hand.erase(hand.begin() + index);
-
-    return this->getCardName();
-};
 
 //============================================================================= 
 
@@ -116,16 +109,6 @@ void ReinforcementCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
     h->discard(i);
 }
 
-//Method
-string ReinforcementCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
-    //Add card back to deck
-    deck.push_back(hand[index]);
-
-    //Remove from hand
-    hand.erase(hand.begin() + index);
-
-    return this->getCardName();
-};
 //============================================================================= 
 
 //constructor
@@ -155,16 +138,6 @@ void BlockadeCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
     h->discard(i);
 }
 
-//Method
-string BlockadeCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
-    //Add card back to deck
-    deck.push_back(hand[index]);
-
-    //Remove from hand
-    hand.erase(hand.begin() + index);
-
-    return this->getCardName();
-};
 //============================================================================= 
 
 //constructor
@@ -198,16 +171,6 @@ void AirliftCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
     h->discard(i);
 }
 
-//Method
-string AirliftCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
-    //Add card back to deck
-    deck.push_back(hand[index]);
-
-    //Remove from hand
-    hand.erase(hand.begin() + index);
-
-    return this->getCardName();
-};
 //============================================================================= 
 
 //constructor
@@ -227,16 +190,11 @@ DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& dc) {
     return *this;
 }
 
-//Method
-string DiplomacyCard::play(int index, vector<Card*> hand, vector<Card*> deck) {
-    //Add card back to deck
-    deck.push_back(hand[index]);
+void DiplomacyCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+{
 
-    //Remove from hand
-    hand.erase(hand.begin() + index);
+}
 
-    return this->getCardName();
-};
 //============================================================================= 
 
 //Default constructor

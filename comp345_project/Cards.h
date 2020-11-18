@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -9,6 +10,8 @@ using namespace std;
 
 class Player;
 class Map;
+class Deck;
+class Hand;
 class Card {
 private:
     /*The size of the array of the cards that will be given
@@ -22,6 +25,7 @@ public:
     //Default constructor
     Card();
     Card(int cm);
+    Card(int cm, string cn);
     Card(const Card& c);
 
     //Assignment operator
@@ -37,8 +41,7 @@ public:
 
     //Methods
     friend ostream& operator<<(ostream& out, const Card& c);
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i) = 0;
-    virtual string play(int index, vector<Card*> hand, vector<Card*> deck) = 0;
+    virtual virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i) = 0;
 
 };
 
@@ -54,8 +57,8 @@ public:
     BombCard& operator = (const BombCard& bc);
 
     //Method
-    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
-    string play(int index, vector<Card*> hand, vector<Card*> deck);
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    
 };
 
 class ReinforcementCard : public Card {
@@ -68,8 +71,8 @@ public:
     ReinforcementCard& operator = (const ReinforcementCard& rc);
 
     //Method
-    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
-    string play(int index, vector<Card*> hand, vector<Card*> deck);
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    
 };
 
 class BlockadeCard : public Card {
@@ -82,8 +85,8 @@ public:
     BlockadeCard& operator = (const BlockadeCard& blc);
 
     //Method
-    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
-    string play(int index, vector<Card*> hand, vector<Card*> deck);
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    
 };
 
 class AirliftCard : public Card {
@@ -96,8 +99,8 @@ public:
     AirliftCard& operator = (const AirliftCard& ac);
 
     //Method
-    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
-    string play(int index, vector<Card*> hand, vector<Card*> deck);
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    
 };
 
 class DiplomacyCard : public Card {
@@ -110,8 +113,8 @@ public:
     DiplomacyCard& operator = (const DiplomacyCard& dc);
 
     //Method
-    void play(Player* p, Map* m, Deck* d, Hand* h, int i);
-    string play(int index, vector<Card*> hand, vector<Card*> deck);
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    
 };
 
 class Deck {
