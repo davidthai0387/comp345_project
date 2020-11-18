@@ -69,7 +69,7 @@ BombCard& BombCard::operator=(const BombCard& bc) {
 }
 
 
-void BombCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
     d->addToDeck(h->getHand()[i]);
 
@@ -99,7 +99,7 @@ ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& rc) {
     return *this;
 }
 
-void ReinforcementCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
     d->addToDeck(h->getHand()[i]);
 
@@ -128,7 +128,7 @@ BlockadeCard& BlockadeCard::operator=(const BlockadeCard& blc) {
     return *this;
 }
 
-void BlockadeCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
     d->addToDeck(h->getHand()[i]);
 
@@ -157,7 +157,7 @@ AirliftCard& AirliftCard::operator=(const AirliftCard& ac) {
     return *this;
 }
 
-void AirliftCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
     d->addToDeck(h->getHand()[i]);
 
@@ -190,9 +190,18 @@ DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& dc) {
     return *this;
 }
 
-void DiplomacyCard::play(Player* p, Map* m, Deck* d, Hand* h, int i)
+void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    string pName = p->getName();
+    string oName;
+    int oNum;
 
+    do {
+        oNum = rand() % o.size();
+        oName = o[oNum]->getName();
+    } while (pName == oName);
+
+    p->issueOrder(new Negotiate(p, o[oNum], m));
 }
 
 //============================================================================= 

@@ -25,7 +25,10 @@ class GameEngine : public Observable{
         void GameStart();
         void startupPhase();
         void mainGameLoop();
-        
+        void reinforcementPhase();
+        void issueOrdersPhase();
+        void executeOrdersPhase();
+
     private:
         int nbOfPlayers;
         Deck* deck;
@@ -38,8 +41,5 @@ class GameEngine : public Observable{
         void toggleObservers();
         string selectMap();
         string currentphase;
-        void reinforcementPhase();
         bool ownsContinent(Player* p, Continent* c);
-        void issueOrdersPhase();
-        void executeOrdersPhase();
 };

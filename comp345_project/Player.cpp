@@ -63,7 +63,12 @@ vector<string> Player::getNegotiatedPlayers() {
 };
 void Player::resetNegotiatedPlayers() {
     negotiatedPlayers.clear();
-};
+}
+Hand* Player::getHandObject()
+{
+    return playerHand;
+}
+;
 vector<Country*> Player::getOwnedCountries() {
     return this->countries;
 };

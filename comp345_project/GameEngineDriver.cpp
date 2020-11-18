@@ -40,5 +40,7 @@ int main() {
         cout << "Observers are off" << endl;
 
     ge.startupPhase();
+    ge.reinforcementPhase();
+    ge.issueOrdersPhase();
     return 0;
 }

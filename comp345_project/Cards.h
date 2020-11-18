@@ -41,7 +41,7 @@ public:
 
     //Methods
     friend ostream& operator<<(ostream& out, const Card& c);
-    virtual virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i) = 0;
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i) = 0;
 
 };
 
@@ -57,7 +57,7 @@ public:
     BombCard& operator = (const BombCard& bc);
 
     //Method
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
     
 };
 
@@ -71,7 +71,7 @@ public:
     ReinforcementCard& operator = (const ReinforcementCard& rc);
 
     //Method
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
     
 };
 
@@ -85,7 +85,7 @@ public:
     BlockadeCard& operator = (const BlockadeCard& blc);
 
     //Method
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
     
 };
 
@@ -99,7 +99,7 @@ public:
     AirliftCard& operator = (const AirliftCard& ac);
 
     //Method
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
     
 };
 
@@ -113,7 +113,7 @@ public:
     DiplomacyCard& operator = (const DiplomacyCard& dc);
 
     //Method
-    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i);
+    virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
     
 };
 
