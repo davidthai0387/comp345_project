@@ -41,7 +41,7 @@ public:
 
     //Methods
     friend ostream& operator<<(ostream& out, const Card& c);
-    virtual virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i) = 0;
+    virtual void play(Player* p, Map* m, Deck* d, Hand* h, int i) = 0;
 
 };
 
