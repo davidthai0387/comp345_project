@@ -236,8 +236,10 @@ Bomb::~Bomb() {
 };
 // Methods
 bool Bomb::validate() {
+	string opponent = targetCountry->getPlayer()->getName();
+	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
 	for (Country* country : (*orderIssuer).getOwnedCountries()) {
-		if (std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
+		if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
 			valid = true;
 		}
 	}
