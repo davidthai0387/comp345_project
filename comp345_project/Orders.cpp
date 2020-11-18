@@ -74,28 +74,33 @@ Deploy::~Deploy() {
 
 // Methods
 bool Deploy::validate() {
-	if (getArmy() <= this->orderIssuer->getNumOfArmies() && getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
+	// if army to deploy is greater than the reinforcement number
+	// if army to deploy is greater than 0
+	// if country ordered to attack is owned by player
+	if ((getArmy() <= this->orderIssuer->getNumOfArmies()) && (getArmy() > 0) && (this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos)) {
 		valid = true;
 	}
+	valid = false;
 	return valid;
-};
-void Deploy::execute() {
-	for (Country* c : this->orderIssuer->getOwnedCountries()) {
-		if (c->getName() == country->getName()) {
-
-			c->setArmies((c->getArmies()) + getArmy());
-		}
-	}
 };
 void Deploy::read() {
 	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry()->getName() << endl;
-	if (validate()) {
+};
+void Deploy::execute() {
+	read();
+	if(validate()){
 		cout << "Order is valid, executing...\n" << endl;
-		execute();
+		for (Country* c : this->orderIssuer->getOwnedCountries()) {
+			if (c->getName() == country->getName()) {
+				// new army value
+				c->setArmies((c->getArmies()) + getArmy());
+			}
+		}
 	}
-	else {
+	else{
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
+	
 };
 bool Deploy::getValid() {
 	return valid;
@@ -146,6 +151,7 @@ bool Advance::validate() {
 
 		valid = true;
 	}
+	valid = false;
 	return valid;
 };
 void Advance::execute() {
@@ -241,7 +247,8 @@ bool Bomb::validate() {
 			return true;
 		}
 	}
-	return false;
+	valid = false;
+	return valid;
 };
 void Bomb::execute() {
 	targetCountry->setArmies((targetCountry->getArmies() / 2));
@@ -275,16 +282,17 @@ void Bomb::setTargetCountry(Country* c) {
 //---------------------BLOCKADE CLASS-----------------------
 // Constructors
 Blockade::Blockade(Player* p, Country* c, Map* m) : Orders(p) {
+	orderIssuer = p;
 	target = c;
 	map = m;
-
 	this->setName("Blockade");
 	priority = 3;
 };
 Blockade::Blockade(const Blockade& bl2) {
+	orderIssuer = bl2.orderIssuer;
 	valid = bl2.valid;
 	target = bl2.target;
-
+	map = bl2.map;
 	this->setName("Blockade");
 	priority = 3;
 }
@@ -293,25 +301,28 @@ Blockade::~Blockade() {
 // Methods
 bool Blockade::validate() {
 	if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
-
 		valid = true;
+		return true;
 	}
-	return true;
+	valid = false;
+	return false;
+	
 };
 void Blockade::execute() {
-	target->setArmies((target->getArmies() * 2));
-	orderIssuer->removeCountry(target->getName());
-	// GIVE IT TO NEAUTRAL PLAYER
-};
-void Blockade::read() {
-	cout << "Blockade\tTriples troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
+	read();
+	// GIVE IT TO NEUTRAL PLAYER
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
-		execute();
+		target->setArmies((target->getArmies() * 2));
+		orderIssuer->removeCountry(target->getName());
+		target->setPlayer(new Player());
 	}
 	else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
+};
+void Blockade::read() {
+	cout << "Blockade\tDoubles troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
 };
 bool Blockade::getValid() {
 	return valid;
