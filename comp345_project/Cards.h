@@ -42,7 +42,6 @@ public:
     //Methods
     friend ostream& operator<<(ostream& out, const Card& c);
     virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i) = 0;
-
 };
 
 ostream& operator<<(ostream& out, const Card& c);
@@ -58,7 +57,6 @@ public:
 
     //Method
     virtual void play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i);
-    
 };
 
 class ReinforcementCard : public Card {
