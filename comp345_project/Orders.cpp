@@ -142,8 +142,9 @@ Advance::~Advance() {
 };
 // Methods
 bool Advance::validate() {
-	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getAllBorders()[src->getNum()]).begin(), (map->getAllBorders()[src->getNum()]).end(), dest) != (map->getAllBorders()[src->getNum()]).end()) {
-
+	string opponent = dest->getPlayer()->getName();
+	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
+	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && getArmiesToDeploy() <= src->getArmies() && getArmiesToDeploy() > 0 && std::find((map->getAllBorders()[src->getNum()]).begin(), (map->getAllBorders()[src->getNum()]).end(), dest) != (map->getAllBorders()[src->getNum()]).end()) {
 		valid = true;
 	}
 	return valid;
@@ -238,10 +239,9 @@ bool Bomb::validate() {
 	for (Country* country : (*orderIssuer).getOwnedCountries()) {
 		if (std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
 			valid = true;
-			return true;
 		}
 	}
-	return false;
+	return valid;
 };
 void Bomb::execute() {
 	targetCountry->setArmies((targetCountry->getArmies() / 2));
@@ -292,16 +292,17 @@ Blockade::~Blockade() {
 };
 // Methods
 bool Blockade::validate() {
-	if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
-
+	string opponent = target->getPlayer()->getName();
+	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
+	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && (*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
 		valid = true;
 	}
-	return true;
+	return valid;
 };
 void Blockade::execute() {
 	target->setArmies((target->getArmies() * 2));
 	orderIssuer->removeCountry(target->getName());
-	// GIVE IT TO NEAUTRAL PLAYER
+	// GIVE IT TO NEUTRAL PLAYER
 };
 void Blockade::read() {
 	cout << "Blockade\tTriples troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
@@ -353,7 +354,9 @@ Airlift::~Airlift() {
 };
 // Methods
 bool Airlift::validate() {
-	if (/* orderIssuer->getTruce() != dest->getPlayer() && */(*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
+	string opponent = dest->getPlayer()->getName();
+	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
+	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
 		valid = true;
 	}
 	return valid;
@@ -448,12 +451,11 @@ bool Negotiate::validate() {
 	if ((*orderIssuer).getName() != (*opponent).getName()) {
 		valid = true;
 	}
-	return true;
+	return valid;
 };
 void Negotiate::execute() {
-	// orderIssuer->setTruce(opponent);
-	// opponent->setTruce(orderIssuer);
-	// AT THE BEGINNING OF EVERY ROUND, SET EVERY PLAYER'S TRUCE TO NOBODY
+	orderIssuer->getNegotiatedPlayers().push_back((*opponent).getName());
+	opponent->getNegotiatedPlayers().push_back((*orderIssuer).getName());
 };
 
 void Negotiate::read() {
