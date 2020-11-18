@@ -294,27 +294,30 @@ Blockade::~Blockade() {
 };
 // Methods
 bool Blockade::validate() {
-	string opponent = target->getPlayer()->getName();
-	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
-	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && (*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
-		valid = true;
-	}
-	return valid;
+    if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
+        valid = true;
+		return true;
+    }
+	valid = false;
+    return false;
 };
 void Blockade::execute() {
-	target->setArmies((target->getArmies() * 2));
-	orderIssuer->removeCountry(target->getName());
-	// GIVE IT TO NEUTRAL PLAYER
-};
-void Blockade::read() {
-	cout << "Blockade\tTriples troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
+	read();
 	if (validate()) {
 		cout << "Order is valid, executing...\n" << endl;
-		execute();
+		target->setArmies((target->getArmies() * 2));
+		orderIssuer->removeCountry(target->getName());
+		target->setPlayer(new Player);
 	}
 	else {
 		cout << "Order is invalid, no action will occur.\n" << endl;
 	}
+	
+	// GIVE IT TO NEUTRAL PLAYER
+};
+void Blockade::read() {
+	cout << "Blockade\tDoubles troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
+	
 };
 bool Blockade::getValid() {
 	return valid;
