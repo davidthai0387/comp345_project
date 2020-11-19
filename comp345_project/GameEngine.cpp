@@ -148,12 +148,12 @@ void GameEngine::issueOrdersPhase()
 
         
         bool keepPlaying = rand() % 3;
-        int c1Num;
-        int c2Num;
+        int c1Num; // src country for advance
+        int c2Num; // destination country for advance
 
         while (keepPlaying) {
             
-            c1Num = rand() % p->getOwnedCountries().size();
+            c1Num = p->getOwnedCountries()[rand() % p->getOwnedCountries().size()]->getNum();
 
             bool chooseFrom = rand() % 2;
             if (chooseFrom) {
@@ -187,8 +187,6 @@ void GameEngine::issueOrdersPhase()
             setPhase("Player " + p->getName() + ": Issuing Orders Cards Phase");
             Notify();
         }
-
-        cout << "-" << p->getName();
 
         if (p->getOwnedCountries().size() == 0)
             continue;
