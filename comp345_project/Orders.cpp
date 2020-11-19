@@ -82,6 +82,7 @@ bool Deploy::validate() {
 	if (getArmy() <= this->orderIssuer->getNumOfArmies() && getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
 		return true;
 	}
+	return false;
 };
 bool Deploy::execute() {
 	read();
