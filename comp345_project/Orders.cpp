@@ -235,10 +235,14 @@ bool Bomb::validate() {
 	string opponent = targetCountry->getPlayer()->getName();
 	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
 	for (Country* country : (*orderIssuer).getOwnedCountries()) {
-		if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
-			return true;
+		if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0) {
+			vector<Country*> borders = orderIssuer->toAttack();
+			if (std::find(borders.begin(), borders.end(), targetCountry) != (borders.end())) {
+				return true;
+			}
 		}
 	}
+
 	return false;
 };
 bool Bomb::execute() {
