@@ -34,7 +34,7 @@ Player::~Player() {
 
 // Setter methods
 void Player::setCountry(Country* a) {
-    if(a->getPlayer() != nullptr && a->getPlayer() == this)
+    //if(a->getPlayer() != nullptr && a->getPlayer() == this)
         this->countries.insert(countries.end(), a);
 };
 void Player::setPlayerOrders(Orders* a) {
