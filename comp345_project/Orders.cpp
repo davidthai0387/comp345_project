@@ -145,11 +145,20 @@ Advance::~Advance() {
 bool Advance::validate() {
 	string opponent = dest->getPlayer()->getName();
 	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
+	bool countrychecker = false;
+
+	for (Country* country: map->getAllBorders()[src->getNum()]) {
+		if (country->getName() == dest->getName()) {
+			countrychecker = true;
+			break;
+		}
+	}
+	
 	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 // check if negotiated
 	&& (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos // check if issuer owns source
 	&& getArmiesToDeploy() <= src->getArmies() // check if armies <= source armies
 	&& getArmiesToDeploy() > 0 // check if armies > 0
-	&& std::find((map->getAllBorders()[src->getNum()]).begin(), (map->getAllBorders()[src->getNum()]).end(), dest) != (map->getAllBorders()[src->getNum()]).end()) // error
+	&& countrychecker)
 	{
 		valid = true;
 		return valid;

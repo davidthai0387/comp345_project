@@ -157,9 +157,18 @@ void GameEngine::issueOrdersPhase()
 
             bool chooseFrom = rand() % 2;
             if (chooseFrom) {
+                // check surrounding
+                bool attack = true;
+                while (attack) {
+                    int attackNum = rand() % p->toAttack().size();
+                    for (Country* border : p->getOwnedCountries()[c1Num]->getBorders()) {
+                        c2Num = p->toAttack()[attackNum]->getNum();
+                        if (border->getNum() == c2Num)
+                            attack = false;
+                    }
+                }
                 
-                int attackNum = rand() % p->toAttack().size();
-                c2Num = p->toAttack()[attackNum]->getNum();
+                
             }
             else {
                 
@@ -172,6 +181,7 @@ void GameEngine::issueOrdersPhase()
                 
                 nArmies = rand() % gameMap->getCountries()[c1Num]->getArmies();
             }
+
             p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deck));
 
             keepPlaying = rand() % 3;
