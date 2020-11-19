@@ -5,7 +5,7 @@
 using namespace std;
 
 // Constructors
-Player::Player() :name("David") {
+Player::Player() :name("Neutral") {
     this->playerHand = new Hand();
     this->playerOrders = new OrderList();
 };

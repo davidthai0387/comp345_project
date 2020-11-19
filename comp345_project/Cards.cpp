@@ -165,10 +165,13 @@ void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, i
 {
     d->addToDeck(h->getHand()[i]);
     
-    int c1Num = p->getOwnedCountries()[rand() % p->getOwnedCountries().size()]->getNum();
+    int c1Num = rand() % p->getOwnedCountries().size();
     int c2Num = rand() % m->getCountries().size();
 
-    int a = rand() % p->getOwnedCountries()[c1Num]->getArmies();
+    int a = 0;
+    if (p->getOwnedCountries()[c1Num]->getArmies() > 0) {
+        int a = rand() % p->getOwnedCountries()[c1Num]->getArmies();
+    }
 
     p->issueOrder(new Airlift(p, a, p->getOwnedCountries()[c1Num], m->getCountries()[c2Num], m, d));
 

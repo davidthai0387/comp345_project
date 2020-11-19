@@ -367,5 +367,9 @@ void GameEngine::mainGameLoop(){
 
         executeOrdersPhase();
         
+        for (Country* c : gameMap->getCountries()) {
+            cout << c->getNum() << ": " << c->getArmies() << endl;
+        }
+
     } while (remainingPlayers > 1);
 }
