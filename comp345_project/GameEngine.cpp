@@ -347,19 +347,19 @@ void GameEngine::mainGameLoop(){
         }
     }
 
+    startupPhase();
 
     // loop mechanism
     int remainingPlayers;
     do {
         remainingPlayers = players.size();
         for (Player* p : players) {
+            cout << p->getOwnedCountries().size() << endl;
             if (p->getOwnedCountries().size() == 0) {   // count players remaining
                 remainingPlayers--;
                 continue;
             }
         }
-
-        startupPhase();
         issueOrdersPhase();
         executeOrdersPhase();
         
