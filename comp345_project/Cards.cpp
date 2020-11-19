@@ -165,7 +165,7 @@ void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, i
 {
     d->addToDeck(h->getHand()[i]);
     
-    int c1Num = p->getOwnedCountries()[rand() % p->getOwnedCountries().size()]->getNum();
+    int c1Num = rand() % p->getOwnedCountries().size();
     int c2Num = rand() % m->getCountries().size();
 
     int a = 0;
