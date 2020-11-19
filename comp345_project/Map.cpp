@@ -179,7 +179,7 @@ Map::Map(vector<tuple<string, int>> continents_, int numOfContinents_, vector<tu
 	//create borders vector
 	borderNumbers.resize(numOfCountries);
 	for (int i = 0; i < numOfCountries_; i++) {
-		for (int j = 0; j < borders_[i].size(); j++) {
+		for (int j = 1; j < borders_[i].size(); j++) {
 			int currentDestNum = borders_[i][j] - 1;
 			borderNumbers[i].push_back(currentDestNum);
 		}
@@ -193,10 +193,13 @@ Map::Map(vector<tuple<string, int>> continents_, int numOfContinents_, vector<tu
 	}
 
 	//create border countries vector
+	vector<Country*> neighbors;
 	for (Country* country : countries) {
 		for (int neighbor : borderNumbers[country->getNum()]) {
 			(*country).addBorder((countries[neighbor]));
+			neighbors.push_back(countries[neighbor]);
 		}
+		allBorders.push_back(neighbors);
 	}
 }
 
