@@ -188,8 +188,6 @@ void GameEngine::issueOrdersPhase()
             Notify();
         }
 
-        cout << "-" << p->getName();
-
         if (p->getOwnedCountries().size() == 0)
             continue;
         int handSize = p->getHand().size();
