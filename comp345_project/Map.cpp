@@ -195,11 +195,12 @@ Map::Map(vector<tuple<string, int>> continents_, int numOfContinents_, vector<tu
 	//create border countries vector
 	vector<Country*> neighbors;
 	for (Country* country : countries) {
-		for (int neighbor : borderNumbers[country->getNum()]) {
-			(*country).addBorder((countries[neighbor]));
-			neighbors.push_back(countries[neighbor]);
+		for (int borderNumber : borderNumbers[country->getNum()]) {
+			(*country).addBorder((countries[borderNumber]));
+			neighbors.push_back(countries[borderNumber]);
 		}
 		allBorders.push_back(neighbors);
+		neighbors.clear();
 	}
 }
 

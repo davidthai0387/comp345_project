@@ -64,7 +64,6 @@ Deploy::Deploy(Player* p, int a, Country* c, Map* m) : Orders(p) {
 	priority = 1;
 };
 Deploy::Deploy(const Deploy& d2) : Orders(d2.orderIssuer) {
-	valid = d2.valid;
 	armiesToDeploy = d2.armiesToDeploy;
 	country = d2.country;
 	this->setName("Deploy");
@@ -77,9 +76,8 @@ Deploy::~Deploy() {
 // Methods
 bool Deploy::validate() {
 	if (getArmy() <= this->orderIssuer->getNumOfArmies() && getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
-		valid = true;
+		return true;
 	}
-	return valid;
 };
 bool Deploy::execute() {
 	read();
@@ -98,9 +96,6 @@ bool Deploy::execute() {
 void Deploy::read() {
 	cout << "Deploy\t\tPlace " << getArmy() << " troop(s) in " << getCountry()->getName() << endl;
 };
-bool Deploy::getValid() {
-	return valid;
-};
 int Deploy::getArmy() {
 	return armiesToDeploy;
 };
@@ -109,9 +104,6 @@ Country* Deploy::getCountry() {
 };
 string Deploy::getName() {
 	return "Deploy";
-};
-void Deploy::setValid(bool v) {
-	valid = v;
 };
 void Deploy::setArmy(int a) {
 	armiesToDeploy = a;
@@ -132,7 +124,6 @@ Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : 
 	priority = 4;
 };
 Advance::Advance(const Advance& a2) {
-	valid = a2.valid;
 	armiesToAdvance = a2.armiesToAdvance;
 	src = a2.src;
 	dest = a2.dest;
@@ -145,26 +136,20 @@ Advance::~Advance() {
 bool Advance::validate() {
 	string opponent = dest->getPlayer()->getName();
 	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
-	bool countrychecker = false;
-
-	for (Country* country: map->getAllBorders()[src->getNum()]) {
-		if (country->getName() == dest->getName()) {
-			countrychecker = true;
-			break;
+	vector<Country*> borders = map->getAllBorders()[src->getNum()];
+	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 // check if negotiated
+		&& (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos // check if issuer owns source
+		&& getArmiesToDeploy() <= src->getArmies() // check if armies <= source armies
+		&& getArmiesToDeploy() > 0 // check if armies > 0
+		) {
+		if (std::find(borders.begin(), borders.end(), dest) != (borders.end())) {
+			{
+				return true;
+			}
 		}
 	}
 	
-	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 // check if negotiated
-	&& (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos // check if issuer owns source
-	&& getArmiesToDeploy() <= src->getArmies() // check if armies <= source armies
-	&& getArmiesToDeploy() > 0 // check if armies > 0
-	&& countrychecker)
-	{
-		valid = true;
-		return valid;
-	}
-	valid = false;
-	return valid;
+	return false;
 };
 bool Advance::execute() {
 	read();
@@ -209,9 +194,6 @@ bool Advance::execute() {
 void Advance::read() {
 	cout << "Advance\t\tMove " << getArmiesToDeploy() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
 };
-bool Advance::getValid() {
-	return valid;
-};
 int Advance::getArmiesToDeploy() {
 	return armiesToAdvance;
 };
@@ -223,9 +205,6 @@ Country* Advance::getDest() {
 };
 string Advance::getName() {
 	return "Advance";
-};
-void Advance::setValid(bool v) {
-	valid = v;
 };
 void Advance::setArmy(int a) {
 	armiesToAdvance = a;
@@ -246,7 +225,6 @@ Bomb::Bomb(Player* p, Country* c, Map* m) : Orders(p) {
 	priority = 4;
 };
 Bomb::Bomb(const Bomb& b2) {
-	valid = b2.valid;
 	targetCountry = b2.targetCountry;
 	this->setName("Bomb");
 	priority = 4;
@@ -259,10 +237,10 @@ bool Bomb::validate() {
 	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
 	for (Country* country : (*orderIssuer).getOwnedCountries()) {
 		if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && std::find((map->getAllBorders()[country->getNum()]).begin(), (map->getAllBorders()[country->getNum()]).end(), targetCountry) != (map->getAllBorders()[country->getNum()]).end()) {
-			valid = true;
+			return true;
 		}
 	}
-	return valid;
+	return false;
 };
 bool Bomb::execute() {
 	read();
@@ -277,17 +255,11 @@ bool Bomb::execute() {
 void Bomb::read() {
 	cout << "Bomb\t\tEliminate half the troops in " << getTargetCountry()->getName() << endl;
 };
-bool Bomb::getValid() {
-	return valid;
-};
 Country* Bomb::getTargetCountry() {
 	return targetCountry;
 };
 string Bomb::getName() {
 	return "Bomb";
-};
-void Bomb::setValid(bool v) {
-	valid = v;
 };
 void Bomb::setTargetCountry(Country* c) {
 	targetCountry = c;
@@ -303,7 +275,6 @@ Blockade::Blockade(Player* p, Country* c, Map* m) : Orders(p) {
 	priority = 3;
 };
 Blockade::Blockade(const Blockade& bl2) {
-	valid = bl2.valid;
 	target = bl2.target;
 
 	this->setName("Blockade");
@@ -314,10 +285,8 @@ Blockade::~Blockade() {
 // Methods
 bool Blockade::validate() {
     if ((*orderIssuer).getCountryNames().find(getTarget()->getName()) != string::npos) {
-        valid = true;
 		return true;
     }
-	valid = false;
     return false;
 };
 bool Blockade::execute() {
@@ -337,17 +306,11 @@ void Blockade::read() {
 	cout << "Blockade\tDoubles troops in " << getTarget()->getName() << " and making it a neutral territory" << endl;
 	
 };
-bool Blockade::getValid() {
-	return valid;
-};
 Country* Blockade::getTarget() {
 	return target;
 };
 string Blockade::getName() {
 	return "Blockade";
-};
-void Blockade::setValid(bool v) {
-	valid = v;
 };
 void Blockade::setTarget(Country* c) {
 	target = c;
@@ -365,7 +328,6 @@ Airlift::Airlift(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : 
 	priority = 2;
 };
 Airlift::Airlift(const Airlift& ai2) {
-	valid = ai2.valid;
 	armies = ai2.armies;
 	src = ai2.src;
 	dest = ai2.dest;
@@ -380,9 +342,9 @@ bool Airlift::validate() {
 	string opponent = dest->getPlayer()->getName();
 	vector<string> negotiatedPlayers = orderIssuer->getNegotiatedPlayers();
 	if (count(negotiatedPlayers.begin(), negotiatedPlayers.end(), opponent) == 0 && (*orderIssuer).getCountryNames().find(getSrc()->getName()) != string::npos && armies <= src->getArmies() && armies > 0) {
-		valid = true;
+		return true;
 	}
-	return valid;
+	return false;
 };
 bool Airlift::execute() {
 	read();
@@ -427,9 +389,6 @@ bool Airlift::execute() {
 void Airlift::read() {
 	cout << "Airlift\t\tMove " << getArmies() << " troop(s) from " << getSrc()->getName() << " to " << getDest()->getName() << endl;
 };
-bool Airlift::getValid() {
-	return valid;
-};
 int Airlift::getArmies() {
 	return armies;
 };
@@ -442,9 +401,6 @@ Country* Airlift::getDest() {
 
 string Airlift::getName() {
 	return "Airlift";
-};
-void Airlift::setValid(bool v) {
-	valid = v;
 };
 void Airlift::setArmy(int a) {
 	armies = a;
@@ -464,7 +420,6 @@ Negotiate::Negotiate(Player* p, Player* o, Map* m) : Orders(p) {
 	priority = 4;
 };
 Negotiate::Negotiate(const Negotiate& p2) {
-	valid = p2.valid;
 	opponent = p2.opponent;
 	this->setName("Negotiate");
 	priority = 4;
@@ -474,9 +429,9 @@ Negotiate::~Negotiate() {
 // Methods
 bool Negotiate::validate() {
 	if ((*orderIssuer).getName() != (*opponent).getName()) {
-		valid = true;
+		return true;
 	}
-	return valid;
+	return false;
 };
 bool Negotiate::execute() {
 	read();
@@ -495,17 +450,11 @@ void Negotiate::read() {
 };
 
 
-bool Negotiate::getValid() {
-	return valid;
-};
 Player* Negotiate::getOpponent() {
 	return opponent;
 };
 string Negotiate::getName() {
 	return "Negotiate";
-};
-void Negotiate::setValid(bool v) {
-	valid = v;
 };
 void Negotiate::setOpponent(Player* p) {
 	opponent = p;
