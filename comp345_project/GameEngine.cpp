@@ -87,6 +87,10 @@ string GameEngine::selectMap() {
 
 void GameEngine::reinforcementPhase()
 {
+    cout << endl << "<<<<<<<<<< reinforcementPhase() START" << endl;
+
+    cout << "----- Armies received by each player: " << endl;
+
     for (Player* player : players) {
         int armyValue = 0;
         for (Continent* continent : gameMap->getContinents()) {
@@ -96,7 +100,12 @@ void GameEngine::reinforcementPhase()
         }
         armyValue += (player->getOwnedCountries().size()) / 3;
         player->setNumOfArmies(armyValue);
+
+        cout << player->getName() << ": " << armyValue << endl;
+
     }
+
+    cout << ">>>>>>>>>> reinforcementPhase() END" << endl;
 }
 
 bool GameEngine::ownsContinent(Player* p, Continent* c)
@@ -110,9 +119,7 @@ bool GameEngine::ownsContinent(Player* p, Continent* c)
 
 void GameEngine::issueOrdersPhase()
 {
-    
-    cout << endl << "<<<<<issueOrdersPhase() START" << endl;
-    cout << "DEPLOY" << endl;
+    cout << endl << "<<<<<<<<<< issueOrdersPhase() START" << endl;
 
     for (Player* p : players) {     // deploy random number of armies to random country until no armies left
 
@@ -124,16 +131,22 @@ void GameEngine::issueOrdersPhase()
 
         int armiesThisTurn = p->getNumOfArmies();
 
+        cout << "----- Player " << p->getName() << " deploying armies: " << endl;
+
+        cout << "Starting with " << armiesThisTurn << " armie(s)" << endl;
+
         while (armiesThisTurn > 0) {
-            
             int nArmies = rand() % armiesThisTurn + 1;
             armiesThisTurn -= nArmies;
             int cNum = rand() % p->getOwnedCountries().size();
             p->issueOrder(new Deploy(p, nArmies, p->getOwnedCountries()[cNum], gameMap));
+
+            cout << "Deployed: " << nArmies << "\tRemaining: " << armiesThisTurn << endl;
+
         }
     }
 
-    cout << endl << "ADVANCE" << endl;
+    cout << "----- Issuing advance orders: " << endl;
 
     for (Player* p : players) {     // advance
 
@@ -158,6 +171,8 @@ void GameEngine::issueOrdersPhase()
             bool chooseFrom = rand() % 2;
             if (chooseFrom) {
                 
+                if (p->toAttack().size() == 0)
+                    return;
                 int attackNum = rand() % p->toAttack().size();
                 c2Num = p->toAttack()[attackNum]->getNum();
             }
@@ -174,11 +189,13 @@ void GameEngine::issueOrdersPhase()
             }
             p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deck));
 
+            cout << "Player " << p->getName() << " issuing Advance order from " << gameMap->getCountries()[c1Num]->getName() << " to " << gameMap->getCountries()[c2Num]->getName() << endl;
+
             keepPlaying = rand() % 3;
         }
     }
 
-    cout << endl << "CARDS" << endl;
+    cout << "----- Playing cards: " << endl;
 
     for (Player* p : players) {     // cards
 
@@ -203,12 +220,15 @@ void GameEngine::issueOrdersPhase()
             }
         }
     }
-    cout << endl << "issueOrdersPhase() END >>>>>" << endl;
+
+    cout << ">>>>>>>>>> issueOrdersPhase() END" << endl;
+
 }
 
 void GameEngine::executeOrdersPhase()
 {
-    cout << endl << "<<<<<executeOrdersPhase() START" << endl;
+    cout << endl << "<<<<<<<<<< executeOrdersPhase() START" << endl;
+
     for (Player* p : players) {
 
         // Observer
@@ -225,12 +245,16 @@ void GameEngine::executeOrdersPhase()
         p->getPlayerOrders()->emptyList();
         
         if (p->getPlayerOrders()->getCountryConquered()) {
+
+            cout << "Player " << p->getName() << " draws a card." << endl;
+
             deck->draw(p->getHand());
             p->getPlayerOrders()->setCountryConquered(false);
         }
     }
     
-    cout << endl << "<<<<<executeOrdersPhase() END" << endl;
+    cout << endl << ">>>>>>>>>> executeOrdersPhase() END" << endl;
+
 }
 
 bool GameEngine::isMapInDirectory(string fileName) {
@@ -294,6 +318,7 @@ bool GameEngine::getObserverStatus() {
 }
 void GameEngine::setObserverStatus(bool status) {
     activateObservers = status;
+    cout << "Observer status set to: " << status << endl;
 }
 Map* GameEngine::getMap() {
     return gameMap;
@@ -310,6 +335,7 @@ string GameEngine::getPhase(){
 
 /* Assigns countries and number of armies to players */
 void GameEngine::startupPhase() {
+    cout << endl << "<<<<<<<<<< startUpPhase() START" << endl;
     vector<Country*> randomCountries = (*gameMap).getCountries();
     random_shuffle(randomCountries.begin(), randomCountries.end());     // shuffling the list of countries
     int c = 0;
@@ -339,11 +365,21 @@ void GameEngine::startupPhase() {
         player->setNumOfArmies(initialArmies);
     }
 
+    cout << "----- Owner of each country: " << endl;
+    for (Country* c : gameMap->getCountries()) {
+        cout << c->getNum() << ". " << c->getName() << ": " << c->getPlayer()->getName() << endl;
+    }
+	cout << "----- Reinforcement pool of each player: " << endl;
+	for (Player* p : players) {
+        cout << p->getName() << ": " << p->getNumOfArmies() << endl;
+    }
+
+    cout << ">>>>>>>>>> startUpPhase() END" << endl;
 }
 
 /* Main flow of the game */
 void GameEngine::mainGameLoop(){
-    startupPhase();
+    cout << endl << "<<<<<<<<<< mainGameLoop() START" << endl;
     for(int i = 0; i < players.size(); i++){
         // Observer
         if(activateObservers){
@@ -355,21 +391,35 @@ void GameEngine::mainGameLoop(){
     // loop mechanism
     int remainingPlayers;
     do {
+
+        reinforcementPhase();
+
+        issueOrdersPhase();
+
+        executeOrdersPhase();
+        
+        // FOR TESTING
+        /*for (Country* c : gameMap->getCountries()) {
+            cout << c->getNum() << ": " << c->getArmies() << endl;
+        }*/
+
         remainingPlayers = players.size();
         for (Player* p : players) {
-            cout << p->getOwnedCountries().size() << endl;
             if (p->getOwnedCountries().size() == 0) {   // count players remaining
                 remainingPlayers--;
                 continue;
             }
         }
-        issueOrdersPhase();
-
-        executeOrdersPhase();
-        
-        for (Country* c : gameMap->getCountries()) {
-            cout << c->getNum() << ": " << c->getArmies() << endl;
+        if (remainingPlayers == 1) {
+            for (Player* p : players) {
+                if (p->getNumOfArmies() != 0) {
+                    cout << endl << "Player " << p->getName() << " is the winner!!!" << endl;
+                    break;
+                }
+            }
         }
 
     } while (remainingPlayers > 1);
+
+    cout << ">>>>>>>>>> mainGameLoop() END";
 }

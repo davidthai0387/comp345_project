@@ -53,7 +53,7 @@ void Card::setCardName(string cn) {
 
 //Default constructor
 BombCard::BombCard() : Card() {
-    
+    setCardName("Bomb");
 }
 
 //Copy constructor
@@ -72,6 +72,7 @@ BombCard& BombCard::operator=(const BombCard& bc) {
 
 void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    cout << "Playing " << getCardName() << " card" << endl;
     d->addToDeck(h->getHand()[i]);
 
     
@@ -103,6 +104,8 @@ ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& rc) {
 
 void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    cout << "Playing " << getCardName() << " card" << endl;
+
     d->addToDeck(h->getHand()[i]);
 
     
@@ -133,6 +136,8 @@ BlockadeCard& BlockadeCard::operator=(const BlockadeCard& blc) {
 
 void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    cout << "Playing " << getCardName() << " card" << endl;
+
     d->addToDeck(h->getHand()[i]);
 
     
@@ -163,6 +168,8 @@ AirliftCard& AirliftCard::operator=(const AirliftCard& ac) {
 
 void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    cout << "Playing " << getCardName() << " card" << endl;
+
     d->addToDeck(h->getHand()[i]);
     
     int c1Num = rand() % p->getOwnedCountries().size();
@@ -199,6 +206,8 @@ DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& dc) {
 
 void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
+    cout << "Playing " << getCardName() << " card" << endl;
+
     string pName = p->getName();
     string oName;
     int oNum;
