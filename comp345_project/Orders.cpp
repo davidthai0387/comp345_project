@@ -148,7 +148,6 @@ bool Advance::validate() {
 			}
 		}
 	}
-	
 	return false;
 };
 bool Advance::execute() {
