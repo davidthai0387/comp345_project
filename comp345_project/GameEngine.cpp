@@ -110,14 +110,17 @@ bool GameEngine::ownsContinent(Player* p, Continent* c)
 
 void GameEngine::issueOrdersPhase()
 {
+    
     cout << endl << "<<<<<issueOrdersPhase() START" << endl;
     cout << "DEPLOY" << endl;
 
     for (Player* p : players) {     // deploy random number of armies to random country until no armies left
 
-        cout << "-" << p->getName();
-
-       
+        // Observer
+        if(activateObservers){
+            setPhase("Player " + p->getName() + ": Reinforcement Phase");
+            Notify();
+        }       
 
         int armiesThisTurn = p->getNumOfArmies();
 
@@ -134,7 +137,11 @@ void GameEngine::issueOrdersPhase()
 
     for (Player* p : players) {     // advance
 
-        cout << "-" << p->getName();
+        // Observer
+        if(activateObservers){
+            setPhase("Player " + p->getName() + ": Issuing Orders Advance Phase");
+            Notify();
+        }
 
         if (p->getOwnedCountries().size() == 0)
             continue;
@@ -147,7 +154,6 @@ void GameEngine::issueOrdersPhase()
         while (keepPlaying) {
             
             c1Num = rand() % p->getOwnedCountries().size();
-            cout << "[" << keepPlaying << "]";
 
             bool chooseFrom = rand() % 2;
             if (chooseFrom) {
@@ -176,6 +182,12 @@ void GameEngine::issueOrdersPhase()
 
     for (Player* p : players) {     // cards
 
+        // Observer
+        if(activateObservers){
+            setPhase("Player " + p->getName() + ": Issuing Orders Cards Phase");
+            Notify();
+        }
+
         cout << "-" << p->getName();
 
         if (p->getOwnedCountries().size() == 0)
@@ -200,6 +212,12 @@ void GameEngine::executeOrdersPhase()
 {
     cout << endl << "<<<<<executeOrdersPhase() START" << endl;
     for (Player* p : players) {
+
+        // Observer
+        if(activateObservers){
+            setPhase("Player " + p->getName() + ": Orders Execution Phase");
+            Notify();
+        }
         for (Orders* o : p->getPlayerOrders()->getList()) {
             if (o->execute()) {
                 p->getPlayerOrders()->setCountryConquered(true);
@@ -327,28 +345,15 @@ void GameEngine::startupPhase() {
 
 /* Main flow of the game */
 void GameEngine::mainGameLoop(){
+    startupPhase();
     for(int i = 0; i < players.size(); i++){
-        // Reinforcement phase
+        // Observer
         if(activateObservers){
             setPhase("Player " + players[i]->getName() + ": Reinforcement Phase");
             Notify();
         }
-
-        // Issuing orders phase
-        if(activateObservers){
-            setPhase("Player " + players[i]->getName() + ": Issuing Orders Phase");
-            Notify();
-        }
-
-        // Orders execution phase
-        if(activateObservers){
-            setPhase("Player " + players[i]->getName() + ": Orders Execution Phase");
-            Notify();
-        }
     }
-
-    startupPhase();
-
+    
     // loop mechanism
     int remainingPlayers;
     do {
@@ -361,8 +366,8 @@ void GameEngine::mainGameLoop(){
             }
         }
         issueOrdersPhase();
+
         executeOrdersPhase();
         
     } while (remainingPlayers > 1);
-    
 }

@@ -67,12 +67,13 @@ GameStatsObserver::~GameStatsObserver(){
 
 // Methods
 void GameStatsObserver::update(){
-    int Total = subject->getMap()->getCountries().size();
-    cout << '|' << setw(20) << "Game Statistics" << setw(20) << '|' << endl;
+    double Total = subject->getMap()->getCountries().size();
+    cout << '|' << setw(10) << "Game Statistics" << setw(10) << '|' << endl;
     for(int i = 0; i < subject->getPlayersList().size(); i++){
         // Percentage controlled
-        int OwnedCountries = subject->getPlayersList()[i]->getOwnedCountries().size();
-        cout << '|' << setw(10) << subject->getPlayersList()[i]->getName() << '|' << setw(10) << (OwnedCountries/Total)*100 << "%" << '|' << endl;
+        double OwnedCountries = subject->getPlayersList()[i]->getOwnedCountries().size();
+        double OwnedPercentage = (OwnedCountries/Total)*100;
+        cout << '|' << setw(10) << subject->getPlayersList()[i]->getName() << '|' << setw(10) << OwnedPercentage << "%" << '|' << endl;
 
     }
 }
