@@ -1,10 +1,13 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include <tuple>
 
-//Nodes of the adjacency list
+using namespace std;
+
 class Player;
+//Nodes of the adjacency list
 class Country {
 public:
 	Country(int num_, std::string name_, int continentNum_);
@@ -18,12 +21,16 @@ public:
 	void setPlayer(Player* newPlayer);
 	int getArmies();
 	void setArmies(int newNum);
+	vector<Country*> getBorders();
+	void setBorders(vector<Country*> b);
+	void addBorder(Country* c);
 private:
 	int num;
 	std::string name;
 	int continentNum;
 	Player* player;
 	int armies;
+	vector<Country*> borders;
 };
 
 //
@@ -51,18 +58,20 @@ public:
 	Map();
 	std::vector<Country*> getCountries();
 	std::vector<std::string> getCountryNames();
-	std::vector<int> getCountryContinents();
+	std::vector<int> getCountryContinentNumbers();
 	std::vector<Continent*> getContinents();
-	std::vector<std::vector<int>> getBorders();
+	std::vector<std::vector<int>> getBorderNumbers();
+	std::vector<std::vector<Country*>> getAllBorders();
 	bool validate();
 	void showContents();
 
 private:
 	std::vector<Country*> countries;	//list of countries in order
 	std::vector<std::string> countryNames;	//list of country names in order
-	std::vector<int> countryContinents; //continent of each country in order
+	std::vector<int> countryContinentNumber; //continent of each country in order
 	std::vector<Continent*> continents;	//list of continents in order
-	std::vector<std::vector<int>> borders;	//list of all borders
+	std::vector<std::vector<int>> borderNumbers;	//list of all borders country numbers
+	std::vector<std::vector<Country*>> allBorders;	//list of all border countries
 	int numOfContinents;
 	int numOfCountries;
 	bool dfs();

@@ -1,18 +1,19 @@
 #pragma once
 #include "Player.h"
 #include "GameObservers.h"
+
 #include<iostream>
+
 using namespace std;
 
 class GameEngine : public Observable{
     public:
         // Constructors
         GameEngine();
-        void GameStart();
 
         // Accessors
         int getNbOfPlayers();
-        Deck* getDeckCards();
+        Deck* getDeck();
         vector<Player*> getPlayersList();
         bool getObserverStatus();
         void setObserverStatus(bool status);
@@ -21,12 +22,16 @@ class GameEngine : public Observable{
         string getPhase();
 
         // Methods
+        void GameStart();
         void startupPhase();
         void mainGameLoop();
-        
+        void reinforcementPhase();
+        void issueOrdersPhase();
+        void executeOrdersPhase();
+
     private:
         int nbOfPlayers;
-        Deck* deckCards;
+        Deck* deck;
         vector<Player*> players;
         bool activateObservers;
         Map* gameMap;
@@ -36,4 +41,5 @@ class GameEngine : public Observable{
         void toggleObservers();
         string selectMap();
         string currentphase;
+        bool ownsContinent(Player* p, Continent* c);
 };

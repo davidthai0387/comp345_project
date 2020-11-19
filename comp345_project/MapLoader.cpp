@@ -1,3 +1,5 @@
+#include "Player.h"
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -5,7 +7,6 @@
 #include <algorithm>
 #include <tuple>
 #include <iterator>
-#include "Player.h"
 
 using namespace std;
 /*Constructor w/ parameter. The string parameter represents the name of the map file*/

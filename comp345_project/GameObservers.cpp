@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+
 #include <list>
 #include <iostream>
 #include <iomanip> 
@@ -67,14 +68,11 @@ GameStatsObserver::~GameStatsObserver(){
 // Methods
 void GameStatsObserver::update(){
     int Total = subject->getMap()->getCountries().size();
-    int UnownedCountries = Total;
     cout << '|' << setw(20) << "Game Statistics" << setw(20) << '|' << endl;
     for(int i = 0; i < subject->getPlayersList().size(); i++){
         // Percentage controlled
         int OwnedCountries = subject->getPlayersList()[i]->getOwnedCountries().size();
         cout << '|' << setw(10) << subject->getPlayersList()[i]->getName() << '|' << setw(10) << (OwnedCountries/Total)*100 << "%" << '|' << endl;
 
-        UnownedCountries -= OwnedCountries;
     }
-    cout << '|' << setw(10) << "Total Remaining" << '|' << setw(10) << (UnownedCountries/Total)*100 << "%" << '|' << endl;
 }

@@ -1,30 +1,29 @@
 #pragma once
-#include <vector>
-#include <string>
 #include "MapLoader.h"
 #include "Cards.h"
-#include "Map.h"
 #include "Orders.h"
-using namespace std;
 
+using namespace std;
 
 class Player {
 private:
     // player name
-    string Name;
+    string name;
 
     // list of owned countries
-    vector<Country*> Countries;
+    vector<Country*> countries;
 
     // hand of cards
-    Hand* PlayerHand;
+    Hand* playerHand;
 
     // list of orders
-    OrderList* PlayerOrders;
+    OrderList* playerOrders;
 
     // reinforcement pool
     int numOfArmies;
 
+    //negotiate
+    vector<string> negotiatedPlayers;
 
 public:
     // constructors
@@ -49,19 +48,22 @@ public:
     // getters
     string getName();
     bool existsCountry(string a);
-    string getCountries();
+    string getCountryNames();
     vector<Country*> getOwnedCountries();
     vector<Card*>& getHand();
+    Hand* getHandObject();
     OrderList* getPlayerOrders();
     int getNumOfArmies();
+    vector<string> getNegotiatedPlayers();
+    void resetNegotiatedPlayers();
 
     // methods
     string showHand();
     friend ostream& operator<<(ostream& out, const Player& p);
     Player operator=(const Player& p);
-    string toDefend(); //return list of country to defend
-    string toAttack(); //return list of country to attack
-    inline void issueOrder(string a);
+    vector<Country*> toDefend(); //return list of country to defend
+    vector<Country*> toAttack(); //return list of country to attack
+    void issueOrder(Orders* o);
     void issueOrder(string a, vector<Player*> listofplayers); //create Order object + add to list of orders (optional parameter)
 
 };

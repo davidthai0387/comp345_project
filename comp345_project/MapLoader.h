@@ -1,8 +1,8 @@
 #pragma once
-#ifndef MAPLOADER_H
-#define MAPLOADER_H
 
 #include<iostream>
+#include<vector>
+
 using namespace std;
 
 class MapLoader {
@@ -30,4 +30,3 @@ private:
     bool checkBorders(string text);
     int countWords(string const& str);
 };
-#endif

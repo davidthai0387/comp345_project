@@ -1,4 +1,5 @@
 #include "Player.h"
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -73,6 +74,22 @@ int Country::getArmies()
 void Country::setArmies(int newNum)
 {
 	armies = newNum;
+}
+
+/*Returns the bordering countries in a list*/
+vector<Country*> Country::getBorders()
+{
+	return borders;
+}
+
+void Country::setBorders(vector<Country*> b)
+{
+	borders = b;
+}
+
+void Country::addBorder(Country* c)
+{
+	borders.push_back(c);
 }
 
 //---Continent methods---
@@ -155,22 +172,30 @@ Map::Map(vector<tuple<string, int>> continents_, int numOfContinents_, vector<tu
 	//create countryContinents vector
 	for (int i = 0; i < numOfCountries_; i++) {
 		int currentContinentNum = get<1>(countries_[i]) - 1;
-		countryContinents.push_back(currentContinentNum);
+		countryContinentNumber.push_back(currentContinentNum);
+	}
+
+	
+	//create borders vector
+	borderNumbers.resize(numOfCountries);
+	for (int i = 0; i < numOfCountries_; i++) {
+		for (int j = 0; j < borders_[i].size(); j++) {
+			int currentDestNum = borders_[i][j] - 1;
+			borderNumbers[i].push_back(currentDestNum);
+		}
 	}
 
 	//create countries vector
 	for (int i = 0; i < numOfCountries_; i++) {
-		Country* country = new Country(i, countryNames[i], countryContinents[i]);
+		Country* country = new Country(i, countryNames[i], countryContinentNumber[i]);
 		countries.push_back(country);
 		continents[country->getContinentNum()]->add(country);
 	}
 
-	//create borders vector
-	borders.resize(numOfCountries);
-	for (int i = 0; i < numOfCountries_; i++) {
-		for (int j = 0; j < borders_[i].size(); j++) {
-			int currentDestNum = borders_[i][j] - 1;
-			borders[i].push_back(currentDestNum);
+	//create border countries vector
+	for (Country* country : countries) {
+		for (int neighbor : borderNumbers[country->getNum()]) {
+			(*country).addBorder((countries[neighbor]));
 		}
 	}
 }
@@ -186,21 +211,21 @@ Map::Map(const Map& map)
 		string tempCountryName = name;
 		countryNames.push_back(tempCountryName);
 	}
-	for (auto continent : map.countryContinents) {
+	for (auto continent : map.countryContinentNumber) {
 		int tempCountryContinent = continent;
-		countryContinents.push_back(tempCountryContinent);
+		countryContinentNumber.push_back(tempCountryContinent);
 	}
 	for (auto continent : map.continents) {
 		Continent* tempContinent = continent;
 		continents.push_back(tempContinent);
 	}
-	for (int i = 0; i < borders.size(); i++) {
+	for (int i = 0; i < borderNumbers.size(); i++) {
 		vector<int> countryBorders;
-		for (auto border : map.borders[i]) {
+		for (auto border : map.borderNumbers[i]) {
 			int tempNum = border;
 			countryBorders.push_back(border);
 		}
-		borders.push_back(countryBorders);
+		borderNumbers.push_back(countryBorders);
 	}
 	numOfContinents = map.numOfContinents;
 	numOfContinents = map.numOfCountries;
@@ -224,9 +249,9 @@ std::vector<std::string> Map::getCountryNames()
 }
 
 /*Returns the the vector of continent number for the corresponding country index*/
-std::vector<int> Map::getCountryContinents()
+std::vector<int> Map::getCountryContinentNumbers()
 {
-	return countryContinents;
+	return countryContinentNumber;
 }
 
 /*Returns the vector of all continents in order*/
@@ -236,9 +261,14 @@ std::vector<Continent*> Map::getContinents()
 }
 
 /*Returns vector of border countries for each corresponding country index*/
-std::vector<std::vector<int>> Map::getBorders()
+std::vector<std::vector<int>> Map::getBorderNumbers()
 {
-	return borders;
+	return borderNumbers;
+}
+
+std::vector<std::vector<Country*>> Map::getAllBorders()
+{
+	return allBorders;
 }
 
 /*Demonstrates that the map is a connected graph*/
@@ -253,7 +283,7 @@ void Map::showContents()
 	cout << "Borders:" << endl;
 	for (int i = 0; i < numOfCountries; i++) {
 		cout << i << ":" << countryNames[i] << " ---> ";
-		for (auto neighbor : borders[i]) {
+		for (auto neighbor : borderNumbers[i]) {
 			cout << neighbor /*->getNum() << " "*/;
 		}
 		cout << endl;
@@ -272,7 +302,7 @@ void Map::showContents()
 
 	cout << "countryContinents:" << endl;
 	for (int i = 0; i < numOfCountries; i++) {
-		cout << i << " " << countryContinents[i] << endl;
+		cout << i << " " << countryContinentNumber[i] << endl;
 	}
 }
 
@@ -302,7 +332,7 @@ void Map::dfsHelper(int cv, bool visited[])
 	visited[cv] = true;
 	//cout << cv << ":" << countryNames[cv] << endl;
 
-	for (auto borderCountry : borders[cv]) {
+	for (auto borderCountry : borderNumbers[cv]) {
 		if (!visited[borderCountry])
 			dfsHelper(borderCountry, visited);
 	}
@@ -338,8 +368,8 @@ void Map::dfsContinentsHelper(int cv, int currentContinentNum, bool visitedCount
 	visitedCountryNums[cv] = true;
 	//cout << cv << ":" << countryNames[cv] << endl;
 
-	for (auto borderCountry : borders[cv]) {
-		if (countryContinents[borderCountry] == currentContinentNum) {
+	for (auto borderCountry : borderNumbers[cv]) {
+		if (countryContinentNumber[borderCountry] == currentContinentNum) {
 			if (!visitedCountryNums[borderCountry])
 				dfsContinentsHelper(borderCountry, currentContinentNum, visitedCountryNums);
 
