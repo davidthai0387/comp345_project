@@ -27,20 +27,8 @@ int main() {
         ge.setObserverStatus(true);
     }
 
-    if(ge.getObserverStatus()) {
-        cout << "Observers are on" << endl;
-        ge.setObserverStatus(false);
-    }
-    else {
-        cout << "Observers are off" << endl;
-        ge.setObserverStatus(true);
-    }
-
-    if(ge.getObserverStatus()) 
-        cout << "Observers are on" << endl;
-    else
-        cout << "Observers are off" << endl;
-
+    ge.startupPhase();
     ge.mainGameLoop();
+
     return 0;
 }
