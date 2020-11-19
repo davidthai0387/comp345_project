@@ -392,8 +392,6 @@ void GameEngine::mainGameLoop(){
     int remainingPlayers;
     do {
 
-        
-
         reinforcementPhase();
 
         issueOrdersPhase();

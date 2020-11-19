@@ -18,7 +18,7 @@ int main() {
     // You set the initial observer status using a prompt from the GameStart() method
     /** After the user sets the status of the observers, we will change the status two times
      * to show the effectiveness of our methods**/
-    if(ge.getObserverStatus()) {
+    /*if(ge.getObserverStatus()) {
         cout << "Observers are on" << endl;
         ge.setObserverStatus(false);
     }
@@ -26,6 +26,20 @@ int main() {
         cout << "Observers are off" << endl;
         ge.setObserverStatus(true);
     }
+
+    if (ge.getObserverStatus()) {
+        cout << "Observers are on" << endl;
+        ge.setObserverStatus(false);
+    }
+    else {
+        cout << "Observers are off" << endl;
+        ge.setObserverStatus(true);
+    }
+
+    if (ge.getObserverStatus())
+        cout << "Observers are on" << endl;
+    else
+        cout << "Observers are off" << endl;*/
 
     ge.startupPhase();
     ge.mainGameLoop();
