@@ -41,7 +41,6 @@ int main() {
     else
         cout << "Observers are off" << endl;
 
-    ge.startupPhase();
     ge.mainGameLoop();
     return 0;
 }

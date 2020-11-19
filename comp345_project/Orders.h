@@ -42,7 +42,6 @@ ostream& operator<<(ostream& out, const Orders& o);
 
 class Deploy : public Orders {
 private:
-	bool valid{ false };
 	int armiesToDeploy;
 	Country* country;
 	Map* map;
@@ -61,20 +60,17 @@ public:
 	void read();
 
 	// Getters
-	bool getValid();
 	int getArmy();
 	Country* getCountry();
 	string getName();
 
 	// Setters
-	void setValid(bool v);
 	void setArmy(int a);
 	void setCountry(Country* t);
 };
 
 class Advance : public Orders {
 private:
-	bool valid{ false };
 	int armiesToAdvance;
 	Country* src;
 	Country* dest;
@@ -94,14 +90,12 @@ public:
 	void read();
 
 	// Getters
-	bool getValid();
 	int getArmiesToDeploy();
 	Country* getSrc();
 	Country* getDest();
 	string getName();
 
 	// Setters
-	void setValid(bool v);
 	void setArmy(int a);
 	void setSrc(Country* c);
 	void setDest(Country* c);
@@ -109,7 +103,6 @@ public:
 
 class Bomb : public Orders {
 private:
-	bool valid{ false };
 	Country* targetCountry;
 	Map* map;
 public:
@@ -127,18 +120,15 @@ public:
 	void read();
 
 	// Getters
-	bool getValid();
 	Country* getTargetCountry();
 	string getName();
 
 	// Setters
-	void setValid(bool v);
 	void setTargetCountry(Country* c);
 };
 
 class Blockade : public Orders {
 private:
-	bool valid{ false };
 	Country* target;
 	Map* map;
 public:
@@ -155,18 +145,15 @@ public:
 	void read();
 
 	// Getters
-	bool getValid();
 	Country* getTarget();
 	string getName();
 
 	// Setters
-	void setValid(bool v);
 	void setTarget(Country* c);
 };
 
 class Airlift : public Orders {
 private:
-	bool valid{ false };
 	int armies;
 	Country* src;
 	Country* dest;
@@ -185,14 +172,12 @@ public:
 	void read();
 
 	//Getters
-	bool getValid();
 	int getArmies();
 	Country* getSrc();
 	Country* getDest();
 	string getName();
 
 	//Setters
-	void setValid(bool v);
 	void setArmy(int a);
 	void setSrc(Country* c);
 	void setDest(Country* c);
@@ -201,7 +186,6 @@ public:
 
 class Negotiate : public Orders {
 private:
-	bool valid{ false };
 	Player* opponent;
 	Map* map;
 public:
@@ -218,12 +202,10 @@ public:
 	void read();
 
 	//Getters
-	bool getValid();
 	Player* getOpponent();
 	string getName();
 
 	//Setters
-	void setValid(bool v);
 	void setOpponent(Player* p);
 };
 
