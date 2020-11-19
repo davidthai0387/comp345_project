@@ -230,6 +230,11 @@ Deck::Deck() {
     deck = listofcards(cardRep);
 }
 
+Deck::~Deck() {
+    deck.clear();
+    deck.shrink_to_fit();
+}
+
 //Parameterized constructor
 Deck::Deck(int cr, vector<Card*> d) {
     cardRep = cr;

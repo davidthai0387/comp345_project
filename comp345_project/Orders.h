@@ -16,7 +16,6 @@ protected:
 	bool exec;
 	int priority;
 	Player* orderIssuer;
-	Map* map;
 	Deck* deck;
 
 public:
@@ -74,6 +73,7 @@ private:
 	int armiesToAdvance;
 	Country* src;
 	Country* dest;
+	Map* map;
 
 public:
 	// Constructor

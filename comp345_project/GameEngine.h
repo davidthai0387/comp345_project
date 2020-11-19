@@ -10,6 +10,7 @@ class GameEngine : public Observable{
     public:
         // Constructors
         GameEngine();
+        ~GameEngine();
 
         // Accessors
         int getNbOfPlayers();

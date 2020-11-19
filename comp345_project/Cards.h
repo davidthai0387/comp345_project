@@ -126,6 +126,7 @@ private:
 public:
     //Default constructor
     Deck();
+    ~Deck();
 
     //Parameterized constructor
     Deck(int cardRep, vector<Card*> deck);

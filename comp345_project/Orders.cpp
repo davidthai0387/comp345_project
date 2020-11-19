@@ -60,16 +60,20 @@ Player* Orders::getOrderIssuer() {
 Deploy::Deploy(Player* p, int a, Country* c, Map* m) : Orders(p) {
 	armiesToDeploy = a;
 	country = c;
+	map = m;
 	this->setName("Deploy");
 	priority = 1;
 };
 Deploy::Deploy(const Deploy& d2) : Orders(d2.orderIssuer) {
 	armiesToDeploy = d2.armiesToDeploy;
 	country = d2.country;
+	map = d2.map;
 	this->setName("Deploy");
 	priority = 1;
 }
 Deploy::~Deploy() {
+	delete deck;
+	deck = nullptr;
 };
 
 
@@ -123,8 +127,9 @@ Advance::Advance(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : 
 	this->setName("Advance");
 	priority = 4;
 };
-Advance::Advance(const Advance& a2) {
+Advance::Advance(const Advance& a2) : Orders(a2.orderIssuer) {
 	armiesToAdvance = a2.armiesToAdvance;
+	map = a2.map;
 	src = a2.src;
 	dest = a2.dest;
 	this->setName("Advance");
@@ -224,12 +229,15 @@ Bomb::Bomb(Player* p, Country* c, Map* m) : Orders(p) {
 	this->setName("Bomb");
 	priority = 4;
 };
-Bomb::Bomb(const Bomb& b2) {
+Bomb::Bomb(const Bomb& b2) : Orders(b2.orderIssuer) {
 	targetCountry = b2.targetCountry;
+	map = b2.map;
 	this->setName("Bomb");
 	priority = 4;
 }
 Bomb::~Bomb() {
+	delete deck;
+	deck = nullptr;
 };
 // Methods
 bool Bomb::validate() {
@@ -278,13 +286,15 @@ Blockade::Blockade(Player* p, Country* c, Map* m) : Orders(p) {
 	this->setName("Blockade");
 	priority = 3;
 };
-Blockade::Blockade(const Blockade& bl2) {
+Blockade::Blockade(const Blockade& bl2) : Orders(bl2.orderIssuer) {
 	target = bl2.target;
-
+	map = bl2.map;
 	this->setName("Blockade");
 	priority = 3;
 }
 Blockade::~Blockade() {
+	delete deck;
+	deck = nullptr;
 };
 // Methods
 bool Blockade::validate() {
@@ -331,9 +341,10 @@ Airlift::Airlift(Player* p, int a, Country* c1, Country* c2, Map* m, Deck* d) : 
 	this->setName("Airlift");
 	priority = 2;
 };
-Airlift::Airlift(const Airlift& ai2) {
+Airlift::Airlift(const Airlift& ai2) : Orders(ai2.orderIssuer) {
 	armies = ai2.armies;
 	src = ai2.src;
+	map = ai2.map;
 	dest = ai2.dest;
 	deck = ai2.deck;
 	this->setName("Airlift");
@@ -424,12 +435,19 @@ Negotiate::Negotiate(Player* p, Player* o, Map* m) : Orders(p) {
 	this->setName("Negotiate");
 	priority = 4;
 };
-Negotiate::Negotiate(const Negotiate& p2) {
+Negotiate::Negotiate(const Negotiate& p2) : Orders(p2.orderIssuer) {
 	opponent = p2.opponent;
+	map = p2.map;
 	this->setName("Negotiate");
 	priority = 4;
 }
 Negotiate::~Negotiate() {
+	delete deck;
+	deck = nullptr;
+	if (opponent->getName() == "Neutral") {
+		delete opponent;
+		opponent = nullptr;
+	}
 };
 // Methods
 bool Negotiate::validate() {

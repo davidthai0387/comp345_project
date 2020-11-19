@@ -19,6 +19,9 @@ GameEngine::GameEngine() {
     srand(time(NULL));
 }
 
+GameEngine::~GameEngine() {
+}
+
 bool GameEngine::equals(const string& a, const string& b) {
     int sz = a.size();
     if (b.size() != sz)
@@ -144,6 +147,7 @@ void GameEngine::issueOrdersPhase()
             cout << "Deployed: " << nArmies << "\tRemaining: " << armiesThisTurn << endl;
 
         }
+        cout << endl;
     }
 
     cout << "----- Issuing advance orders: " << endl;
@@ -189,7 +193,7 @@ void GameEngine::issueOrdersPhase()
             }
             p->issueOrder(new Advance(p, nArmies, gameMap->getCountries()[c1Num], gameMap->getCountries()[c2Num], gameMap, deck));
 
-            cout << "Player " << p->getName() << " issuing Advance order from " << gameMap->getCountries()[c1Num]->getName() << " to " << gameMap->getCountries()[c2Num]->getName() << endl;
+            cout << "Player " << p->getName() << " issuing Advance order from " << gameMap->getCountries()[c1Num]->getName() << " to " << gameMap->getCountries()[c2Num]->getName() << endl << endl;
 
             keepPlaying = rand() % 3;
         }
