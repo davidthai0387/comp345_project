@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerStrategies.h"
 
 #include <iostream>
 #include <vector>
@@ -42,6 +43,10 @@ void Player::setPlayerOrders(Orders* a) {
 }
 void Player::setNumOfArmies(int num) {
     numOfArmies = num;
+}
+
+void Player::setStrategy(PlayerStrategy* newStrat) {
+    strategy = newStrat;
 }
 
 
@@ -140,4 +145,12 @@ vector<Country*> Player::toAttack() {
 };
 void Player::issueOrder(Orders* o) {
     this->getPlayerOrders()->add(o);
-};
+}
+
+void Player::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
+    strategy->issueOrder(orderName, p, o, pool, m);
+}
+
+void Player::playCard(vector<Player*> o, Deck* d, Map* m) {
+    (*strategy).playCard(this, o, d, m);
+}

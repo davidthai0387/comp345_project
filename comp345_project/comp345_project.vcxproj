@@ -147,6 +147,7 @@
     <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="Orders.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerStrategies.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Orders.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
