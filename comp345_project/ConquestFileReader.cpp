@@ -223,14 +223,14 @@ bool ConquestFileReader::checkCountries(string text) {
             else if (loopNum == 3) 
                 continentName.push_back(token);
             else {
-                if (all_of(token.begin(), token.end(), isItADigit) || countDigits(token) < 2) 
+                if (all_of(token.begin(), token.end(), isItADigit) || countDigits(token) < 1) 
                     return false;
                 borders.push_back(token);
             }
             s.erase(0, pos + delimiter.length());
             loopNum++;
         }
-        if (all_of(s.begin(), s.end(), isItADigit) || countDigits(s) < 2)
+        if (all_of(s.begin(), s.end(), isItADigit) || countDigits(s) < 1)
             return false;
         borders.push_back(s);
     }
