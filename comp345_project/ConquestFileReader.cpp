@@ -234,10 +234,8 @@ bool ConquestFileReader::checkCountries(string text) {
             return false;
         borders.push_back(s);
     }
-    if (territoryName.size() != continentName.size()) {
-        cout << "here7" << endl;
+    if (territoryName.size() != continentName.size())
         return false;
-    }
     return true;
 }
 vector<tuple<string, int>> ConquestFileReader::parseCountries(string text) {
