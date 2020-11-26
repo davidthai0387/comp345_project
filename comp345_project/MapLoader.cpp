@@ -38,11 +38,6 @@ MapLoader MapLoader::operator=(const MapLoader& ml) {
     return *this;
 };
 
-/*Destructor method to delete objects of the MapLoader class*/
-//MapLoader::~MapLoader() {
-//    delete& fileName; delete& numOfCountries; delete& numOfContinents;
-//}
-
 /*read() method will read the .map file and split it into individuals sections.
 Each section will be represented by an index in a vector of strings. The section will
 be (in order): file header, files, continents, countries and borders.

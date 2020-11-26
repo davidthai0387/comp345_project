@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "ConquestFileReader.h"
 #include "Orders.h"
 
 #include <algorithm>
@@ -32,60 +33,130 @@ bool GameEngine::equals(const string& a, const string& b) {
     return true;
 }
 
-void GameEngine::GameStart() {
+void GameEngine::GameStart()
+{
     bool mapIsValid = false;
-    do {
-        string mapName = selectMap();
+    string mapType = selectMapType();
+
+    do
+    {
+        string mapName = selectMap(mapType);
 
         // checking if map file exists
-        if (mapName.compare("") == 0) {
+        if (mapName.compare("") == 0)
+        {
             cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
             continue;
         }
 
-        // checking map file format
-        MapLoader ml(mapName);
-        vector<string> mapText = ml.read();
-        if (!ml.checkFormat(mapText)) {
-            cout << "The map that you've selected is incorrectly formatted. You will be asked to select another one." << endl;
-            continue;
-        }
+        if (equals(mapType, "C"))
+        {
+            ConquestFileReader *conquest = new ConquestFileReader(mapName);
+            ConquestFileReaderAdapter *ml = new ConquestFileReaderAdapter(conquest);
+            // checking map file format
+            vector<string> mapText = ml->read();
+            if (!ml->checkFormat(mapText))
+            {
+                cout << "The map that you've selected is incorrectly formatted. You will be asked to select another one." << endl;
+                continue;
+            }
+            // checking if map is valid
+            vector<tuple<string, int>> continents = ml->parseContinents(mapText[2]);
+            vector<tuple<string, int>> countries = ml->parseCountries(mapText[3]);
+            vector<vector<int>> borders = ml->parseBorders(mapText[3]);
+            gameMap = new Map(continents, ml->getNumOfContinents(), countries, ml->getNumOfCountries(), borders);
+            if (!(*gameMap).validate())
+            {
+                cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
+                continue;
+            }
+            cout << "The selected map has been deemed valid." << endl << endl;
 
-        // checking if map is valid
-        vector<tuple<string, int>> continents = ml.parseContinents(mapText[2]);
-        vector<tuple<string, int>> countries = ml.parseCountries(mapText[3]);
-        vector<vector<int>> borders = ml.parseBorders(mapText[4]);
-        gameMap = new Map(continents, ml.getNumOfContinents(), countries, ml.getNumOfCountries(), borders);
-        if (!(*gameMap).validate()) {
-            cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
-            continue;
+            // all criterias checked
+            mapIsValid = true;
         }
-        cout << "The selected map has been deemed valid." << endl << endl;
+        else if (equals(mapType, "D"))
+        {
+            MapLoader *ml = new MapLoader(mapName);
+            // checking map file format
+            vector<string> mapText = ml->read();
+            if (!ml->checkFormat(mapText))
+            {
+                cout << "The map that you've selected is incorrectly formatted. You will be asked to select another one." << endl;
+                continue;
+            }
 
-        // all criterias checked
-        mapIsValid = true;
+            vector<tuple<string, int>> continents = ml->parseContinents(mapText[2]);
+            vector<tuple<string, int>> countries = ml->parseCountries(mapText[3]);
+            vector<vector<int>> borders = ml->parseBorders(mapText[4]);
+            gameMap = new Map(continents, ml->getNumOfContinents(), countries, ml->getNumOfCountries(), borders);
+            if (!(*gameMap).validate())
+            {
+                cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
+                continue;
+            }
+            cout << "The selected map has been deemed valid." << endl << endl;
+
+            // all criterias checked
+            mapIsValid = true;
+        }
     } while (!mapIsValid);
-    
+
     setNbOfPlayers();
     toggleObservers();
     cout << endl;
-    for (int i = 0; i < nbOfPlayers; i++) {
+    for (int i = 0; i < nbOfPlayers; i++)
+    {
         string name;
-        cout << "Enter the name for player #" << (i+1) << ": ";
+        cout << "Enter the name for player #" << (i + 1) << ": ";
         cin >> name;
         players.push_back(new Player(name));
     }
     cout << endl;
 }
+string GameEngine::selectMapType()
+{
+    string mapType;
+    cout << "Would you like to play with a Conquest or Domination map? (C for Conquest, D for Domination): ";
+    cin >> mapType;
+    while (!equals(mapType, "C") && !equals(mapType, "D"))
+    {
+        cout << "Your answer has been deeemd invalid. Please enter again: ";
+        cin >> mapType;
+    }
+    return mapType;
+}
+bool GameEngine::isMapInDirectory(string fileName, string type)
+{
+    bool exist;
+    if (equals(type, "C"))
+    {
+        ifstream file("conquest/" + fileName);
+        exist = !file;
+    }
+    else if (equals(type, "D"))
+    {
+        ifstream file("maps/" + fileName);
+        exist = !file;
+    }
+    if (exist)
+        return false;
+    else
+        return true;
+}
 
-string GameEngine::selectMap() {
+string GameEngine::selectMap(string type)
+{
     string map;
     cout << "What map would you like to play with ?: ";
-    cin >> map;
-    if(isMapInDirectory(map + ".map"))
+    while(map=="") {
+        getline(cin,map);
+    }
+    if (isMapInDirectory(map + ".map", type))
         return map + ".map";
     else
-        return "";    
+        return "";
+    
 }
 
 void GameEngine::reinforcementPhase()
@@ -259,14 +330,6 @@ void GameEngine::executeOrdersPhase()
     
     cout << endl << ">>>>>>>>>> executeOrdersPhase() END" << endl;
 
-}
-
-bool GameEngine::isMapInDirectory(string fileName) {
-    ifstream file("maps/" + fileName);
-    if(!file)            
-        return false;    
-    else                 
-        return true;
 }
 
 void GameEngine::setNbOfPlayers() {

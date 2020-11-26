@@ -36,11 +36,12 @@ class GameEngine : public Observable{
         vector<Player*> players;
         bool activateObservers;
         Map* gameMap;
-        bool isMapInDirectory(string fileName);
+        bool isMapInDirectory(string fileName, string type);
         bool equals(const string& a, const string& b);
         void setNbOfPlayers();
         void toggleObservers();
-        string selectMap();
+        string selectMap(string type);
+        string selectMapType();
         string currentphase;
         bool ownsContinent(Player* p, Continent* c);
 };

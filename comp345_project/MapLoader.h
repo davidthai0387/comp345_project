@@ -12,13 +12,13 @@ public:
     MapLoader(const MapLoader& ml);
     MapLoader operator=(const MapLoader& ml);
     //~MapLoader();
-    vector<string> read();
-    int getNumOfCountries();
-    int getNumOfContinents();
-    bool checkFormat(vector<string> text);
-    vector<vector<int>> parseBorders(string text);
-    vector<tuple<string, int>> parseContinents(string text);
-    vector<tuple<string, int>> parseCountries(string text);
+    virtual vector<string> read();
+    virtual int getNumOfCountries();
+    virtual int getNumOfContinents();
+    virtual bool checkFormat(vector<string> text);
+    virtual vector<vector<int>> parseBorders(string text);
+    virtual vector<tuple<string, int>> parseContinents(string text);
+    virtual vector<tuple<string, int>> parseCountries(string text);
 
 private:
     string fileName;

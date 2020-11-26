@@ -26,22 +26,6 @@ int countDigits(string str){
         count++;
   return count;
 }
-string ConquestFileReader::selectMap() {
-    string map;
-    cout << "What map would you like to play with ?: ";
-    getline(cin, map);
-    if(isMapInDirectory(map + ".map"))
-        return map + ".map";
-    else
-        return "";    
-}
-bool ConquestFileReader::isMapInDirectory(string fileName) {
-    ifstream file("conquest/" + fileName);
-    if(!file)            
-        return false;    
-    else                 
-        return true;
-}
 int ConquestFileReader::getNumOfCountries() {
     return numOfCountries;
 }
@@ -364,39 +348,4 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
         parsedBorders.push_back(borders);
     }
     return parsedBorders;
-}
-Map* ConquestFileReader::loadMap() {
- Map* gameMap;
-    do {
-        string mapName = selectMap();
-
-        // checking if map file exists
-        if (mapName.compare("") == 0) {
-            cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
-            continue;
-        }
-
-        // checking map file format
-        ConquestFileReader cf(mapName);
-        vector<string> mapText = cf.read();
-        if (!cf.checkFormat(mapText)) {
-            cout << "The map that you've selected is incorrectly formatted. You will be asked to select another one." << endl;
-            continue;
-        }
-
-        // checking if map is valid
-        vector<tuple<string, int>> continents = cf.parseContinents(mapText[2]);
-        vector<tuple<string, int>> countries = cf.parseCountries(mapText[3]);
-        vector<vector<int>> borders = cf.parseBorders(mapText[3]);
-        gameMap = new Map(continents, cf.getNumOfContinents(), countries, cf.getNumOfCountries(), borders);
-        if (!(*gameMap).validate()) {
-            cout << "The map that you've selected has been deemed as invalid. You will be asked to select another one." << endl;
-            continue;
-        }
-        cout << "The selected map has been deemed valid." << endl << endl;
-
-        // all criterias checked
-        break;
-    } while (true);
-    return gameMap;
 }
