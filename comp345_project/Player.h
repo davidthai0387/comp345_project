@@ -5,6 +5,7 @@
 
 using namespace std;
 
+class PlayerStrategy;
 class Player {
 private:
     // player name
@@ -25,6 +26,8 @@ private:
     //negotiate
     vector<string> negotiatedPlayers;
 
+    PlayerStrategy* strategy;
+
 public:
     // constructors
     Player();
@@ -39,6 +42,7 @@ public:
     void setCountry(Country* a);
     void setPlayerOrders(Orders* a);
     void setNumOfArmies(int num);
+    void setStrategy(PlayerStrategy* newStrat);
 
     // removers
     void removeCountry(string a);
@@ -64,8 +68,8 @@ public:
     vector<Country*> toDefend(); //return list of country to defend
     vector<Country*> toAttack(); //return list of country to attack
     void issueOrder(Orders* o);
-    void issueOrder(string a, vector<Player*> listofplayers); //create Order object + add to list of orders (optional parameter)
-
+    void issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m);
+    void playCard(vector<Player*> o, Deck* d, Map* m);   // choose a card from hand
 };
 
 // Stream operator

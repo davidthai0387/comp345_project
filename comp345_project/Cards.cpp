@@ -82,6 +82,16 @@ void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int 
     h->discard(i);
 }
 
+void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
+{
+    cout << "Playing " << getCardName() << " card" << endl;
+    d->addToDeck(p->getHand()[i]);
+
+    p->issueOrder("Bomb", p, o, 0, m);
+
+    p->getHandObject()->discard(i);
+}
+
 //============================================================================= 
 
 //constructor
@@ -115,6 +125,16 @@ void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand
     h->discard(i);
 }
 
+void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
+{
+    cout << "Playing " << getCardName() << " card" << endl;
+    d->addToDeck(p->getHand()[i]);
+
+    p->issueOrder("Deploy", p, o, 5, m);
+
+    p->getHandObject()->discard(i);
+}
+
 //============================================================================= 
 
 //constructor
@@ -145,6 +165,16 @@ void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, 
     p->issueOrder(new Blockade(p, p->getOwnedCountries()[cNum], m));
 
     h->discard(i);
+}
+
+void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
+{
+    cout << "Playing " << getCardName() << " card" << endl;
+    d->addToDeck(p->getHand()[i]);
+
+    p->issueOrder("Blockade", p, o, 0, m);
+
+    p->getHandObject()->discard(i);
 }
 
 //============================================================================= 
@@ -185,6 +215,16 @@ void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, i
     h->discard(i);
 }
 
+void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
+{
+    cout << "Playing " << getCardName() << " card" << endl;
+    d->addToDeck(p->getHand()[i]);
+
+    p->issueOrder("Airlift", p, o, 0, m);
+
+    p->getHandObject()->discard(i);
+}
+
 //============================================================================= 
 
 //constructor
@@ -219,6 +259,16 @@ void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h,
     } while (pName == oName);
 
     p->issueOrder(new Negotiate(p, o[oNum], m));
+}
+
+void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
+{
+    cout << "Playing " << getCardName() << " card" << endl;
+    d->addToDeck(p->getHand()[i]);
+
+    p->issueOrder("Negotiate", p, o, 0, m);
+
+    p->getHandObject()->discard(i);
 }
 
 //============================================================================= 
