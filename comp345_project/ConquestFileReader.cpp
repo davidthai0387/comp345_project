@@ -320,8 +320,8 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
         borders.push_back(i+1); //ID
         while ((pos = s.find(delimiter)) != string::npos) {
             token = s.substr(0, pos);
-            numDigits = countDigits(token);
             if(loopNum > 3) {
+                numDigits = countDigits(token);
                 token = token.substr(token.length()-numDigits);
                 try {
                     borders.push_back(stoi(token)); 
