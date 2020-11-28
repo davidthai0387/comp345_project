@@ -2,6 +2,7 @@
 #include "MapLoader.h"
 #include "Orders.h"
 
+#include <filesystem>
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
@@ -13,7 +14,6 @@
 #include <errno.h>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 GameEngine::GameEngine() {
     nbOfPlayers = 0;
@@ -81,7 +81,7 @@ void GameEngine::GameStart()
         {
             string path = "conquest/";
             int fileCount = 1;
-            for (const auto & entry : fs::directory_iterator(path)) {
+            for (const auto & entry : std::filesystem::directory_iterator(path)) {
                 string mapChoice = entry.path();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
@@ -126,7 +126,7 @@ void GameEngine::GameStart()
         {
             string path = "maps/";
             int fileCount = 1;
-            for (const auto & entry : fs::directory_iterator(path)) {
+            for (const auto & entry : std::filesystem::directory_iterator(path)) {
                 string mapChoice = entry.path();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
