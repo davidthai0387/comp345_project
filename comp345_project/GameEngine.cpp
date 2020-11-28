@@ -82,12 +82,14 @@ void GameEngine::GameStart()
         {
             string path = "conquest/";
             int fileCount = 1;
-            for (const auto & entry : std::filesystem::directory_iterator(path)) {
+            for (const auto & entry : fs::directory_iterator(path)) {
                 string mapChoice = entry.path().string();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
                 mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                if (mapChoice == ".DS_S")
+                    continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
                 fileCount++;
             }
@@ -127,12 +129,14 @@ void GameEngine::GameStart()
         {
             string path = "maps/";
             int fileCount = 1;
-            for (const auto & entry : std::filesystem::directory_iterator(path)) {
+            for (const auto & entry : fs::directory_iterator(path)) {
                 string mapChoice = entry.path().string();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
                 mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                if (mapChoice == ".DS_S")
+                    continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
                 fileCount++;
             }
