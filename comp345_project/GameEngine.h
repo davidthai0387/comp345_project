@@ -10,7 +10,12 @@ class GameEngine : public Observable{
     public:
         // Constructors
         GameEngine();
+        GameEngine(const GameEngine& ge);
         ~GameEngine();
+
+        //Operators
+        GameEngine& operator=(const GameEngine& ge);
+        friend ostream& operator<<(ostream& os, const GameEngine& lst);
 
         // Accessors
         int getNbOfPlayers();

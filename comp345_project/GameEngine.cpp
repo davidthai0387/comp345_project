@@ -7,20 +7,56 @@
 #include <time.h>
 #include <iterator>
 #include <iostream>
+
 #include <fstream>
 #include <vector>
 #include <errno.h>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 GameEngine::GameEngine() {
     nbOfPlayers = 0;
     deck = new Deck();
+    cout << "The deck has been created" << endl;
     activateObservers = true;
     srand(time(NULL));
 }
 
-GameEngine::~GameEngine() {
+GameEngine::~GameEngine()
+{
+    for (Player *p : players) {
+        delete p;
+        p = nullptr;
+    }
+    delete deck;
+    deck = nullptr;
+    delete gameMap;
+    gameMap = nullptr;
+}
+
+GameEngine::GameEngine(const GameEngine& ge) {
+    nbOfPlayers = ge.nbOfPlayers;
+    deck = ge.deck;
+    activateObservers = ge.activateObservers;
+    gameMap = ge.gameMap;
+    players = ge.players;
+    currentphase = ge.currentphase;
+}
+
+GameEngine& GameEngine::operator=(const GameEngine& ge) {
+    this->nbOfPlayers = ge.nbOfPlayers;
+    this->deck = ge.deck;
+    this->activateObservers = ge.activateObservers;
+    this->gameMap = ge.gameMap;
+    this->players = ge.players;
+    this->currentphase = ge.currentphase;
+    return *this;
+}
+
+ostream& operator<<(ostream& os, const GameEngine& ge) {
+    os << ge.nbOfPlayers;
+    return os;
 }
 
 bool GameEngine::equals(const string& a, const string& b) {
@@ -40,17 +76,28 @@ void GameEngine::GameStart()
 
     do
     {
-        string mapName = selectMap(mapType);
-
-        // checking if map file exists
-        if (mapName.compare("") == 0)
-        {
-            cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
-            continue;
-        }
-
+        cout << endl << "Here's a list of the available maps" << endl;
         if (equals(mapType, "C"))
         {
+            string path = "conquest/";
+            int fileCount = 1;
+            for (const auto & entry : fs::directory_iterator(path)) {
+                string mapChoice = entry.path();
+                int pos = mapChoice.find("/");
+                mapChoice = mapChoice.substr(pos);
+                mapChoice.erase(0,1);
+                mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                cout << "Map #" << fileCount << ": " << mapChoice << endl;
+                fileCount++;
+            }
+            cout << endl;
+            string mapName = selectMap(mapType);
+            // checking if map file exists
+            if (mapName.compare("") == 0)
+            {
+                cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
+                continue;
+            }
             ConquestFileReader *conquest = new ConquestFileReader(mapName);
             ConquestFileReaderAdapter *ml = new ConquestFileReaderAdapter(conquest);
             // checking map file format
@@ -77,6 +124,25 @@ void GameEngine::GameStart()
         }
         else if (equals(mapType, "D"))
         {
+            string path = "maps/";
+            int fileCount = 1;
+            for (const auto & entry : fs::directory_iterator(path)) {
+                string mapChoice = entry.path();
+                int pos = mapChoice.find("/");
+                mapChoice = mapChoice.substr(pos);
+                mapChoice.erase(0,1);
+                mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                cout << "Map #" << fileCount << ": " << mapChoice << endl;
+                fileCount++;
+            }
+            cout << endl;
+            string mapName = selectMap(mapType);
+            // checking if map file exists
+            if (mapName.compare("") == 0)
+            {
+                cout << "The map that you've selected does not exist in this current directory. You will be asked to select another one." << endl;
+                continue;
+            }
             MapLoader *ml = new MapLoader(mapName);
             // checking map file format
             vector<string> mapText = ml->read();
@@ -112,6 +178,7 @@ void GameEngine::GameStart()
         cin >> name;
         players.push_back(new Player(name));
     }
+    random_shuffle(players.begin(), players.end());     // shuffling the list of players
     cout << endl;
 }
 string GameEngine::selectMapType()
@@ -487,6 +554,14 @@ void GameEngine::mainGameLoop(){
         }
 
     } while (remainingPlayers > 1);
-
     cout << ">>>>>>>>>> mainGameLoop() END";
 }
+
+int main() {
+    GameEngine ge;
+    ge.GameStart();
+    ge.startupPhase();
+    ge.mainGameLoop();
+    return 0;
+}
+
