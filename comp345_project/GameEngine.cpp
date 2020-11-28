@@ -1,5 +1,5 @@
 #include "GameEngine.h"
-#include "ConquestFileReader.h"
+#include "MapLoader.h"
 #include "Orders.h"
 
 #include <algorithm>
