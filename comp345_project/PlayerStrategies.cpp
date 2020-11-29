@@ -3,7 +3,7 @@
 
 // ----------HUMAN PLAYER----------
 
-void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Map* m) {
+void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
 	// TODO
 }
@@ -138,7 +138,7 @@ void HumanPlayer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
 
 // ----------AGRESSIVE COMPUTER----------
 
-void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Map* m) {
+void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 		
 	if (orderName == "Deploy") {
 
@@ -186,7 +186,7 @@ void AggressiveComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
-void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Map* m) {
+void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
 	// TODO
 
@@ -213,7 +213,7 @@ void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
-void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Map* m) {
+void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck d*, Map* m) {
 
 	// TODO
 

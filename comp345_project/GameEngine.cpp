@@ -287,12 +287,27 @@ void GameEngine::issueOrdersPhase()
         switch (phases[i]) {    // check
         case 0:
             if (players[i]->getNumOfArmies() > 0) {
-                players[i]->issueOrder("Deploy", players[i], players, players[i]->getNumOfArmies(), gameMap);
+                players[i]->issueOrder("Deploy", players[i], players, deck, gameMap);
+            }
+            else {
+                phases[i]++;
             }
             break;
         case 1:
+            if (!players[i]->getAdvancePhaseIsOver()) {
+                players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
+            }
+            else {
+                continue;
+            }
             break;
         case 2:
+            if (!players[i]->getCardPhaseIsOver()) {
+                players[i]->issueOrder("Card", players[i], players, deck, gameMap);
+            }
+            else {
+                continue;
+            }
             break;
         }
 
@@ -301,7 +316,7 @@ void GameEngine::issueOrdersPhase()
 
         roundIsOver = true;
         for (Player* p : players) {
-            if (!p->getTurnIsOver())
+            if (!p->getAdvancePhaseIsOver() || !p->getCardPhaseIsOver())
                 roundIsOver = false;
         }
         i = ++i % players.size();   // i loops from 0 to number of active players
@@ -449,7 +464,8 @@ void GameEngine::executeOrdersPhase()
 
 void GameEngine::newRound() {
     for (Player* p : players) {
-        p->setTurnIsOver(false);
+        p->setAdvancePhaseIsOver(false);
+        p->setCardPhaseIsOver(false);
     }
 }
 
