@@ -284,7 +284,7 @@ void GameEngine::issueOrdersPhase()
 
     while (!roundIsOver) {
 
-        switch (phases[i]) {    // check
+        switch (phases[i]) {    // check current player's phase (0:deploy, 1:advance, 2:cards)
         case 0:
             if (players[i]->getNumOfArmies() > 0) {
                 players[i]->issueOrder("Deploy", players[i], players, deck, gameMap);
@@ -630,8 +630,7 @@ void GameEngine::mainGameLoop(){
     }
     
     // loop mechanism
-    int remainingPlayers;
-    do {
+    while (true) {
 
         reinforcementPhase();
 
@@ -639,23 +638,18 @@ void GameEngine::mainGameLoop(){
 
         executeOrdersPhase();
 
-        remainingPlayers = players.size();
-        for (Player* p : players) {
-            if (p->getOwnedCountries().size() == 0) {   // count players remaining
-                remainingPlayers--;
-                continue;
-            }
-        }
-        if (remainingPlayers == 1) {
-            for (Player* p : players) {
-                if (p->getNumOfArmies() != 0) {
-                    cout << endl << "Player " << p->getName() << " is the winner!!!" << endl;
-                    break;
-                }
-            }
-        }
+		for (int i = players.size() - 1; i >= 0; i--) {     // deleting each player that has no country starting from the end of the vector
+			if (players[i]->getOwnedCountries().size() == 0) {
+				players.erase(players.begin() + i);
+			}
+		}
+		if (players.size() == 1) {
+			cout << endl << "Player " << players[0]->getName() << " is the winner!!!" << endl;
+			break;
 
-    } while (remainingPlayers > 1);
+		}
+
+    }
     cout << ">>>>>>>>>> mainGameLoop() END";
 }
 
