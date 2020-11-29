@@ -30,7 +30,7 @@ private:
     int countWords(string const& str);
 };
 
-//Desired interface
+//Adaptee class
 class ConquestFileReader {
   public:
         ConquestFileReader();
@@ -55,32 +55,18 @@ class ConquestFileReader {
         bool checkBorders(string text);
 };
 
-//Adapter wrapper
+//Adapter class
 class ConquestFileReaderAdapter : public MapLoader{
     private:
         ConquestFileReader *conquest_;
     public:
         ConquestFileReaderAdapter(ConquestFileReader *conquest) : conquest_(conquest) {}
         ~ConquestFileReaderAdapter();
-        virtual vector<string> read() override {
-            return this->conquest_->read();
-        }
-        virtual bool checkFormat(vector<string> text) override {
-            return this->conquest_->checkFormat(text);
-        }
-        virtual int getNumOfCountries() override {
-            return this->conquest_->getNumOfCountries();
-        }
-        virtual int getNumOfContinents() override {
-            return this->conquest_->getNumOfContinents();
-        }
-        virtual vector<tuple<string, int>> parseContinents(string text) override {
-            return this->conquest_->parseContinents(text);
-        }
-        virtual vector<tuple<string, int>> parseCountries(string text) override {
-            return this->conquest_->parseCountries(text);
-        }
-        virtual vector<vector<int>> parseBorders(string text) override {
-            return this->conquest_->parseBorders(text);
-        }
+        virtual vector<string> read() override; 
+        virtual bool checkFormat(vector<string> text) override;
+        virtual int getNumOfCountries() override;
+        virtual int getNumOfContinents() override;
+        virtual vector<tuple<string, int>> parseContinents(string text) override;
+        virtual vector<tuple<string, int>> parseCountries(string text) override;
+        virtual vector<vector<int>> parseBorders(string text) override;
 };
