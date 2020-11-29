@@ -34,10 +34,6 @@ private:
 	vector<Country*> borders;
 };
 
-bool operator<(const Country& a, const Country& b) {
-	return a.armies < b.armies;
-}
-
 //
 class Continent {
 public:

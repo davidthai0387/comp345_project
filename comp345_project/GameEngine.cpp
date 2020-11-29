@@ -4,7 +4,7 @@
 
 #include <filesystem>
 #include <algorithm>
-#include <stdlib.h>
+//#include <stdlib.h>   this include makes 'cout' ambiguous
 #include <time.h>
 #include <iterator>
 #include <iostream>
@@ -277,13 +277,46 @@ void GameEngine::issueOrdersPhase()
 {
     cout << endl << "<<<<<<<<<< issueOrdersPhase() START" << endl;
 
-    for (Player* p : players) {     // issue orders in round-robin fashion
+    int i = 0;
+    bool roundIsOver = false;
+    newRound();
+    vector<int> phases(players.size(), 0);
+
+    while (!roundIsOver) {
+
+        switch (phases[i]) {    // check
+        case 0:
+            if (players[i]->getNumOfArmies() > 0) {
+                players[i]->issueOrder("Deploy", players[i], players, players[i]->getNumOfArmies(), gameMap);
+            }
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        }
+
+
+
+
+        roundIsOver = true;
+        for (Player* p : players) {
+            if (!p->getTurnIsOver())
+                roundIsOver = false;
+        }
+        i = ++i % players.size();   // i loops from 0 to number of active players
+    }
+
+
+
+
+    for (Player* p : players) {     // deploy
 
         // Observer
-        if(activateObservers){
+        if (activateObservers) {
             setPhase("Player " + p->getName() + ": Reinforcement Phase");
             Notify();
-        }       
+        }
 
         int armiesThisTurn = p->getNumOfArmies();
 
@@ -412,6 +445,12 @@ void GameEngine::executeOrdersPhase()
     
     cout << endl << ">>>>>>>>>> executeOrdersPhase() END" << endl;
 
+}
+
+void GameEngine::newRound() {
+    for (Player* p : players) {
+        p->setTurnIsOver(false);
+    }
 }
 
 void GameEngine::setNbOfPlayers() {

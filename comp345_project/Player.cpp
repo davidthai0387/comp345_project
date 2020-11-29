@@ -49,6 +49,10 @@ void Player::setStrategy(PlayerStrategy* newStrat) {
     strategy = newStrat;
 }
 
+void Player::setTurnIsOver(bool b) {
+    turnIsOver = b;
+}
+
 // Getter methods
 string Player::getName() {
     return this->name;
@@ -73,6 +77,9 @@ vector<string> Player::getNegotiatedPlayers() {
 };
 void Player::resetNegotiatedPlayers() {
     negotiatedPlayers.clear();
+}
+bool Player::getTurnIsOver() {
+    return turnIsOver;
 }
 Hand* Player::getHandObject()
 {
@@ -146,8 +153,8 @@ void Player::issueOrder(Orders* o) {
     this->getPlayerOrders()->add(o);
 }
 
-void Player::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
-    strategy->issueOrder(orderName, p, o, pool, m);
+void Player::issueOrder(string orderName, Player* p, vector<Player*> o, Map* m) {
+    strategy->issueOrder(orderName, p, o, m);
 }
 
 void Player::playCard(vector<Player*> o, Deck* d, Map* m) {

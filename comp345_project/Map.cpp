@@ -378,5 +378,8 @@ void Map::dfsContinentsHelper(int cv, int currentContinentNum, bool visitedCount
 	}
 }
 
+bool operator<(const Country& a, const Country& b)
+{
+	return a.armies < b.armies;
 
-
+}

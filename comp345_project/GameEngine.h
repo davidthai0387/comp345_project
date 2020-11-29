@@ -34,6 +34,7 @@ class GameEngine : public Observable{
         void reinforcementPhase();
         void issueOrdersPhase();
         void executeOrdersPhase();
+        void newRound();
 
     private:
         int nbOfPlayers;
