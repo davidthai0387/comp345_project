@@ -4,7 +4,7 @@
 
 #include <filesystem>
 #include <algorithm>
-#include <stdlib.h>
+//#include <stdlib.h>   this include makes 'cout' ambiguous
 #include <time.h>
 #include <iterator>
 #include <iostream>
@@ -277,13 +277,59 @@ void GameEngine::issueOrdersPhase()
 {
     cout << endl << "<<<<<<<<<< issueOrdersPhase() START" << endl;
 
-    for (Player* p : players) {     // issue orders in round-robin fashion
+    int i = 0;
+    bool roundIsOver = false;
+    newRound();
+    vector<int> phases(players.size(), 0);
+
+    while (!roundIsOver) {
+
+        switch (phases[i]) {    // check
+        case 0:
+            if (players[i]->getNumOfArmies() > 0) {
+                players[i]->issueOrder("Deploy", players[i], players, deck, gameMap);
+            }
+            else {
+                phases[i]++;
+            }
+            break;
+        case 1:
+            if (!players[i]->getAdvancePhaseIsOver()) {
+                players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
+            }
+            else {
+                continue;
+            }
+            break;
+        case 2:
+            if (!players[i]->getCardPhaseIsOver()) {
+                players[i]->issueOrder("Card", players[i], players, deck, gameMap);
+            }
+            else {
+                continue;
+            }
+            break;
+        }
+
+
+
+
+        roundIsOver = true;
+        for (Player* p : players) {
+            if (!p->getAdvancePhaseIsOver() || !p->getCardPhaseIsOver())
+                roundIsOver = false;
+        }
+        i = ++i % players.size();   // i loops from 0 to number of active players
+    }
+
+
+    for (Player* p : players) {     // deploy
 
         // Observer
-        if(activateObservers){
+        if (activateObservers) {
             setPhase("Player " + p->getName() + ": Reinforcement Phase");
             Notify();
-        }       
+        }
 
         int armiesThisTurn = p->getNumOfArmies();
 
@@ -412,6 +458,13 @@ void GameEngine::executeOrdersPhase()
     
     cout << endl << ">>>>>>>>>> executeOrdersPhase() END" << endl;
 
+}
+
+void GameEngine::newRound() {
+    for (Player* p : players) {
+        p->setAdvancePhaseIsOver(false);
+        p->setCardPhaseIsOver(false);
+    }
 }
 
 void GameEngine::setNbOfPlayers() {

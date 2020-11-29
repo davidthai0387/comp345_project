@@ -130,7 +130,7 @@ void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int 
     cout << "Playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
-    p->issueOrder("Deploy", p, o, 5, m);
+    p->issueOrder("Deploy", p, o, d, m);
 
     p->getHandObject()->discard(i);
 }

@@ -49,6 +49,14 @@ void Player::setStrategy(PlayerStrategy* newStrat) {
     strategy = newStrat;
 }
 
+void Player::setAdvancePhaseIsOver(bool b) {
+    advancePhaseIsOver = b;
+}
+
+void Player::setCardPhaseIsOver(bool b) {
+    cardPhaseIsOver = b;
+}
+
 // Getter methods
 string Player::getName() {
     return this->name;
@@ -73,6 +81,12 @@ vector<string> Player::getNegotiatedPlayers() {
 };
 void Player::resetNegotiatedPlayers() {
     negotiatedPlayers.clear();
+}
+bool Player::getAdvancePhaseIsOver() {
+    return advancePhaseIsOver;
+}
+bool Player::getCardPhaseIsOver() {
+    return cardPhaseIsOver;
 }
 Hand* Player::getHandObject()
 {
@@ -146,8 +160,8 @@ void Player::issueOrder(Orders* o) {
     this->getPlayerOrders()->add(o);
 }
 
-void Player::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
-    strategy->issueOrder(orderName, p, o, pool, m);
+void Player::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
+    strategy->issueOrder(orderName, p, o, d, m);
 }
 
 void Player::playCard(vector<Player*> o, Deck* d, Map* m) {

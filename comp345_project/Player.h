@@ -28,6 +28,9 @@ private:
 
     PlayerStrategy* strategy;
 
+    bool advancePhaseIsOver;
+    bool cardPhaseIsOver;
+
 public:
     // constructors
     Player();
@@ -43,6 +46,8 @@ public:
     void setPlayerOrders(Orders* a);
     void setNumOfArmies(int num);
     void setStrategy(PlayerStrategy* newStrat);
+    void setAdvancePhaseIsOver(bool b);
+    void setCardPhaseIsOver(bool b);
 
     // removers
     void removeCountry(string a);
@@ -60,6 +65,8 @@ public:
     int getNumOfArmies();
     vector<string> getNegotiatedPlayers();
     void resetNegotiatedPlayers();
+    bool getAdvancePhaseIsOver();
+    bool getCardPhaseIsOver();
 
     // methods
     string showHand();
@@ -68,7 +75,7 @@ public:
     vector<Country*> toDefend(); //return list of country to defend
     vector<Country*> toAttack(); //return list of country to attack
     void issueOrder(Orders* o);
-    void issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m);
+    void issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m);
     void playCard(vector<Player*> o, Deck* d, Map* m);   // choose a card from hand
 };
 
