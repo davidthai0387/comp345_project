@@ -213,7 +213,7 @@ void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
-void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck d*, Map* m) {
+void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
 	// TODO
 

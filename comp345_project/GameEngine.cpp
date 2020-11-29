@@ -323,8 +323,6 @@ void GameEngine::issueOrdersPhase()
     }
 
 
-
-
     for (Player* p : players) {     // deploy
 
         // Observer
