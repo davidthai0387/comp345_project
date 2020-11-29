@@ -601,11 +601,6 @@ void GameEngine::mainGameLoop(){
         issueOrdersPhase();
 
         executeOrdersPhase();
-        
-        // FOR TESTING
-        /*for (Country* c : gameMap->getCountries()) {
-            cout << c->getNum() << ": " << c->getArmies() << endl;
-        }*/
 
         remainingPlayers = players.size();
         for (Player* p : players) {
