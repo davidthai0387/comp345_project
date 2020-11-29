@@ -82,8 +82,11 @@ void GameEngine::GameStart()
         {
             string path = "conquest/";
             int fileCount = 1;
+            vector<string> tempList;
             for (const auto & entry : fs::directory_iterator(path)) {
-                string mapChoice = entry.path().string();
+                tempList.push_back(entry.path().string());
+            }
+            for (string mapChoice : tempList) {
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
@@ -91,10 +94,11 @@ void GameEngine::GameStart()
                 if (mapChoice == ".DS_S")
                     continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
+                mapList.push_back(mapChoice);
                 fileCount++;
             }
             cout << endl;
-            string mapName = selectMap(mapType);
+            string mapName = selectMap(mapList, mapType);
             // checking if map file exists
             if (mapName.compare("") == 0)
             {
@@ -129,8 +133,11 @@ void GameEngine::GameStart()
         {
             string path = "maps/";
             int fileCount = 1;
+            vector<string> tempList;
             for (const auto & entry : fs::directory_iterator(path)) {
-                string mapChoice = entry.path().string();
+                tempList.push_back(entry.path().string());
+            }
+            for (string mapChoice : tempList) {
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
@@ -138,10 +145,11 @@ void GameEngine::GameStart()
                 if (mapChoice == ".DS_S")
                     continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
+                mapList.push_back(mapChoice);
                 fileCount++;
             }
             cout << endl;
-            string mapName = selectMap(mapType);
+            string mapName = selectMap(mapList, mapType);
             // checking if map file exists
             if (mapName.compare("") == 0)
             {
@@ -220,18 +228,17 @@ bool GameEngine::isMapInDirectory(string fileName, string type)
         return true;
 }
 
-string GameEngine::selectMap(string type)
+string GameEngine::selectMap(vector<string> mapList, string type)
 {
-    string map;
-    cout << "What map would you like to play with ?: ";
-    while(map=="") {
-        getline(cin,map);
+    int map;
+    cout << "What map would you like to play with ? (Enter the map number): ";
+    cin >> map;
+    if (isMapInDirectory(mapList[map-1] + ".map", type)) {
+        cout << "You've selected the " << mapList[map-1] << " map."<< endl;
+        return mapList[map-1] + ".map";
     }
-    if (isMapInDirectory(map + ".map", type))
-        return map + ".map";
     else
         return "";
-    
 }
 
 void GameEngine::reinforcementPhase()
