@@ -2,6 +2,7 @@
 #include "MapLoader.h"
 #include "Orders.h"
 
+#include <filesystem>
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
@@ -11,10 +12,10 @@
 #include <fstream>
 #include <vector>
 #include <errno.h>
+#include <random>
 
 using namespace std;
 namespace fs = std::filesystem;
-
 GameEngine::GameEngine() {
     nbOfPlayers = 0;
     deck = new Deck();
@@ -82,11 +83,13 @@ void GameEngine::GameStart()
             string path = "conquest/";
             int fileCount = 1;
             for (const auto & entry : fs::directory_iterator(path)) {
-                string mapChoice = entry.path();
+                string mapChoice = entry.path().string();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
                 mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                if (mapChoice == ".DS_S")
+                    continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
                 fileCount++;
             }
@@ -127,11 +130,13 @@ void GameEngine::GameStart()
             string path = "maps/";
             int fileCount = 1;
             for (const auto & entry : fs::directory_iterator(path)) {
-                string mapChoice = entry.path();
+                string mapChoice = entry.path().string();
                 int pos = mapChoice.find("/");
                 mapChoice = mapChoice.substr(pos);
                 mapChoice.erase(0,1);
                 mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back(); mapChoice.pop_back();
+                if (mapChoice == ".DS_S")
+                    continue;
                 cout << "Map #" << fileCount << ": " << mapChoice << endl;
                 fileCount++;
             }
@@ -178,7 +183,10 @@ void GameEngine::GameStart()
         cin >> name;
         players.push_back(new Player(name));
     }
-    random_shuffle(players.begin(), players.end());     // shuffling the list of players
+
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(players.begin(), players.end(), g);     // shuffling the list of players
     cout << endl;
 }
 string GameEngine::selectMapType()
@@ -262,7 +270,7 @@ void GameEngine::issueOrdersPhase()
 {
     cout << endl << "<<<<<<<<<< issueOrdersPhase() START" << endl;
 
-    for (Player* p : players) {     // deploy random number of armies to random country until no armies left
+    for (Player* p : players) {     // issue orders in round-robin fashion
 
         // Observer
         if(activateObservers){
@@ -471,7 +479,9 @@ string GameEngine::getPhase(){
 void GameEngine::startupPhase() {
     cout << endl << "<<<<<<<<<< startUpPhase() START" << endl;
     vector<Country*> randomCountries = (*gameMap).getCountries();
-    random_shuffle(randomCountries.begin(), randomCountries.end());     // shuffling the list of countries
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(randomCountries.begin(), randomCountries.end(), g);     // shuffling the list of countries
     int c = 0;
     for (Country* country : randomCountries) {      // assigning each country to a player
         (*players[c]).setCountry(country);

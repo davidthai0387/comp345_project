@@ -75,14 +75,36 @@ void AggressiveComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
-void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
-
-	// TODO
-
-}
-
 
 // ----------BENEVOLENT COMPUTER----------
+
+void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
+
+	if (orderName == "Deploy") {
+
+		while (pool > 0) {
+
+		}
+
+		//p->getPlayerOrders()->add(new Deploy());
+	}
+	else if (orderName == "Advance") {
+
+	}
+	else if (orderName == "Bomb") {
+
+	}
+	else if (orderName == "Blockade") {
+
+	}
+	else if (orderName == "Airlift") {
+
+	}
+	else if (orderName == "Negotiate") {
+
+	}
+
+}
 
 vector<Country*> BenevolentComputer::toAttack(Player* p) {
 
@@ -104,14 +126,14 @@ void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
+
+// ----------NEUTRAL COMPUTER----------
+
 void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, int pool, Map* m) {
 
 	// TODO
 
 }
-
-
-// ----------NEUTRAL COMPUTER----------
 
 vector<Country*> NeutralComputer::toAttack(Player* p) {
 
