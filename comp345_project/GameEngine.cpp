@@ -571,13 +571,14 @@ void GameEngine::startupPhase() {
 
     cout << "----- Owner of each country: " << endl;
     for (Country* c : gameMap->getCountries()) {
-        cout << c->getNum() << ". " << c->getName() << ": " << c->getPlayer()->getName() << endl;
+        cout << c->getNum()+1 << ". " << c->getName() << ": " << c->getPlayer()->getName() << endl;
     }
+    cout << endl;
 	cout << "----- Reinforcement pool of each player: " << endl;
 	for (Player* p : players) {
         cout << p->getName() << ": " << p->getNumOfArmies() << endl;
     }
-
+    cout << endl;
     cout << ">>>>>>>>>> startUpPhase() END" << endl;
 }
 
