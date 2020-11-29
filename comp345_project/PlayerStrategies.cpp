@@ -133,17 +133,15 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 // ----------BENEVOLENT COMPUTER----------
 
 vector<Country*> BenevolentComputer::toAttack(Player* p) {
-
-	// TODO
-
+	// Unecessary
 	return vector<Country*>();
 }
 
 vector<Country*> BenevolentComputer::toDefend(Player* p) {
+	vector<Country*> out = p->getOwnedCountries();
+	sort(out.begin(), out.end());
 
-	// TODO
-
-	return vector<Country*>();
+	return out;
 }
 
 void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
@@ -162,21 +160,15 @@ void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o,
 // ----------NEUTRAL COMPUTER----------
 
 vector<Country*> NeutralComputer::toAttack(Player* p) {
-
-	// TODO
-
+	// Unecessary
 	return vector<Country*>();
 }
 
 vector<Country*> NeutralComputer::toDefend(Player* p) {
-
-	// TODO
-
+	// Unecessary
 	return vector<Country*>();
 }
 
 void NeutralComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
+	// Unecessary
 }

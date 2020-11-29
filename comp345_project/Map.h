@@ -24,6 +24,7 @@ public:
 	vector<Country*> getBorders();
 	void setBorders(vector<Country*> b);
 	void addBorder(Country* c);
+	friend bool operator<(const Country& a, const Country& b);
 private:
 	int num;
 	std::string name;
@@ -32,6 +33,10 @@ private:
 	int armies;
 	vector<Country*> borders;
 };
+
+bool operator<(const Country& a, const Country& b) {
+	return a.armies < b.armies;
+}
 
 //
 class Continent {
