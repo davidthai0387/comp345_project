@@ -97,7 +97,7 @@ bool MapLoader::checkFormat(vector<string> text) {
 }
 
 /*Checks the [files] section of the file. Looks for key words (pic, map and crd), if those key words are not found
-the file will be considered as non valid.*/
+the file will be considered as non valid. Return type: boolean (true: valid, false: non-valid)*/
 bool MapLoader::checkFiles(string text) {
     if ((text.find("pic") != string::npos) && (text.find("map") != string::npos) && (text.find("crd") != string::npos))
         return true;
@@ -426,17 +426,43 @@ vector<vector<int>> MapLoader::parseBorders(string text) {
     }
     return parsedBorders;
 }
-
+/*Constructor w/o parameter*/
 ConquestFileReader::ConquestFileReader() {
     fileName = "";
     numOfContinents = 0;
     numOfCountries = 0;    
 }
+
+/*Constructor w/ parameter. The string parameter represents the name of the map file*/
 ConquestFileReader::ConquestFileReader(string text) {
     fileName = text;
     numOfContinents = 0;
     numOfCountries = 0;    
 }
+
+/*Assignment constructor*/
+ConquestFileReader ConquestFileReader::operator=(const ConquestFileReader& cfr) {
+    this->fileName = cfr.fileName;
+    this->numOfContinents = cfr.numOfContinents;
+    this->numOfCountries = cfr.numOfCountries;
+    return *this;
+}
+
+/*Copy constructor*/
+ConquestFileReader::ConquestFileReader(const ConquestFileReader& cfr){
+    fileName = cfr.fileName;
+    numOfContinents = cfr.numOfContinents;
+    numOfCountries = cfr.numOfCountries;
+}
+
+/*Destructor*/
+ConquestFileReaderAdapter::~ConquestFileReaderAdapter() {
+    delete conquest_;
+    conquest_ = nullptr;
+}
+
+/*countDigits(string str) will return the number of digits in a string
+Return type: Integer*/
 int countDigits(string str){
   int count=0;
   for(int i=0;i<str.size();i++)
@@ -444,12 +470,21 @@ int countDigits(string str){
         count++;
   return count;
 }
+
+/*get() method that will return the number of territories in a map. Return type: Integer*/
 int ConquestFileReader::getNumOfCountries() {
     return numOfCountries;
 }
+
+/*get() method that will return the number of continents in a map. Return type: Integer*/
 int ConquestFileReader::getNumOfContinents() {
     return numOfContinents;
 }
+
+/*read() method will read the .map file and split it into individuals sections.
+Each section will be represented by an index in a vector of strings. The section will
+be (in order): empty space, map, continents and territories.
+Return type: Vector of strings*/
 vector<string> ConquestFileReader::read() {
     string mapText;
     string text = "";
@@ -466,16 +501,21 @@ vector<string> ConquestFileReader::read() {
     }
     return tokens;
 }
-int countWords(string const& str) {
-    stringstream stream(str);
-    return distance(istream_iterator<string>(stream), istream_iterator<string>());
-}
+
+/*Checks the [Map] section of the file. Looks for key words (image, wrap, scroll, author and warn), if those key words are not found
+the file will be considered as non valid. Return type: boolean (true: valid, false: non-valid)*/
 bool ConquestFileReader::checkFiles(string text) {
     if ((text.find("image") == string::npos) || (text.find("wrap") == string::npos) || (text.find("scroll") == string::npos) 
             || (text.find("author") == string::npos) || (text.find("warn") == string::npos))
         return false;
     return true;
 }
+
+/*This method will determine whether or not a .map file is valid. There are multiple criterias
+that need to be met for a .map file to be valid. To start, we will searching for key words
+in each of the sections of the files. For the file header, we must make sure that it is empty.
+We will be calling other methods to make sure that the sections all respect their usual format.
+Return type: boolean (true: valid, false: non-valid)*/
 bool ConquestFileReader::checkFormat(vector<string> text) {
     if (text[0] != "")
         return false;
@@ -485,6 +525,10 @@ bool ConquestFileReader::checkFormat(vector<string> text) {
         return false;
     return true;
 }
+
+/*Checks the [continents] section of the file. This method will determine if the format of the [continents] section
+is respected. The format for this section is: ContinentName=score. If every line in the section,
+follows the format it'll pass the check. If not, the file will be considered non-valid.*/
 bool ConquestFileReader::checkContinents(string text) {
     vector<string> tokens;
     vector<string> continents;
@@ -535,6 +579,9 @@ bool ConquestFileReader::checkContinents(string text) {
         return false;
     return true;
 }
+
+/*This method will parse through the [continents] section of the file and return the data as vector of tuples of strings and integers.
+The method is only called if the file has been considered valid.*/
 vector<tuple<string, int>> ConquestFileReader::parseContinents(string text) {
     vector<string> tokens;
     vector<string> continents;
@@ -580,6 +627,9 @@ vector<tuple<string, int>> ConquestFileReader::parseContinents(string text) {
     continentsList = parsedContinents;
     return parsedContinents;
 }
+/*Checks the [territories] section of the file. This method will determine if the format of the [countries] section
+is respected. The format for this section is: TerritoryName - XCoordinate - YCoordinate - ContinentName - Borders...
+If every line in the section, follows the format it'll pass the check. If not, the file will be considered non-valid.*/
 bool ConquestFileReader::checkCountries(string text) {
     vector<string> tokens;
     vector<string> territoryName;
@@ -657,6 +707,9 @@ bool ConquestFileReader::checkCountries(string text) {
         return false;
     return true;
 }
+
+/*This method will parse through the [territories] section of the file and return the data as vector of tuples of strings and integers.
+The method is only called if the file has been considered valid.*/
 vector<tuple<string, int>> ConquestFileReader::parseCountries(string text) {
     vector<string> tokens;
     vector<string> territoryName;
@@ -709,6 +762,9 @@ vector<tuple<string, int>> ConquestFileReader::parseCountries(string text) {
     numOfCountries = parsedCountries.size();
     return parsedCountries;
 }
+
+/*This method will parse through the [territories] section of the file to get the borders. It will return the data as vector
+of vector of integers. The method is only called if the file has been considered valid.*/
 vector<vector<int>> ConquestFileReader::parseBorders(string text) {
     vector<string> tokens;
     vector<vector<int>> parsedBorders;

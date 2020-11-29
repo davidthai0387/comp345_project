@@ -11,7 +11,6 @@ public:
     MapLoader();
     MapLoader(const MapLoader& ml);
     MapLoader operator=(const MapLoader& ml);
-    //~MapLoader();
     virtual vector<string> read();
     virtual int getNumOfCountries();
     virtual int getNumOfContinents();
@@ -36,6 +35,8 @@ class ConquestFileReader {
   public:
         ConquestFileReader();
         ConquestFileReader(string text);
+        ConquestFileReader operator=(const ConquestFileReader& cfr);
+        ConquestFileReader(const ConquestFileReader& cfr);
         int getNumOfCountries();
         int getNumOfContinents();
         vector<string> read();
@@ -60,6 +61,7 @@ class ConquestFileReaderAdapter : public MapLoader{
         ConquestFileReader *conquest_;
     public:
         ConquestFileReaderAdapter(ConquestFileReader *conquest) : conquest_(conquest) {}
+        ~ConquestFileReaderAdapter();
         virtual vector<string> read() override {
             return this->conquest_->read();
         }
