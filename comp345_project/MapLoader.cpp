@@ -571,7 +571,7 @@ vector<tuple<string, int>> ConquestFileReader::parseContinents(string text) {
     }
     continents.pop_back();
     int index = 1;
-    for (int i = 0; i <= continents.size(); i++) {
+    for (int i = 0; i < continents.size(); i++) {
         tuple<string, int> tupleContinents = make_tuple(continents[i], index);
         index++;
         parsedContinents.push_back(tupleContinents);
@@ -612,7 +612,7 @@ bool ConquestFileReader::checkCountries(string text) {
         while ((pos = s.find(delimiter)) != string::npos) {
             token = s.substr(0, pos);
             if (loopNum == 0) {
-                if (all_of(token.begin(), token.end(), is_digit)) 
+                if (all_of(token.begin(), token.end(), is_digit) || !is_digit(token[token.size() - 1]))
                     return false;
                 territoryName.push_back(token);
             }
@@ -641,14 +641,15 @@ bool ConquestFileReader::checkCountries(string text) {
             else if (loopNum == 3) 
                 continentName.push_back(token);
             else {
-                if (all_of(token.begin(), token.end(), is_digit) || countDigits(token) < 1) 
+                if (all_of(token.begin(), token.end(), is_digit) || countDigits(token) < 1 || !is_digit(token[token.size() - 1]))
                     return false;
                 borders.push_back(token);
             }
             s.erase(0, pos + delimiter.length());
             loopNum++;
         }
-        if (all_of(s.begin(), s.end(), is_digit) || countDigits(s) < 1)
+        s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
+        if (all_of(s.begin(), s.end(), is_digit) || countDigits(s) < 1 || !is_digit(s[s.size() - 1]))
             return false;
         borders.push_back(s);
     }
