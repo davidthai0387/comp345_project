@@ -49,7 +49,6 @@ void Player::setStrategy(PlayerStrategy* newStrat) {
     strategy = newStrat;
 }
 
-
 // Getter methods
 string Player::getName() {
     return this->name;

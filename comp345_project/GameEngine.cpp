@@ -270,7 +270,7 @@ void GameEngine::issueOrdersPhase()
 {
     cout << endl << "<<<<<<<<<< issueOrdersPhase() START" << endl;
 
-    for (Player* p : players) {     // deploy random number of armies to random country until no armies left
+    for (Player* p : players) {     // issue orders in round-robin fashion
 
         // Observer
         if(activateObservers){
