@@ -1,4 +1,6 @@
 #pragma once
+#include <limits.h> 
+#include <stdio.h> 
 #include "Player.h"
 
 using namespace std;
