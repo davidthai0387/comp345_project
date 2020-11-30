@@ -1,6 +1,7 @@
 #include "GameEngine.h"
 #include "MapLoader.h"
 #include "Orders.h"
+#include "PlayerStrategies.h"
 
 #include <filesystem>
 #include <algorithm>
@@ -190,6 +191,31 @@ void GameEngine::GameStart()
         cout << "Enter the name for player #" << (i + 1) << ": ";
         cin >> name;
         players.push_back(new Player(name));
+    }
+
+    for (Player* p : players) {
+        cout << "Select Strategy# for player " << p->getName() << endl;
+        cout << "#1 Human Player" << endl;
+        cout << "#2 Aggressive Computer" << endl;
+        cout << "#3 Benevolent Computer" << endl;
+        cout << "#4 Neutral Computer" << endl;
+
+        int in;
+        cin >> in;
+        switch (in) {
+        case 1:
+            p->setStrategy(new HumanPlayer());
+            break;
+        case 2:
+            p->setStrategy(new AggressiveComputer());
+            break;
+        case 3:
+            p->setStrategy(new BenevolentComputer());
+            break;
+        case 4:
+            p->setStrategy(new NeutralComputer());
+            break;
+        }
     }
 
     random_device rd;

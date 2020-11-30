@@ -14,7 +14,6 @@ public:
 
 class HumanPlayer : public PlayerStrategy {
 public:
-
 	void issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m);
 	vector<Country*> toAttack(Player* p);
 	vector<Country*> toDefend(Player* p);
