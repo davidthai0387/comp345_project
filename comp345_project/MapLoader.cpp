@@ -822,3 +822,38 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
     }
     return parsedBorders;
 }
+
+/*read() method for the ConquestFileReader class*/
+vector<string> ConquestFileReaderAdapter::read() {
+    return this->conquest_->read();
+}
+
+/*checkFormat(vector<string>) method for the ConquestFileReader class*/
+bool ConquestFileReaderAdapter::checkFormat(vector<string> text) {
+    return this->conquest_->checkFormat(text);
+}
+
+/*getNumOfCountries() method for the ConquestFileReader class*/
+int ConquestFileReaderAdapter::getNumOfCountries() {
+    return this->conquest_->getNumOfCountries();
+}
+
+/*getNumOfContinents() method for the ConquestFileReader class*/
+int ConquestFileReaderAdapter::getNumOfContinents() {
+    return this->conquest_->getNumOfContinents();
+}
+
+/*parseContinents(string) method for the ConquestFileReader class*/
+vector<tuple<string, int>> ConquestFileReaderAdapter::parseContinents(string text) {
+    return this->conquest_->parseContinents(text);
+}
+
+/*parseCountries(string) method for the ConquestFileReader class*/
+vector<tuple<string, int>> ConquestFileReaderAdapter::parseCountries(string text) {
+    return this->conquest_->parseCountries(text);
+}
+
+/*parseBorders(string) method for the ConquestFileReader class*/
+vector<vector<int>> ConquestFileReaderAdapter::parseBorders(string text) {
+    return this->conquest_->parseBorders(text);
+}
