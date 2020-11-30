@@ -31,38 +31,115 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		p->setNumOfArmies(p->getNumOfArmies()-army);
 	}
 	else if (orderName == "Advance") {
-		vector<Country*> atk = toAttack(p);
+		int choice;
 		vector<Country*> potential;
+		int src = 0;
 		int army = 0;
 		int counter = 1;
-		for (Country* country : atk[0]->getBorders()) {
-			if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0) {
-				cout << "Country #" << counter << "\t" << country->getName() << endl;
-				potential.push_back(country);
-				counter++;
-			}
-		}
-		cout << "How many soldiers would you like to advance with? ";
-		while (army < 0) {
+
+		cout << "Would you like to attack an enemy country or move your troops?" << endl;
+		cout << "1.\tAttack enemy country" << endl;
+		cout << "2.\tMove troops" << endl;
+		while (true) {
 			try {
-				cin >> army;
-				if (army < 0) {
+				cout << "Choice: ";
+				cin >> choice;
+				if (choice != 1 && choice != 2)
 					throw exception();
-				}
-				break;
-			}
-			catch (...) {
-				cout << "That is not a valid input. Please try again..." << endl;
+			} catch (...){
+				cout << "That is not a valid option. Please try again..." << endl;
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
+		if (choice == 1) {
+			vector<Country*> atk = toAttack(p);
+			for (Country* country : atk[0]->getBorders()) {
+				if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0) {
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					potential.push_back(country);
+					counter++;
+				}
+			}
+			cout << "Where would you like to advance from?\nChoose the country number where you like as the source of your advance: ";
+			while (src < 0 && src >= counter) {
+				try {
+					cin >> src;
+					if (src < 0) {
+						throw exception();
+					}
+					break;
+				}
+				catch (...) {
+					cout << "That is not a valid input. Please try again..." << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			src -= 1;
 
-		counter -= 1;
-		p->getPlayerOrders()->add(new Advance(p, army, potential[counter], atk[0], m, d));
-		p->setAdvancePhaseIsOver(true);
+			cout << "How many soldiers would you like to advance with? ";
+			while (army < 0) {
+				try {
+					cin >> army;
+					if (army < 0) {
+						throw exception();
+					}
+					break;
+				}
+				catch (...) {
+					cout << "That is not a valid input. Please try again..." << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			p->getPlayerOrders()->add(new Advance(p, army, potential[src], atk[0], m, d));
+			p->setAdvancePhaseIsOver(true);
+		}
+		else if (choice == 2) {
+			vector<Country*> def = toDefend(p);
+			for (Country* country : def[0]->getBorders()) {
+				if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0) {
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					potential.push_back(country);
+					counter++;
+				}
+			}
+			cout << "Where would you like to advance from?\nChoose the country number where you like as the source of your advance: ";
+			while (src < 0 && src >= counter) {
+				try {
+					cin >> src;
+					if (src < 0) {
+						throw exception();
+					}
+					break;
+				}
+				catch (...) {
+					cout << "That is not a valid input. Please try again..." << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			src -= 1;
 
-		//here
+			cout << "How many soldiers would you like to advance with? ";
+			while (army < 0) {
+				try {
+					cin >> army;
+					if (army < 0) {
+						throw exception();
+					}
+					break;
+				}
+				catch (...) {
+					cout << "That is not a valid input. Please try again..." << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			p->getPlayerOrders()->add(new Advance(p, army, potential[src], def[0], m, d));
+			p->setAdvancePhaseIsOver(true);
+		}
 	}
 	else if (orderName == "Blockade") {
 		string terr;
@@ -169,7 +246,7 @@ vector<Country*> HumanPlayer::toAttack(Player* p) {
 			cout << "Here is a list of bordering countries:" << endl;
 			int counter = 1;
 			for (Country* country : potential) {
-				cout << "Country #" << counter << "\t" << country->getName() << endl;
+				cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
 				counter++;
 			}
 
@@ -212,7 +289,7 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 			cout << "Here is a list of your owned countries:" << endl;
 			int counter = 1;
 			for (Country* country : potential) {
-				cout << "Country #" << counter << "\t" << country->getName() << endl;
+				cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
 				counter++;
 			}
 
@@ -250,15 +327,14 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
-		vector<Country*> toDefendCountries = toDefend(p);
-		Country* sourceCountry = toDefendCountries[0];
-		Country* destCountry;
-		for (Country* c : m->getCountries()) {
-			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
-				p->getPlayerOrders()->add(new Airlift(p, 111, new Country(), new Country(), m, d));
-				break;
-			}
+		vector<Country*> toAdvanceCountires = toAttack(p); // Has both enemy finding and moving logic
+		Country* destCountry = toAdvanceCountires[0];
+		Country* sourceCountry = p->getOwnedCountries()[0];
+		for (Country* country : p->getOwnedCountries()) {
+			if (sourceCountry->getArmies() <= country->getArmies())
+				sourceCountry = country;
 		}
+		p->getPlayerOrders()->add(new Advance(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
 	}
 	else if (orderName == "Bomb") {		// bombs a random country
 		int targetNum = toAttack(p)[rand() % m->getCountries().size()]->getNum();
@@ -269,7 +345,6 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		int armiesToDeploy = 5;
 		vector<Country*> potentialTargets = toDefend(p);
 		Country* target = potentialTargets[0];
-
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Airlift") {		// advances strongest country's armies to a weaker enemy country
@@ -278,7 +353,8 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		Country* destCountry;
 		for (Country* c : m->getCountries()) {
 			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
-				p->getPlayerOrders()->add(new Airlift(p, 111, new Country(), new Country(), m, d));
+				destCountry = c;
+				p->getPlayerOrders()->add(new Airlift(p, 111, sourceCountry, destCountry, m, d));
 				break;
 			}
 		}
@@ -297,7 +373,6 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		}
 		p->setCardPhaseIsOver(true);
 	}
-
 }
 
 vector<Country*> AggressiveComputer::toAttack(Player* p) {
@@ -305,41 +380,37 @@ vector<Country*> AggressiveComputer::toAttack(Player* p) {
 	// Variable initialization
 	vector<Country*> ownedCountries = p->getOwnedCountries();
 	Country* strongest = ownedCountries[0];
-	vector<Country*> potential;
-	static vector<Country*> confirmed;
+	vector<Country*> confirmed;
 
-	// Potential list initialization
+	// Strongest initialization
 	for (Country* country : p->getOwnedCountries()) {
 		if (strongest->getArmies() <= country->getArmies())
 			strongest = country;
 	}
 
-	if (confirmed.size() > 0) {
-		for (Country* border : strongest->getBorders()) {
-			if (border->getPlayer()->getName() != p->getName() && confirmed.size() < 4)
-				confirmed.push_back(border);
+	// If enemies in border
+	for (Country* border : strongest->getBorders()) {
+		if (border->getPlayer()->getName() != p->getName()) {
+			confirmed.push_back(border);
+			break;
 		}
-		if (confirmed.size() == 0) {
-			confirmed.push_back(strongest->getBorders()[rand() % (strongest->getBorders().size())]);
-		}
+				
 	}
-	else {
-		confirmed.erase(confirmed.begin());
+	// If no enemies in border
+	if (confirmed.size() == 0) {
+		confirmed.push_back(strongest->getBorders()[rand() % (strongest->getBorders().size())]);
 	}
 	
 	return confirmed;
 }
 
 vector<Country*> AggressiveComputer::toDefend(Player* p) {
-
 	vector<Country*> out;
-
 	for (Country* c : p->getOwnedCountries()) {		// get countries that have armies
 		if (c->getArmies() > 0) {
 			out.push_back(c);
 		}
 	}
-
 	if (out.size() == 0) {		// if all countries have 0 armies
 		for (Country* c : p->getOwnedCountries()) {		// choose owned countries that have a neighboring enemy country
 			for (Country* n : c->getBorders()) {
@@ -354,7 +425,6 @@ vector<Country*> AggressiveComputer::toDefend(Player* p) {
 		sort(out.begin(), out.end());
 		reverse(out.begin(), out.end());
 	}
-
 	return out;
 }
 

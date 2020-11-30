@@ -76,7 +76,6 @@ public:
     vector<Country*> toAttack(); //return list of country to attack
     void issueOrder(Orders* o);
     void issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m);
-    void playCard(vector<Player*> o, Deck* d, Map* m);   // choose a card from hand
 };
 
 // Stream operator
