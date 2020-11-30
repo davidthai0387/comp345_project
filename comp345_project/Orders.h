@@ -183,7 +183,6 @@ public:
 	void setDest(Country* c);
 };
 
-
 class Negotiate : public Orders {
 private:
 	Player* opponent;
