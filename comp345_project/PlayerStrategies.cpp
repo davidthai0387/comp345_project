@@ -479,6 +479,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 vector<Country*> BenevolentComputer::toAttack(Player* p) {
 	// uncessary since Benevolent never advances
+	return vector<Country*>();
 }
 
 vector<Country*> BenevolentComputer::toDefend(Player* p) {
