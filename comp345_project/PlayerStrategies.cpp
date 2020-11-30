@@ -236,12 +236,6 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 	return confirmed;
 }
 
-void HumanPlayer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
-}
-
 
 // ----------AGRESSIVE COMPUTER----------
 
@@ -309,7 +303,8 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 vector<Country*> AggressiveComputer::toAttack(Player* p) {
 
 	// Variable initialization
-	Country* strongest = p->getOwnedCountries()[0];
+	vector<Country*> ownedCountries = p->getOwnedCountries();
+	Country* strongest = ownedCountries[0];
 	vector<Country*> potential;
 	static vector<Country*> confirmed;
 
@@ -363,13 +358,6 @@ vector<Country*> AggressiveComputer::toDefend(Player* p) {
 	return out;
 }
 
-void AggressiveComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
-}
-
-
 // ----------BENEVOLENT COMPUTER----------
 
 void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
@@ -384,17 +372,24 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		}
 		else {
 			bool enoughArmiesToBalance = (endArmies - beginArmies) <= p->getNumOfArmies();
-			armiesToDeploy = ((p->getNumOfArmies() - (*potentialTargets.end())->getArmies())) >= 0;
+			armiesToDeploy = enoughArmiesToBalance ? (endArmies - beginArmies) : p->getNumOfArmies();
 		}
 
 		Country* target = potentialTargets[0];
 
+		p->setNumOfArmies(p->getNumOfArmies() - armiesToDeploy);
+
+		cout << "----- Player " << p->getName() << " deploying " << armiesToDeploy << " armies to " << target->getName() << endl;
+
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
-
+		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {
+
+	}
+	else if (orderName == "Reinforcement") {
 
 	}
 	else if (orderName == "Blockade") {
@@ -406,6 +401,9 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 	else if (orderName == "Negotiate") {
 
 	}
+	else if (orderName == "Card") {
+		p->setCardPhaseIsOver(true);
+	}
 
 }
 
@@ -415,21 +413,16 @@ vector<Country*> BenevolentComputer::toAttack(Player* p) {
 
 vector<Country*> BenevolentComputer::toDefend(Player* p) {
 	static vector<Country*> out;
+	
+	if (out.size() >= 1) {
+		out.erase(out.begin());
+	}
 	if (out.size() == 0) {
 		out = p->getOwnedCountries();
 		sort(out.begin(), out.end());
 	}
-	else {
-		out.erase(out.begin());
-	}
 
 	return out;
-}
-
-void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
 }
 
 
@@ -437,7 +430,10 @@ void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
-	// TODO
+	cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+
+	p->setAdvancePhaseIsOver(true);
+	p->setCardPhaseIsOver(true);
 
 }
 
@@ -449,8 +445,4 @@ vector<Country*> NeutralComputer::toAttack(Player* p) {
 vector<Country*> NeutralComputer::toDefend(Player* p) {
 	// Unecessary
 	return vector<Country*>();
-}
-
-void NeutralComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-	// Unecessary
 }
