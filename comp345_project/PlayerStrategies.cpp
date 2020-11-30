@@ -432,6 +432,7 @@ void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o,
 
 	cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
 
+	p->setNumOfArmies(0);
 	p->setAdvancePhaseIsOver(true);
 	p->setCardPhaseIsOver(true);
 
