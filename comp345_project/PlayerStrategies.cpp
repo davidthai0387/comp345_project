@@ -141,8 +141,130 @@ void HumanPlayer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
 void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 		
 	if (orderName == "Deploy") {
+		int armiesToDeploy = p->getNumOfArmies();
+		p->setNumOfArmies(armiesToDeploy);
+		vector<Country*> potentialTargets = toDefend(p);
+		Country* target = potentialTargets[0];
 
-		//p->getPlayerOrders()->add(new Deploy());
+		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
+	}
+	else if (orderName == "Advance") {
+		vector<Country*> toDefendCountries = toDefend(p);
+		Country* sourceCountry = toDefendCountries[0];
+		Country* destCountry;
+		for (Country* c : m->getCountries()) {
+			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
+				p->getPlayerOrders()->add(new Airlift(p, 111, new Country(), new Country(), m, d));
+				break;
+			}
+		}
+	}
+	else if (orderName == "Bomb") {		// bombs a random country
+		int targetNum = toAttack(p)[rand() % m->getCountries().size()]->getNum();
+
+		p->getPlayerOrders()->add(new Bomb(p, m->getCountries()[targetNum], m));
+	}
+	else if (orderName == "Reinforcement") {	// reinforces strongest country
+		int armiesToDeploy = 5;
+		vector<Country*> potentialTargets = toDefend(p);
+		Country* target = potentialTargets[0];
+
+		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
+	}
+	else if (orderName == "Airlift") {		// advances strongest country's armies to a weaker enemy country
+		vector<Country*> toAttackCountries = toAttack(p);
+		Country* sourceCountry = toAttackCountries[0];
+		Country* destCountry;
+		for (Country* c : m->getCountries()) {
+			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
+				p->getPlayerOrders()->add(new Airlift(p, 111, new Country(), new Country(), m, d));
+				break;
+			}
+		}
+	}
+	else if (orderName == "Card") {
+		for (int i = 0; i < p->getHand().size(); i++) {
+			if (p->getHand()[i]->getCardName() == "Bomb") {
+				p->getHand()[i]->play(p, o, m, d, i);
+			}
+			if (p->getHand()[i]->getCardName() == "Airlift") {
+				p->getHand()[i]->play(p, o, m, d, i);
+			}
+			if (p->getHand()[i]->getCardName() == "Reinforcement") {
+				p->getHand()[i]->play(p, o, m, d, i);
+			}
+		}
+		p->setCardPhaseIsOver(true);
+	}
+
+}
+
+vector<Country*> AggressiveComputer::toAttack(Player* p) {
+
+	// TODO 
+	vector<Country*> potential;
+	vector<Country*> confirmed;
+
+
+
+	return vector<Country*>();
+}
+
+vector<Country*> AggressiveComputer::toDefend(Player* p) {
+
+	vector<Country*> out;
+
+	for (Country* c : p->getOwnedCountries()) {		// get countries that have armies
+		if (c->getArmies() > 0) {
+			out.push_back(c);
+		}
+	}
+
+	if (out.size() == 0) {		// if all countries have 0 armies
+		for (Country* c : p->getOwnedCountries()) {		// choose owned countries that have a neighboring enemy country
+			for (Country* n : c->getBorders()) {
+				if (n->getPlayer() != p) {
+					out.push_back(c);
+					break;
+				}
+			}
+		}
+	}
+	else {		// if some countries have armies, sort those countries by number of armies and reverse (index 0 should have country with most armies)
+		sort(out.begin(), out.end());
+		reverse(out.begin(), out.end());
+	}
+
+	return out;
+}
+
+void AggressiveComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
+
+	// TODO
+
+}
+
+
+// ----------BENEVOLENT COMPUTER----------
+
+void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
+
+	if (orderName == "Deploy") {
+		vector<Country*> potentialTargets = toDefend(p);
+		int armiesToDeploy;
+		int beginArmies = (*potentialTargets.begin())->getArmies();
+		int endArmies = (*potentialTargets.end())->getArmies();
+		if (beginArmies == endArmies) {
+			armiesToDeploy = 1;
+		}
+		else {
+			bool enoughArmiesToBalance = (endArmies - beginArmies) <= p->getNumOfArmies();
+			armiesToDeploy = ((p->getNumOfArmies() - (*potentialTargets.end())->getArmies())) >= 0;
+		}
+
+		Country* target = potentialTargets[0];
+
+		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
 
@@ -162,47 +284,19 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 }
 
-vector<Country*> AggressiveComputer::toAttack(Player* p) {
-
-	// TODO 
-	vector<Country*> potential;
-	vector<Country*> confirmed;
-
-
-
-	return vector<Country*>();
-}
-
-vector<Country*> AggressiveComputer::toDefend(Player* p) {
-
-	// TODO
-
-	return vector<Country*>();
-}
-
-void AggressiveComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
-}
-
-void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
-
-	// TODO
-
-}
-
-
-// ----------BENEVOLENT COMPUTER----------
-
 vector<Country*> BenevolentComputer::toAttack(Player* p) {
-	// Unecessary
-	return vector<Country*>();
+	// uncessary since Benevolent never advances
 }
 
 vector<Country*> BenevolentComputer::toDefend(Player* p) {
-	vector<Country*> out = p->getOwnedCountries();
-	sort(out.begin(), out.end());
+	static vector<Country*> out;
+	if (out.size() == 0) {
+		out = p->getOwnedCountries();
+		sort(out.begin(), out.end());
+	}
+	else {
+		out.erase(out.begin());
+	}
 
 	return out;
 }
@@ -213,14 +307,14 @@ void BenevolentComputer::playCard(Player* p, vector<Player*> o, Deck* d, Map* m)
 
 }
 
+
+// ----------NEUTRAL COMPUTER----------
+
 void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
 	// TODO
 
 }
-
-
-// ----------NEUTRAL COMPUTER----------
 
 vector<Country*> NeutralComputer::toAttack(Player* p) {
 	// Unecessary
