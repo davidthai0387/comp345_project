@@ -193,13 +193,14 @@ void GameEngine::GameStart()
         players.push_back(new Player(name));
     }
 
+    cout << endl << "Stategy options for players" << endl;
+    cout << "1. Human Player" << endl;
+    cout << "2. Aggressive Computer" << endl;
+    cout << "3. Benevolent Computer" << endl;
+    cout << "4. Neutral Computer" << endl << endl;
     for (Player* p : players) {
-        cout << "Select Strategy# for player " << p->getName() << endl;
-        cout << "#1 Human Player" << endl;
-        cout << "#2 Aggressive Computer" << endl;
-        cout << "#3 Benevolent Computer" << endl;
-        cout << "#4 Neutral Computer" << endl;
-
+        cout << "Select Strategy # for player " << p->getName() << endl;
+        cout << "Select option: ";
         int in;
         cin >> in;
         switch (in) {
