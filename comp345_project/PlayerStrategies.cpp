@@ -556,7 +556,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 	if (orderName == "Deploy") {
 		vector<Country*> potentialTargets = toDefend(p);
-		int armiesToDeploy;
+		int armiesToDeploy = 0;
 		int beginArmies = potentialTargets[0]->getArmies();
 		int endArmies = potentialTargets[potentialTargets.size() - 1]->getArmies();
 		if (beginArmies == endArmies) {
@@ -571,7 +571,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 		p->setNumOfArmies(p->getNumOfArmies() - armiesToDeploy);
 
-		cout << "----- Player " << p->getName() << " deploying " << armiesToDeploy << " armies to " << target->getName() << endl;
+		//cout << "----- Player " << p->getName() << " deploying " << armiesToDeploy << " armies to " << target->getName() << endl;
 
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
@@ -612,7 +612,7 @@ vector<Country*> BenevolentComputer::toDefend(Player* p) {
 	}
 	if (out.size() == 0) {
 		out = p->getOwnedCountries();
-		sort(out.begin(), out.end());
+		sort(out.begin(), out.end(), CountryComparator());
 	}
 
 	return out;
