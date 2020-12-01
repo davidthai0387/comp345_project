@@ -414,9 +414,10 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
-		vector<Country*> toAdvanceCountires = toAttack(p); // Has both enemy finding and moving logic
-		Country* destCountry = toAdvanceCountires[0];
-		Country* sourceCountry = p->getOwnedCountries()[0];
+		vector<Country*> toAdvanceCountries = toAttack(p); // Has both enemy finding and moving logic
+		Country* destCountry = toAdvanceCountries[0];
+		vector<Country*> ownedCountries = p->getOwnedCountries();
+		Country* sourceCountry = ownedCountries[0];
 		for (Country* country : p->getOwnedCountries()) {
 			if (sourceCountry->getArmies() <= country->getArmies())
 				sourceCountry = country;
@@ -454,8 +455,12 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Airlift") {		// advances strongest country's armies to a weaker enemy country
-		vector<Country*> toAttackCountries = toAttack(p);
-		Country* sourceCountry = toAttackCountries[0];
+		vector<Country*> ownedCountries = p->getOwnedCountries();
+		Country* sourceCountry = ownedCountries[0];
+		for (Country* country : p->getOwnedCountries()) {
+			if (sourceCountry->getArmies() <= country->getArmies())
+				sourceCountry = country;
+		}
 		Country* destCountry;
 		for (Country* c : m->getCountries()) {
 			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
