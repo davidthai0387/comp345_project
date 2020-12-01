@@ -421,7 +421,25 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 			if (sourceCountry->getArmies() <= country->getArmies())
 				sourceCountry = country;
 		}
-		p->getPlayerOrders()->add(new Advance(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
+
+
+		int armyValue = 0;
+		bool continentcheck = true;		
+		for (Continent* continent : m->getContinents()) {
+			for (Country* country : continent->getCountries()) {
+				if (country->getPlayer() != p) {
+					continentcheck = false;
+					break;
+				}
+			}
+			if (continentcheck) {
+				armyValue += continent->getControlValue();
+			}
+		}
+		armyValue += (p->getOwnedCountries().size()) / 3;
+
+
+		p->getPlayerOrders()->add(new Advance(p, armyValue + sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
 		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {		// bombs a random country
@@ -483,13 +501,16 @@ vector<Country*> AggressiveComputer::toAttack(Player* p) {
 	for (Country* border : strongest->getBorders()) {
 		if (border->getPlayer()->getName() != p->getName()) {
 			confirmed.push_back(border);
+			cout << "There are enemies in the border." << "\t" << strongest->getName() << "\t" << confirmed[0]->getName() << endl;
 			break;
 		}
 				
 	}
 	// If no enemies in border
 	if (confirmed.size() == 0) {
+		
 		confirmed.push_back(strongest->getBorders()[rand() % (strongest->getBorders().size())]);
+		cout << "There are no enemies in the border." << "\t" << strongest->getName() << "\t" << confirmed[0]->getName() << endl;
 	}
 	
 	return confirmed;
@@ -516,6 +537,7 @@ vector<Country*> AggressiveComputer::toDefend(Player* p) {
 		sort((out.begin()), out.end(), CountryComparator());
 		reverse(out.begin(), out.end());
 	}
+	cout << out[0]->getName() << endl;
 	return out;
 }
 
