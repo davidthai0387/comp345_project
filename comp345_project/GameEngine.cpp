@@ -350,7 +350,13 @@ void GameEngine::issueOrdersPhase()
             Notify();
         }
         i = ++i % players.size();   // i loops from 0 to number of active players
+        cout << "CURRENT PLAYER ORDERS IN LIST: " << endl;
+        for (Orders* o : players[i]->getPlayerOrders()->getList()) {
+            cout << o->getName() << endl;
+        }
     }
+
+    
 
     cout << ">>>>>>>>>> issueOrdersPhase() END" << endl;
 

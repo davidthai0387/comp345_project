@@ -455,11 +455,21 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 			if (sourceCountry->getArmies() <= country->getArmies())
 				sourceCountry = country;
 		}
+
+		int armyValue = 0;
+		for (Orders* order : p->getPlayerOrders()->getList()) {
+			if (order->getName() == "Deploy") {
+				Deploy* d = dynamic_cast<Deploy*>(order);
+				armyValue += d->getArmy();
+			}
+		}
+		armyValue += sourceCountry->getArmies();
+
 		Country* destCountry;
 		for (Country* c : m->getCountries()) {
 			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
 				destCountry = c;
-				p->getPlayerOrders()->add(new Airlift(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
+				p->getPlayerOrders()->add(new Airlift(p, armyValue, sourceCountry, destCountry, m, d));
 				break;
 			}
 		}
