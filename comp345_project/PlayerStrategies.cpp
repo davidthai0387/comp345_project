@@ -424,7 +424,7 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {		// bombs a random country
-		int targetNum = toAttack(p)[rand() % m->getCountries().size()]->getNum();
+		int targetNum = rand() % m->getCountryNames().size();
 
 		p->getPlayerOrders()->add(new Bomb(p, m->getCountries()[targetNum], m));
 	}
@@ -447,15 +447,18 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		}
 	}
 	else if (orderName == "Card") {
-		for (int i = 0; i < p->getHand().size(); i++) {
+		for (int i = p->getHand().size() - 1; i >= 0; i--) {
 			if (p->getHand()[i]->getCardName() == "Bomb") {
 				p->getHand()[i]->play(p, o, m, d, i);
+				continue;
 			}
 			if (p->getHand()[i]->getCardName() == "Airlift") {
 				p->getHand()[i]->play(p, o, m, d, i);
+				continue;
 			}
 			if (p->getHand()[i]->getCardName() == "Reinforcement") {
 				p->getHand()[i]->play(p, o, m, d, i);
+				continue;
 			}
 		}
 		p->setCardPhaseIsOver(true);
