@@ -414,9 +414,10 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
-		vector<Country*> toAdvanceCountires = toAttack(p); // Has both enemy finding and moving logic
-		Country* destCountry = toAdvanceCountires[0];
-		Country* sourceCountry = p->getOwnedCountries()[0];
+		vector<Country*> toAdvanceCountries = toAttack(p); // Has both enemy finding and moving logic
+		Country* destCountry = toAdvanceCountries[0];
+		vector<Country*> ownedCountries = p->getOwnedCountries();
+		Country* sourceCountry = ownedCountries[0];
 		for (Country* country : p->getOwnedCountries()) {
 			if (sourceCountry->getArmies() <= country->getArmies())
 				sourceCountry = country;
@@ -448,13 +449,27 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Airlift") {		// advances strongest country's armies to a weaker enemy country
-		vector<Country*> toAttackCountries = toAttack(p);
-		Country* sourceCountry = toAttackCountries[0];
+		vector<Country*> ownedCountries = p->getOwnedCountries();
+		Country* sourceCountry = ownedCountries[0];
+		for (Country* country : p->getOwnedCountries()) {
+			if (sourceCountry->getArmies() <= country->getArmies())
+				sourceCountry = country;
+		}
+
+		int armyValue = 0;
+		for (Orders* order : p->getPlayerOrders()->getList()) {
+			if (order->getName() == "Deploy") {
+				Deploy* d = dynamic_cast<Deploy*>(order);
+				armyValue += d->getArmy();
+			}
+		}
+		armyValue += sourceCountry->getArmies();
+
 		Country* destCountry;
 		for (Country* c : m->getCountries()) {
 			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
 				destCountry = c;
-				p->getPlayerOrders()->add(new Airlift(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
+				p->getPlayerOrders()->add(new Airlift(p, armyValue, sourceCountry, destCountry, m, d));
 				break;
 			}
 		}
@@ -541,9 +556,9 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 	if (orderName == "Deploy") {
 		vector<Country*> potentialTargets = toDefend(p);
-		int armiesToDeploy;
-		int beginArmies = (*potentialTargets.begin())->getArmies();
-		int endArmies = (*potentialTargets.end())->getArmies();
+		int armiesToDeploy = 0;
+		int beginArmies = potentialTargets[0]->getArmies();
+		int endArmies = potentialTargets[potentialTargets.size() - 1]->getArmies();
 		if (beginArmies == endArmies) {
 			armiesToDeploy = 1;
 		}
@@ -556,7 +571,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 
 		p->setNumOfArmies(p->getNumOfArmies() - armiesToDeploy);
 
-		cout << "----- Player " << p->getName() << " deploying " << armiesToDeploy << " armies to " << target->getName() << endl;
+		//cout << "----- Player " << p->getName() << " deploying " << armiesToDeploy << " armies to " << target->getName() << endl;
 
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
@@ -597,7 +612,7 @@ vector<Country*> BenevolentComputer::toDefend(Player* p) {
 	}
 	if (out.size() == 0) {
 		out = p->getOwnedCountries();
-		sort(out.begin(), out.end());
+		sort(out.begin(), out.end(), CountryComparator());
 	}
 
 	return out;
