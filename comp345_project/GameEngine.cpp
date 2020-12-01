@@ -320,18 +320,18 @@ void GameEngine::issueOrdersPhase()
             }
             break;
         case 1:
-            if (!players[i]->getAdvancePhaseIsOver()) {
-                players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
-            }
-            if (players[i]->getAdvancePhaseIsOver()) {
-                phases[i]++;
-            }
-            break;
-        case 2:
             if (!players[i]->getCardPhaseIsOver()) {
                 players[i]->issueOrder("Card", players[i], players, deck, gameMap);
             }
             if (players[i]->getCardPhaseIsOver()) {
+                phases[i]++;
+            }
+            break;
+        case 2:
+            if (!players[i]->getAdvancePhaseIsOver()) {
+                players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
+            }
+            if (players[i]->getAdvancePhaseIsOver()) {
                 phases[i]++;
             }
             break;

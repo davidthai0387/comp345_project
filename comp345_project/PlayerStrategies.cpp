@@ -557,8 +557,8 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 	if (orderName == "Deploy") {
 		vector<Country*> potentialTargets = toDefend(p);
 		int armiesToDeploy;
-		int beginArmies = (*potentialTargets.begin())->getArmies();
-		int endArmies = (*potentialTargets.end())->getArmies();
+		int beginArmies = potentialTargets[0]->getArmies();
+		int endArmies = potentialTargets[potentialTargets.size() - 1]->getArmies();
 		if (beginArmies == endArmies) {
 			armiesToDeploy = 1;
 		}
