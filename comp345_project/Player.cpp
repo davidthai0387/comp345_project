@@ -163,7 +163,3 @@ void Player::issueOrder(Orders* o) {
 void Player::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
     strategy->issueOrder(orderName, p, o, d, m);
 }
-
-void Player::playCard(vector<Player*> o, Deck* d, Map* m) {
-    (*strategy).playCard(this, o, d, m);
-}
