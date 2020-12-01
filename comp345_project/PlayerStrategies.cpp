@@ -10,12 +10,21 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 	if (orderName == "Bomb") {
 		string terr;
 		Country* target;
-		cout << "Where would you like bomb? ";
-		cin >> terr;
-		for (Country* country : m->getCountries()) {
-			if (country->getName() == terr) {
-				target = country;
-				break;
+		while (true) {
+			try {
+				cout << "Where would you like bomb? ";
+				cin >> terr;
+				for (Country* country : m->getCountries()) {
+					if (country->getName() == terr) {
+						target = country;
+						break;
+					}
+				}
+			}
+			catch (...) {
+				cout << "This country does not exist on the map of this world." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
 		p->getPlayerOrders()->add(new Bomb(p, target, m));
@@ -144,37 +153,87 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 	else if (orderName == "Blockade") {
 		string terr;
 		Country* target;
-		cout << "Where would you like to form a blockade? ";
-		cin >> terr;
-		for (Country* country : m->getCountries()) {
-			if (country->getName() == terr) {
-				target = country;
-				break;
+		while (true) {
+			try {
+				cout << "Where would you like to form a blockade? ";
+				cin >> terr;
+				for (Country* country : m->getCountries()) {
+					if (country->getName() == terr) {
+						target = country;
+					}
+				}
+			}
+			catch (...) {
+				cout << "This country does not exist on the map of this world... Please try again...";
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
+		
 		p->getPlayerOrders()->add(new Blockade(p, target, m));			
 	}
 	else if (orderName == "Airlift") {
 		int army;
-		string terr1;
-		string terr2;
+		int terr1;
+		int terr2;
 		Country* target1;
 		Country* target2;
+		vector<Country*> potential;
 
-		cout << "From which of your terriories would you deploy from? ";
-		cin >> terr1;
-		cout << "How many troops would you like to deploy? ";
-		cin >> terr2;
-		for (Country* country : m->getCountries()) {
-			if (country->getName() == terr1) {
-				target1 = country;
-				break;
+		while (true) {
+			try {
+				int counter = 1;
+				for (Country* country : p->getOwnedCountries()) {
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					counter++;
+				}
+				cout << "From which of your terriories would you deploy from?\nEnter the number of the country: ";
+				cin >> terr1;
+				terr1 -= 1;
+				target1 = p->getOwnedCountries()[terr1];
+			}
+			catch (...) {
+				cout << "There is no such country that you own... Try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
-		for (Country* country : m->getCountries()) {
-			if (country->getName() == terr2) {
-				target2 = country;
+		
+		while (true) {
+			try {
+				int counter = 1;
+				for (Country* country : m->getCountries()) {
+					if (country->getPlayer() != p) {
+						cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+						potential.push_back(country);
+						counter++;
+					}
+				}
+				cout << "Where would you like to airlift to?\nEnter the number of the country: ";
+				cin >> terr2;
+				terr2 -= 1;
+				target2 = potential[terr2];
+			}
+			catch (...) {
+				cout << "There is no such country that you own... Try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+		}
+		
+		while (army < 0) {
+			try {
+				cout << "How many soldiers would you like to airlift with? ";
+				cin >> army;
+				if (army < 0) {
+					throw exception();
+				}
 				break;
+			}
+			catch (...) {
+				cout << "That is not a valid input. Please try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
 		p->getPlayerOrders()->add(new Airlift(p, army, target1, target2, m, d));
@@ -182,25 +241,49 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 	else if (orderName == "Negotiate") {
 		string playername;
 		Player* targetplayer;
-		cout << "Which player would you like to negociate with? ";
-		cin >> playername;
-		for (Player* player : o) {
-			if (player->getName() == playername) {
-				targetplayer = player;
-				break;
+
+		while (true) {
+			try {
+				for (Player* player : o) {
+					cout << "Player " << player->getName() << endl;
+				}
+				cout << "Which player would you like to negociate with? ";
+				cin >> playername;
+				for (Player* player : o) {
+					if (player->getName() == playername) {
+						targetplayer = player;
+						break;
+					}
+				}
+			}
+			catch (...) {
+				cout << "That is not a valid player. Please try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
+		
 		p->getPlayerOrders()->add(new Negotiate(p, targetplayer, m));
 	}
 	else if (orderName == "Reinforcement") {
-		string terr;
+		int terr;
 		Country* target;
-		cout << "Where would you like to reinforce? ";
-		cin >> terr;
-		for (Country* country : m->getCountries()) {
-			if (country->getName() == terr) {
-				target = country;
-				break;
+		while (true) {
+			try {
+				int counter = 1;
+				for (Country* country : p->getOwnedCountries()) {
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					counter++;
+				}
+				cout << "Where would you like to reinforce?\nEnter the country number: ";
+				cin >> terr;
+				terr -= 1;
+				target = p->getOwnedCountries()[terr];
+			}
+			catch (...) {
+				cout << "That is not a valid country. Please try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
 		p->getPlayerOrders()->add(new Deploy(p, 5, target, m));
