@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 
+
 // ----------HUMAN PLAYER----------
 
 void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
@@ -512,7 +513,7 @@ vector<Country*> AggressiveComputer::toDefend(Player* p) {
 		}
 	}
 	else {		// if some countries have armies, sort those countries by number of armies and reverse (index 0 should have country with most armies)
-		sort(out.begin(), out.end());
+		sort((out.begin()), out.end(), CountryComparator());
 		reverse(out.begin(), out.end());
 	}
 	return out;

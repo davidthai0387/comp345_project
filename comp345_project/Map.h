@@ -24,7 +24,7 @@ public:
 	vector<Country*> getBorders();
 	void setBorders(vector<Country*> b);
 	void addBorder(Country* c);
-	friend bool operator<(const Country& a, const Country& b);
+	bool operator<(const Country& rhs) const;
 private:
 	int num;
 	std::string name;
@@ -32,6 +32,11 @@ private:
 	Player* player;
 	int armies;
 	vector<Country*> borders;
+};
+
+struct CountryComparator {
+public:
+	bool operator() (Country* a, Country* b);
 };
 
 //
