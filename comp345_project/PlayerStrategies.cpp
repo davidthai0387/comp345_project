@@ -36,6 +36,9 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		cin >> army;
 		vector<Country*> defending = toDefend(p);
 		target = defending[0];
+		if (army > p->getNumOfArmies()) {
+			army = p->getNumOfArmies();
+		}
 		p->getPlayerOrders()->add(new Deploy(p, army, target, m));
 		p->setNumOfArmies(p->getNumOfArmies()-army);
 	}

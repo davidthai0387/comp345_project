@@ -552,18 +552,18 @@ void GameEngine::setNbOfPlayers() {
 
 void GameEngine::toggleObservers() {
     string answer;
-    cout << "Would you like to activate the observers for this game? (Yes or No): ";
+    cout << "Would you like to activate the observers for this game? (y or n): ";
     cin >> answer;
-    while(!equals(answer,"yes") && !equals(answer,"no")) {
+    while(!equals(answer,"y") && !equals(answer,"n")) {
        cout << "Your answer has been deeemd invalid. Please enter again: ";
        cin >> answer;
     }
-    if(equals(answer,"yes")) {
+    if(equals(answer,"y")) {
         setObserverStatus(true);
         new PhaseObserver(this);
         new GameStatsObserver(this);
     }  
-    else if(equals(answer,"no"))
+    else if(equals(answer,"n"))
         setObserverStatus(false);
 }
 
