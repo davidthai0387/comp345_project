@@ -810,7 +810,7 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
             loopNum++;
         }
         numDigits = countDigits(s);
-        s = s.substr(s.length()-numDigits-1);
+        s = s.substr(s.length()-numDigits);
         try {
             borders.push_back(stoi(s));
         } 
