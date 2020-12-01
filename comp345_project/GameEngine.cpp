@@ -281,7 +281,7 @@ void GameEngine::reinforcementPhase()
             }
         }
         armyValue += (player->getOwnedCountries().size()) / 3;
-        player->setNumOfArmies(armyValue);
+        player->setNumOfArmies(player->getNumOfArmies() + armyValue);
 
         cout << player->getName() << ": " << armyValue << endl;
 
@@ -324,7 +324,7 @@ void GameEngine::issueOrdersPhase()
                 players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
             }
             else {
-                continue;
+                phases[i]++;
             }
             break;
         case 2:
@@ -332,7 +332,7 @@ void GameEngine::issueOrdersPhase()
                 players[i]->issueOrder("Card", players[i], players, deck, gameMap);
             }
             else {
-                continue;
+                phases[i]++;
             }
             break;
         }
@@ -469,7 +469,7 @@ void GameEngine::executeOrdersPhase()
             if (players[i]->getPlayerOrders()->getList()[0]->execute()) {
                 players[i]->getPlayerOrders()->setCountryConquered(true);
             }
-            players[i]->getPlayerOrders()->getList().erase(players[i]->getPlayerOrders()->getList().begin());   // delete first order in ordersList
+            players[i]->getPlayerOrders()->remove(0);   // delete first order in ordersList
         }
 
         if (players[i]->getPlayerOrders()->getCountryConquered()) {
