@@ -341,6 +341,13 @@ void GameEngine::issueOrdersPhase()
         for (Player* p : players) {
             if (!p->getAdvancePhaseIsOver() || !p->getCardPhaseIsOver())
                 roundIsOver = false;
+            
+            
+        }
+        //Observer
+        if (activateObservers) {
+            setPhase("Player " + players[0]->getName() + ": Issuing Orders Advance Phase");
+            Notify();
         }
         i = ++i % players.size();   // i loops from 0 to number of active players
     }

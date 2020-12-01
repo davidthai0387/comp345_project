@@ -422,25 +422,19 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 			if (sourceCountry->getArmies() <= country->getArmies())
 				sourceCountry = country;
 		}
-
+		
 
 		int armyValue = 0;
-		bool continentcheck = true;		
-		for (Continent* continent : m->getContinents()) {
-			for (Country* country : continent->getCountries()) {
-				if (country->getPlayer() != p) {
-					continentcheck = false;
-					break;
-				}
-			}
-			if (continentcheck) {
-				armyValue += continent->getControlValue();
+		for (Orders* order : p->getPlayerOrders()->getList()) {
+			if (order->getName() == "Deploy") {
+				Deploy* d = dynamic_cast<Deploy*>(order);
+				armyValue += d->getArmy();
 			}
 		}
-		armyValue += (p->getOwnedCountries().size()) / 3;
+		armyValue += sourceCountry->getArmies();
 
 
-		p->getPlayerOrders()->add(new Advance(p, armyValue + sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
+		p->getPlayerOrders()->add(new Advance(p, armyValue, sourceCountry, destCountry, m, d));
 		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {		// bombs a random country
