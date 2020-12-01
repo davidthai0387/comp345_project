@@ -403,7 +403,7 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		
 	if (orderName == "Deploy") {
 		int armiesToDeploy = p->getNumOfArmies();
-		p->setNumOfArmies(armiesToDeploy);
+		p->setNumOfArmies(0);
 		vector<Country*> potentialTargets = toDefend(p);
 		Country* target = potentialTargets[0];
 
@@ -418,6 +418,7 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 				sourceCountry = country;
 		}
 		p->getPlayerOrders()->add(new Advance(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
+		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {		// bombs a random country
 		int targetNum = toAttack(p)[rand() % m->getCountries().size()]->getNum();
