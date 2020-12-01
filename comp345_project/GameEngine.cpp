@@ -315,7 +315,7 @@ void GameEngine::issueOrdersPhase()
             if (players[i]->getNumOfArmies() > 0) {
                 players[i]->issueOrder("Deploy", players[i], players, deck, gameMap);
             }
-            else {
+            if (players[i]->getNumOfArmies() <= 0) {
                 phases[i]++;
             }
             break;
@@ -323,7 +323,7 @@ void GameEngine::issueOrdersPhase()
             if (!players[i]->getAdvancePhaseIsOver()) {
                 players[i]->issueOrder("Advance", players[i], players, deck, gameMap);
             }
-            else {
+            if (players[i]->getAdvancePhaseIsOver()) {
                 phases[i]++;
             }
             break;
@@ -331,7 +331,7 @@ void GameEngine::issueOrdersPhase()
             if (!players[i]->getCardPhaseIsOver()) {
                 players[i]->issueOrder("Card", players[i], players, deck, gameMap);
             }
-            else {
+            if (players[i]->getCardPhaseIsOver()) {
                 phases[i]++;
             }
             break;
