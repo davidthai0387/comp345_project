@@ -438,7 +438,7 @@ void AggressiveComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		for (Country* c : m->getCountries()) {
 			if (c->getArmies() < sourceCountry->getArmies() && c->getPlayer() != p) {
 				destCountry = c;
-				p->getPlayerOrders()->add(new Airlift(p, 111, sourceCountry, destCountry, m, d));
+				p->getPlayerOrders()->add(new Airlift(p, sourceCountry->getArmies(), sourceCountry, destCountry, m, d));
 				break;
 			}
 		}

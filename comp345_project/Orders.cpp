@@ -79,15 +79,8 @@ Deploy::~Deploy() {
 
 // Methods
 bool Deploy::validate() {
-	if (getArmy() <= this->orderIssuer->getNumOfArmies() && getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
-		if (orderIssuer->getNumOfArmies() < 0) {
-			armiesToDeploy -= orderIssuer->getNumOfArmies();
-			orderIssuer->setNumOfArmies(0);
-			if (armiesToDeploy > 0)
-				return true;
-			else
-				return false;
-		}
+	if (/*getArmy() <= this->orderIssuer->getNumOfArmies() && */getArmy() > 0 && this->orderIssuer->getCountryNames().find(getCountry()->getName()) != string::npos) {
+		return true;
 	}
 	return false;
 };

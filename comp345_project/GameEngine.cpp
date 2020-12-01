@@ -469,7 +469,7 @@ void GameEngine::executeOrdersPhase()
             if (players[i]->getPlayerOrders()->getList()[0]->execute()) {
                 players[i]->getPlayerOrders()->setCountryConquered(true);
             }
-            players[i]->getPlayerOrders()->getList().erase(players[i]->getPlayerOrders()->getList().begin());   // delete first order in ordersList
+            players[i]->getPlayerOrders()->remove(0);   // delete first order in ordersList
         }
 
         if (players[i]->getPlayerOrders()->getCountryConquered()) {

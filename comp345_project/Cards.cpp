@@ -72,7 +72,7 @@ BombCard& BombCard::operator=(const BombCard& bc) {
 
 void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(h->getHand()[i]);
 
     
@@ -84,7 +84,7 @@ void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int 
 
 void BombCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
     p->issueOrder("Bomb", p, o, 0, m);
@@ -114,7 +114,7 @@ ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& rc) {
 
 void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
 
     d->addToDeck(h->getHand()[i]);
 
@@ -127,7 +127,7 @@ void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand
 
 void ReinforcementCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
     p->issueOrder("Reinforcement", p, o, d, m);
@@ -169,7 +169,7 @@ void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, 
 
 void BlockadeCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
     p->issueOrder("Blockade", p, o, 0, m);
@@ -217,7 +217,7 @@ void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h, i
 
 void AirliftCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
     p->issueOrder("Airlift", p, o, 0, m);
@@ -263,7 +263,7 @@ void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, Hand* h,
 
 void DiplomacyCard::play(Player* p, vector<Player*> o, Map* m, Deck* d, int i)
 {
-    cout << "Playing " << getCardName() << " card" << endl;
+    cout << "Player " << p->getName() << " playing " << getCardName() << " card" << endl;
     d->addToDeck(p->getHand()[i]);
 
     p->issueOrder("Negotiate", p, o, 0, m);
