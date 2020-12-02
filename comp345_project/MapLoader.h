@@ -11,6 +11,7 @@ public:
     MapLoader();
     MapLoader(const MapLoader& ml);
     MapLoader operator=(const MapLoader& ml);
+    friend ostream & operator<<(ostream &out, const MapLoader &ml); 
     virtual vector<string> read();
     virtual int getNumOfCountries();
     virtual int getNumOfContinents();
@@ -37,6 +38,7 @@ class ConquestFileReader {
         ConquestFileReader(string text);
         ConquestFileReader operator=(const ConquestFileReader& cfr);
         ConquestFileReader(const ConquestFileReader& cfr);
+        friend ostream & operator<<(ostream &out, const ConquestFileReader &cfr); 
         int getNumOfCountries();
         int getNumOfContinents();
         vector<string> read();

@@ -38,6 +38,11 @@ MapLoader MapLoader::operator=(const MapLoader& ml) {
     return *this;
 };
 
+/*Stream insertion operator for ConquestFileReader*/
+ostream& operator<<(ostream &os, const MapLoader& ml) {
+    return os;
+}
+
 /*read() method will read the .map file and split it into individuals sections.
 Each section will be represented by an index in a vector of strings. The section will
 be (in order): file header, files, continents, countries and borders.
@@ -455,6 +460,11 @@ ConquestFileReader::ConquestFileReader(const ConquestFileReader& cfr){
     numOfCountries = cfr.numOfCountries;
 }
 
+/*Stream insertion operator for ConquestFileReader*/
+ostream& operator<<(ostream &os, const ConquestFileReader& cfr) {
+    return os;
+}
+
 /*Destructor*/
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter() {
     delete conquest_;
@@ -568,10 +578,7 @@ bool ConquestFileReader::checkContinents(string text) {
         try {
             score.push_back(stoi(s));
         }
-        catch (invalid_argument& e) {
-            return false;
-        }
-        catch (out_of_range& e) {
+        catch (...) {
             return false;
         }
     }
@@ -670,10 +677,7 @@ bool ConquestFileReader::checkCountries(string text) {
                 try {
                     xCoordinate.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -681,10 +685,7 @@ bool ConquestFileReader::checkCountries(string text) {
                 try {
                     yCoordinate.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -801,22 +802,18 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
                 try {
                     borders.push_back(stoi(token)); 
                 } 
-                catch (invalid_argument& e) {
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                 }
             }
             s.erase(0, pos + delimiter.length());
             loopNum++;
         }
         numDigits = countDigits(s);
-        s = s.substr(s.length()-numDigits);
+        s = s.substr(s.length()-numDigits-1);
         try {
             borders.push_back(stoi(s));
         } 
-        catch (invalid_argument& e) {
-        }
-        catch (out_of_range& e) {
+        catch (...) {
         }
         parsedBorders.push_back(borders);
     }
