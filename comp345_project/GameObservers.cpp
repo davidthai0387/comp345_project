@@ -50,7 +50,7 @@ PhaseObserver::~PhaseObserver(){
 
 // Methods
 void PhaseObserver::update(){
-    cout << "---------------------------------------- " << subject -> getPhase() << "----------------------------------------" << endl;
+    cout << "\n\n---------------------------------------- " << subject -> getPhase() << "----------------------------------------" << endl;
 }
 
 
