@@ -180,7 +180,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			//vector<Country*> def = toDefend(p);
 
 			cout << "Here is a list of your countries that can reach your destination: " << endl;
-			for (Country* country : reachable[num - 1]->getBorders()) {
+			for (Country* country : reachable[num]->getBorders()) {
 				if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0 || find(deployed.begin(), deployed.end(), country) != deployed.end()) {
 					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
 					potential.push_back(country);
