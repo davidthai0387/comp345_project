@@ -119,6 +119,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		}
 		p->getPlayerOrders()->add(new Advance(p, army, potentialSources[src], target, m, d));
 		p->setAdvancePhaseIsOver(true);
+
 	}
 	else if (orderName == "Blockade") {
 		int terr;
