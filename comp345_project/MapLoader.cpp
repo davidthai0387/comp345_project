@@ -153,11 +153,8 @@ bool MapLoader::checkContinents(string text) {
                 try {
                     controlValue.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
-                    return false;
+                catch (...) {
+                   return false;
                 }
             }
             s.erase(0, pos + delimiter.length());
@@ -258,10 +255,7 @@ bool MapLoader::checkCountries(string text) {
                 try {
                     countryNum.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -274,10 +268,7 @@ bool MapLoader::checkCountries(string text) {
                 try {
                     continentsNum.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -285,10 +276,7 @@ bool MapLoader::checkCountries(string text) {
                 try {
                     xCoordinate.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -298,10 +286,7 @@ bool MapLoader::checkCountries(string text) {
         try {
             yCoordinate.push_back(stoi(s));
         }
-        catch (invalid_argument& e) {
-            return false;
-        }
-        catch (out_of_range& e) {
+        catch (...) {
             return false;
         }
     }
@@ -416,16 +401,14 @@ vector<vector<int>> MapLoader::parseBorders(string text) {
             try {
                 borders.push_back(stoi(token));
             }
-            catch (invalid_argument& e) {
-
+            catch (...) {
             }
             s.erase(0, pos + delimiter.length());
         }
         try {
             borders.push_back(stoi(s));
         }
-        catch (invalid_argument& e) {
-
+        catch (...) {
         }
         parsedBorders.push_back(borders);
     }
@@ -809,7 +792,7 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
             loopNum++;
         }
         numDigits = countDigits(s);
-        s = s.substr(s.length()-numDigits-1);
+        s = s.substr(s.length()-numDigits);
         try {
             borders.push_back(stoi(s));
         } 
