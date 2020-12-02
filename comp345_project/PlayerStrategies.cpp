@@ -59,6 +59,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 				cin >> choice;
 				if (choice != 1 && choice != 2)
 					throw exception();
+				break;
 			} catch (...){
 				cout << "That is not a valid option. Please try again..." << endl;
 				cin.clear();
@@ -74,11 +75,26 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 					counter++;
 				}
 			}
+
+			for (Orders* order : p->getPlayerOrders()->getList()) {
+				if (order->getName() == "Deploy") {
+					Deploy* d = dynamic_cast<Deploy*>(order);
+					for (Country* country : atk[0]->getBorders()) {
+						if (country->getPlayer()->getName() == p->getName() && find(potential.begin(), potential.end(), country) == potential.end()) {
+							cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+							counter++;
+							potential.push_back(country);
+						}
+					}
+				}
+			}
+
+
 			cout << "Where would you like to advance from?\nChoose the country number where you like as the source of your advance: ";
-			while (src < 0 && src >= counter) {
+			while (true) {
 				try {
 					cin >> src;
-					if (src < 0) {
+					if (src < 0 && src > counter) {
 						throw exception();
 					}
 					break;
@@ -92,7 +108,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			src -= 1;
 
 			cout << "How many soldiers would you like to advance with? ";
-			while (army < 0) {
+			while (true) {
 				try {
 					cin >> army;
 					if (army < 0) {
@@ -243,18 +259,23 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		p->getPlayerOrders()->add(new Airlift(p, army, target1, target2, m, d));
 	}
 	else if (orderName == "Negotiate") {
-		string playername;
+		int playernumber;
 		Player* targetplayer;
 
 		while (true) {
 			try {
+				int counter = 1;
 				for (Player* player : o) {
-					cout << "Player " << player->getName() << endl;
+					cout << "Player " << counter << "\t" << player->getName() << endl;
+					counter++;
 				}
-				cout << "Which player would you like to negociate with? ";
-				cin >> playername;
+				cout << "Which player would you like to negociate with (Enter the player number)? ";
+				cin >> playernumber;
+				playernumber -= 1;
+				if ((playernumber < 0 && playernumber > o.size()) || o[playernumber] != p)
+					throw exception();
 				for (Player* player : o) {
-					if (player->getName() == playername) {
+					if (player == o[playernumber]) {
 						targetplayer = player;
 						break;
 					}
@@ -296,18 +317,38 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 	else if (orderName == "Card") {
 		int cardchoice;
 		string cont;
-		cout << "Here are your cards: " << endl;
-		for (int i = 0; i < p->getHand().size(); i++){
-			cout << "Card #" << i+1 << "\t" << p->getHand()[i]->getCardName() << endl;
+		while (true) {
+			try {
+				cout << "Here are your cards: " << endl;
+				for (int i = 0; i < p->getHand().size(); i++) {
+					cout << "Card #" << i + 1 << "\t" << p->getHand()[i]->getCardName() << endl;
+				}
+				cout << "Please choose the card number you would like to play (Enter 0 if you would not like to play a card): ";
+				cin >> cardchoice;
+				if (cardchoice == 0) {
+					p->setCardPhaseIsOver(1);
+					break;
+				}
+				else if (cardchoice > p->getHand().size())
+					throw exception();
+				else {
+					cardchoice -= 1;
+					p->getHand()[cardchoice]->play(p, o, m, d, cardchoice);
+					cout << "Would you like to continue playing more cards?(y/n) ";
+					cin >> cont;
+					if (cont == "n") {
+						p->setCardPhaseIsOver(1);
+						break;
+					}
+				}
+			}
+			catch (...) {
+				cout << "That choice is invalid. Please try again..." << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			
 		}
-		cout << "Please choose the card number you would like to play: ";
-		cin >> cardchoice;
-		cardchoice -= 1;
-		p->getHand()[cardchoice]->play(p, o, m, d, cardchoice);
-		cout << "Would you like to continue playing more cards?(y/n) ";
-		cin >> cont;
-		if (cont == "n")
-			p->setCardPhaseIsOver(1);
 	}
 }
 
@@ -340,7 +381,7 @@ vector<Country*> HumanPlayer::toAttack(Player* p) {
 			// Player choice
 			cout << "Please enter the number of a country that you would like to attack: ";
 			cin >> choice;
-			if (choice > 0) {
+			if (choice > 0 && choice <= potential.size()) {
 				choice -= 1;
 				confirmed.push_back(potential[choice]);
 				break;
@@ -383,15 +424,16 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 			// Player choice
 			cout << "Please enter the number of a country that you would like to defend: ";
 			cin >> choice;
-			if (choice > 0) {
+			if (choice > 0 && choice <= potential.size()) {
 				choice -= 1;
 				confirmed.push_back(potential[choice]);
+				break;
 			}
 			else {
 				throw exception();
 			}
 		}
-		catch (exception e) {
+		catch (...) {
 			cout << "That was not a valid choice. Please try again..." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
