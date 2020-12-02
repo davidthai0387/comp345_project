@@ -568,10 +568,7 @@ bool ConquestFileReader::checkContinents(string text) {
         try {
             score.push_back(stoi(s));
         }
-        catch (invalid_argument& e) {
-            return false;
-        }
-        catch (out_of_range& e) {
+        catch (...) {
             return false;
         }
     }
@@ -670,10 +667,7 @@ bool ConquestFileReader::checkCountries(string text) {
                 try {
                     xCoordinate.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -681,10 +675,7 @@ bool ConquestFileReader::checkCountries(string text) {
                 try {
                     yCoordinate.push_back(stoi(token));
                 }
-                catch (invalid_argument& e) {
-                    return false;
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                     return false;
                 }
             }
@@ -801,22 +792,18 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
                 try {
                     borders.push_back(stoi(token)); 
                 } 
-                catch (invalid_argument& e) {
-                }
-                catch (out_of_range& e) {
+                catch (...) {
                 }
             }
             s.erase(0, pos + delimiter.length());
             loopNum++;
         }
         numDigits = countDigits(s);
-        s = s.substr(s.length()-numDigits);
+        s = s.substr(s.length()-numDigits-1);
         try {
             borders.push_back(stoi(s));
         } 
-        catch (invalid_argument& e) {
-        }
-        catch (out_of_range& e) {
+        catch (...) {
         }
         parsedBorders.push_back(borders);
     }
