@@ -38,6 +38,11 @@ MapLoader MapLoader::operator=(const MapLoader& ml) {
     return *this;
 };
 
+/*Stream insertion operator for ConquestFileReader*/
+ostream& operator<<(ostream &os, const MapLoader& ml) {
+    return os;
+}
+
 /*read() method will read the .map file and split it into individuals sections.
 Each section will be represented by an index in a vector of strings. The section will
 be (in order): file header, files, continents, countries and borders.
@@ -455,6 +460,11 @@ ConquestFileReader::ConquestFileReader(const ConquestFileReader& cfr){
     numOfCountries = cfr.numOfCountries;
 }
 
+/*Stream insertion operator for ConquestFileReader*/
+ostream& operator<<(ostream &os, const ConquestFileReader& cfr) {
+    return os;
+}
+
 /*Destructor*/
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter() {
     delete conquest_;
@@ -799,7 +809,7 @@ vector<vector<int>> ConquestFileReader::parseBorders(string text) {
             loopNum++;
         }
         numDigits = countDigits(s);
-        s = s.substr(s.length()-numDigits);
+        s = s.substr(s.length()-numDigits-1);
         try {
             borders.push_back(stoi(s));
         } 
