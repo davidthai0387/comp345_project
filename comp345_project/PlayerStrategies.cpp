@@ -868,6 +868,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
+		// no need to advance since all the armies are already deployed equally to each country
 		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {
