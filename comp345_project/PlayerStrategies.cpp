@@ -136,16 +136,18 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//		if (choice != 1 && choice != 2)
 		//			throw exception();
 		//		break;
-		//	} catch (...){
+		//	}
+		//	catch (...) {
 		//		cout << "That is not a valid option. Please try again..." << endl;
 		//		cin.clear();
 		//		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		//	}
 		//}
 		//if (choice == 1) {
+
 		//	vector<Country*> atk = toAttack(p);
 		//	for (Country* country : atk[0]->getBorders()) {
-		//		if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0) {
+		//		if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0 && find(potential.begin(), potential.end(), country) == potential.end()) {
 		//			cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
 		//			potential.push_back(country);
 		//			counter++;
@@ -155,30 +157,42 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//	for (Orders* order : p->getPlayerOrders()->getList()) {
 		//		if (order->getName() == "Deploy") {
 		//			Deploy* d = dynamic_cast<Deploy*>(order);
-		//			for (Country* country : atk[0]->getBorders()) {
-		//				if (country->getPlayer()->getName() == p->getName() && find(potential.begin(), potential.end(), country) == potential.end()) {
-		//					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
-		//					potential.push_back(country);
+		//			for (Country* country : d->getCountry()->getBorders()) {
+		//				if (country == atk[0] && find(potential.begin(), potential.end(), country) == potential.end()) {
+		//					cout << "Country #" << counter << "\t" << d->getCountry()->getName() << "\tArmies: " << d->getArmy() << endl;
+		//					potential.push_back(d->getCountry());
 		//					counter++;
+		//					break;
 		//				}
 		//			}
 		//		}
 		//	}
 
+		//	/*vector<Country*>::iterator uni;
+		//	uni = unique(potential.begin(), potential.end());
+		//	potential.resize(distance(potential.begin(), uni));
+		//	for (uni = potential.begin(); uni != potential.end(); ++uni) {
+		//		cout << *uni << " ";
 
-		//	cout << "Where would you like to advance from?\nChoose the country number where you like as the source of your advance: ";
+		//	}*/
+		//	/*for (Country* country : potential) {
+
+		//	}*/
+
+		//	cout << "\nWhere would you like to advance from? (If no countries are displayed, enter 0)\nChoose the country number where you like as the source of your advance: ";
 		//	while (true) {
 		//		try {
 		//			cin >> src;
-		//			
-		//			if (src <= 0 || src > potential.size()) {
+		//			if (src == 0)
+		//				break;
+		//			if (src < 0 || src > potential.size()) {
 		//				throw exception();
 		//			}
 		//			else {
 		//				src -= 1;
 		//				break;
 		//			}
-		//				
+
 		//		}
 		//		catch (...) {
 		//			cout << "That is not a valid input. Please try again..." << endl;
@@ -202,7 +216,10 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		//		}
 		//	}
-		//	p->getPlayerOrders()->add(new Advance(p, army, potential[src], atk[0], m, d));
+		//	if (src != 0)
+		//		p->getPlayerOrders()->add(new Advance(p, army, potential[src], atk[0], m, d));
+		//	else
+		//		cout << "The source country was not reachable. The advance order was not created..." << endl;
 		//	p->setAdvancePhaseIsOver(true);
 		//}
 		//else if (choice == 2) {
@@ -247,7 +264,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//	//vector<Country*> def = toDefend(p);
 
 		//	cout << "Here is a list of your countries that can reach your destination: " << endl;
-		//	for (Country* country : reachable[num]->getBorders()) {
+		//	for (Country* country : reachable[num - 1]->getBorders()) {
 		//		if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0 || find(deployed.begin(), deployed.end(), country) != deployed.end()) {
 		//			cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
 		//			potential.push_back(country);
@@ -256,8 +273,8 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//	}
 
 		//	if (potential.size() == 0) {
-		//		cout << "This country is currently unreachable" << endl;\
-		//		p->setAdvancePhaseIsOver(true);
+		//		cout << "This country is currently unreachable" << endl; \
+		//			p->setAdvancePhaseIsOver(true);
 		//		return;
 		//	}
 
@@ -296,6 +313,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		//	p->getPlayerOrders()->add(new Advance(p, army, potential[src], reachable[num], m, d));
 		//	p->setAdvancePhaseIsOver(true);
 		//}
+
 	}
 	else if (orderName == "Blockade") {
 		int terr;
@@ -409,9 +427,9 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 				}
 				cout << "Which player would you like to negociate with (Enter the player number)? ";
 				cin >> playernumber;
-				playernumber -= 1;
 				if (playernumber <= 0 || playernumber > o.size())
 					throw exception();
+				playernumber -= 1;
 				if (o[playernumber] != p) {
 					targetplayer = o[playernumber];
 					break;
@@ -493,7 +511,8 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 							cin.ignore(numeric_limits<streamsize>::max(), '\n');
 						}
 					}
-					
+					if (cont == "n")
+						break;
 
 				}
 			}
@@ -594,7 +613,7 @@ vector<Country*> HumanPlayer::toAttack(Player* p) {
 	//// Potential list initialization
 	//for (Country* country : p->getOwnedCountries()) {
 	//	for (Country* border : country->getBorders()) {
-	//		if(border->getPlayer()->getName() != p->getName()){
+	//		if(border->getPlayer()->getName() != p->getName() && find(potential.begin(), potential.end(), border) == potential.end()){
 	//			potential.push_back(border);
 	//		}
 	//	}
