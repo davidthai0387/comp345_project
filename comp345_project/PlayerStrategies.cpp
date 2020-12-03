@@ -71,8 +71,27 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		int counter = 1;
 		vector<Country*> potentialSources;
 		for (Country* country : target->getBorders()) {
-			if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0 || find(deployed.begin(), deployed.end(), country) != deployed.end()) {
-				cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
+			if (country->getPlayer()->getName() == p->getName() && country->getArmies() > 0 || find(deployed.begin(), deployed.end(), country) != deployed.end()) {		// check if it's an ally country and there are armies on it
+				if (find(deployed.begin(), deployed.end(), country) != deployed.end()) {		// check if this country has been deployed to this turn
+					int additionalArmies = 0;
+					for (Country* d : deployed) {		// loop through all deployed countries
+						if (d == country) {		// find the country that is currently being displayed
+							for (Orders* o : p->getPlayerOrders()->getList()) {		// loops through all orders
+								if (o->getName() == "Deploy") {		// find only deploy orders
+									Deploy* deployOrder = dynamic_cast<Deploy*>(o);
+									if (deployOrder->getCountry() == d) {		// if the deploy order target is the country being deployed
+										additionalArmies += deployOrder->getArmy();		// keep count of the numbers of armies deployed to this country
+									}
+								}
+							}
+						}
+					}
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+				}
+				else {
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
+				}
+
 				potentialSources.push_back(country);
 				counter++;
 			}
@@ -428,10 +447,39 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 			// Printing defending option list
 			cout << "Here is a list of your owned countries:" << endl;
 			int counter = 1;
+			// creates the vector of countries that were deployed to this turn
+			vector<Country*> deployed;
+			for (Orders* o : p->getPlayerOrders()->getList()) {
+				if (o->getName() == "Deploy") {
+					Deploy* d = dynamic_cast<Deploy*>(o);
+					if (d->getArmy() > 0) {
+						deployed.push_back(d->getCountry());
+					}
+				}
+			}
 			for (Country* country : potential) {
-				cout << "Country #" << left << setw (5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
+				if (find(deployed.begin(), deployed.end(), country) != deployed.end()) {		// check if it's an ally country and there are armies on it
+					int additionalArmies = 0;
+					for (Country* d : deployed) {		// loop through all deployed countries
+						if (d == country) {		// find the country that is currently being displayed
+							for (Orders* o : p->getPlayerOrders()->getList()) {		// loops through all orders
+								if (o->getName() == "Deploy") {		// find only deploy orders
+									Deploy* deployOrder = dynamic_cast<Deploy*>(o);
+									if (deployOrder->getCountry() == d) {		// if the deploy order target is the country being deployed
+										additionalArmies += deployOrder->getArmy();		// keep count of the numbers of armies deployed to this country
+									}
+								}
+							}
+						}
+					}
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+				}
+				else {
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
+				}
 				counter++;
 			}
+			
 
 			// Player choice
 			cout << "Please enter the number of a country that you would like to defend: ";
@@ -630,6 +678,7 @@ void BenevolentComputer::issueOrder(string orderName, Player* p, vector<Player*>
 		p->getPlayerOrders()->add(new Deploy(p, armiesToDeploy, target, m));
 	}
 	else if (orderName == "Advance") {
+		// no need to advance since all the armies are already deployed equally to each country
 		p->setAdvancePhaseIsOver(true);
 	}
 	else if (orderName == "Bomb") {
@@ -677,11 +726,19 @@ vector<Country*> BenevolentComputer::toDefend(Player* p) {
 
 void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
-	cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
 
-	p->setNumOfArmies(0);
-	p->setAdvancePhaseIsOver(true);
-	p->setCardPhaseIsOver(true);
+	if (orderName == "Deploy") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setNumOfArmies(0);
+	}
+	else if (orderName == "Advance") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setAdvancePhaseIsOver(true);
+	}
+	else if (orderName == "Card") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setCardPhaseIsOver(true);
+	}
 
 }
 

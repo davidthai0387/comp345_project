@@ -201,22 +201,34 @@ void GameEngine::GameStart()
     for (Player* p : players) {
         cout << "Select Strategy # for player " << p->getName() << endl;
         cout << "Select option: ";
-        int in;
-        cin >> in;
-        switch (in) {
-        case 1:
-            p->setStrategy(new HumanPlayer());
-            break;
-        case 2:
-            p->setStrategy(new AggressiveComputer());
-            break;
-        case 3:
-            p->setStrategy(new BenevolentComputer());
-            break;
-        case 4:
-            p->setStrategy(new NeutralComputer());
-            break;
+        while (true) {
+            int in;
+            cin >> in;
+
+            if (in > 4 || in < 1) {
+                cout << "Input is invalid, please try again: ";
+                continue;
+            }
+            else {
+                switch (in) {
+                case 1:
+                    p->setStrategy(new HumanPlayer());
+                    break;
+                case 2:
+                    p->setStrategy(new AggressiveComputer());
+                    break;
+                case 3:
+                    p->setStrategy(new BenevolentComputer());
+                    break;
+                case 4:
+                    p->setStrategy(new NeutralComputer());
+                    break;
+                }
+                break;
+            }
         }
+        
+        
     }
 
     random_device rd;
@@ -318,6 +330,7 @@ void GameEngine::issueOrdersPhase()
         switch (phases[i]) {    // check current player's phase (0:deploy, 1:advance, 2:cards)
         case 0:
             if (players[i]->getNumOfArmies() > 0) {
+                cout << "You have a total of " << players[i]->getNumOfArmies() << " number of armies in your reinforcement pool." << endl;
                 players[i]->issueOrder("Deploy", players[i], players, deck, gameMap);
             }
             if (players[i]->getNumOfArmies() <= 0) {
