@@ -86,7 +86,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 							}
 						}
 					}
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies : " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
 				}
 				else {
 					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
@@ -447,10 +447,39 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 			// Printing defending option list
 			cout << "Here is a list of your owned countries:" << endl;
 			int counter = 1;
+			// creates the vector of countries that were deployed to this turn
+			vector<Country*> deployed;
+			for (Orders* o : p->getPlayerOrders()->getList()) {
+				if (o->getName() == "Deploy") {
+					Deploy* d = dynamic_cast<Deploy*>(o);
+					if (d->getArmy() > 0) {
+						deployed.push_back(d->getCountry());
+					}
+				}
+			}
 			for (Country* country : potential) {
-				cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+				if (find(deployed.begin(), deployed.end(), country) != deployed.end()) {		// check if it's an ally country and there are armies on it
+					int additionalArmies = 0;
+					for (Country* d : deployed) {		// loop through all deployed countries
+						if (d == country) {		// find the country that is currently being displayed
+							for (Orders* o : p->getPlayerOrders()->getList()) {		// loops through all orders
+								if (o->getName() == "Deploy") {		// find only deploy orders
+									Deploy* deployOrder = dynamic_cast<Deploy*>(o);
+									if (deployOrder->getCountry() == d) {		// if the deploy order target is the country being deployed
+										additionalArmies += deployOrder->getArmy();		// keep count of the numbers of armies deployed to this country
+									}
+								}
+							}
+						}
+					}
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+				}
+				else {
+					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+				}
 				counter++;
 			}
+			
 
 			// Player choice
 			cout << "Please enter the number of a country that you would like to defend: ";
