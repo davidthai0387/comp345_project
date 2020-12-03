@@ -1,6 +1,6 @@
 #include "PlayerStrategies.h"
 #include <cstdlib>
-
+#include <iomanip> 
 
 
 // ----------HUMAN PLAYER----------
@@ -16,7 +16,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			try {
 				for (Country* country : m->getCountries()) {
 					if (country->getPlayer() != p) {
-						cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+						cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 						potential.push_back(country);
 						counter++;
 					}
@@ -86,10 +86,10 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 							}
 						}
 					}
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
 				}
 				else {
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 				}
 
 				potentialSources.push_back(country);
@@ -147,7 +147,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 		while (true) {
 			try {
 				for (Country* country : p->getOwnedCountries()) {
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 					counter++;
 				}
 				cout << "Where would you like to form a blockade? ";
@@ -179,7 +179,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			try {
 				int counter = 1;
 				for (Country* country : p->getOwnedCountries()) {
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 					counter++;
 				}
 				cout << "From which of your terriories would you deploy from?\nEnter the number of the country: ";
@@ -202,7 +202,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 				int counter = 1;
 				for (Country* country : m->getCountries()) {
 					if (country->getPlayer() != p) {
-						cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+						cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 						potential.push_back(country);
 						counter++;
 					}
@@ -247,7 +247,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			try {
 				int counter = 1;
 				for (Player* player : o) {
-					cout << "Player #" << counter << "\t" << player->getName() << endl;
+					cout << "Player #" << left << setw(5) << counter << left << setw(5) << player->getName() << endl;
 					counter++;
 				}
 				cout << "Which player would you like to negociate with (Enter the player number)? ";
@@ -278,7 +278,7 @@ void HumanPlayer::issueOrder(string orderName, Player* p, vector<Player*> o, Dec
 			try {
 				int counter = 1;
 				for (Country* country : p->getOwnedCountries()) {
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 					counter++;
 				}
 				cout << "Where would you like to reinforce?\nEnter the country number: ";
@@ -396,12 +396,12 @@ vector<Country*> HumanPlayer::toAttack(Player* p) {
 	cout << "Here is a list of reachable countries:" << endl;
 	cout << "Ally countries:" << endl;
 	for (Country* ally : ownCountries) {
-		cout << "Country #" << counter << "\t" << ally->getName() << "\tArmies: " << ally->getArmies() << endl;
+		cout << "Country #" << left << setw(5) << counter << left << setw(30) << ally->getName() << left << setw(5) << "Armies: " << ally->getArmies() << endl;
 		counter++;
 	}
 	cout << "Enemy countries:" << endl;
 	for (Country* enemy : enemyCountries) {
-		cout << "Country #" << counter << "\t" << enemy->getName() << "\tArmies: " << enemy->getArmies() << endl;
+		cout << "Country #" << left << setw(5) << counter << left << setw(30) << enemy->getName() << left << setw(5) << "Armies: " << enemy->getArmies() << endl;
 		counter++;
 	}
 
@@ -472,10 +472,10 @@ vector<Country*> HumanPlayer::toDefend(Player* p) {
 							}
 						}
 					}
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << " (" << country->getArmies() + additionalArmies << " after deploy order execution)" << endl;
 				}
 				else {
-					cout << "Country #" << counter << "\t" << country->getName() << "\tArmies: " << country->getArmies() << endl;
+					cout << "Country #" << left << setw(5) << counter << left << setw(30) << country->getName() << left << setw(5) << "Armies: " << country->getArmies() << endl;
 				}
 				counter++;
 			}
@@ -726,11 +726,19 @@ vector<Country*> BenevolentComputer::toDefend(Player* p) {
 
 void NeutralComputer::issueOrder(string orderName, Player* p, vector<Player*> o, Deck* d, Map* m) {
 
-	cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
 
-	p->setNumOfArmies(0);
-	p->setAdvancePhaseIsOver(true);
-	p->setCardPhaseIsOver(true);
+	if (orderName == "Deploy") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setNumOfArmies(0);
+	}
+	else if (orderName == "Advance") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setAdvancePhaseIsOver(true);
+	}
+	else if (orderName == "Card") {
+		cout << "----- Player " << p->getName() << " is neutral and makes no move..." << endl;
+		p->setCardPhaseIsOver(true);
+	}
 
 }
 
